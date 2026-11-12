@@ -69,3 +69,14 @@ explicar o que foi aproveitado. Uma entrada por uso relevante, a mais recente no
   arquitetura no estilo da identidade e a seção "A cara da Calmaria"; a paleta entrou no README, no escopo
   global e na parte comum de cada arquivo de disciplina.
 
+## 12/11/2026: base da API (módulo Sensorial)
+- **Quem:** Luiz
+- **Parte:** `api-dotnet/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Agora, vamos fazer a minha parte", seguindo a ordem de construção do `csharp.md` (quinta à noite).
+- **O que foi aproveitado:** a solução com os projetos Domain, Privacidade, Infrastructure, Api e Tests; o domínio
+  do módulo Sensorial (lugares com herança, leitura com faixa física, coordenada com Haversine, índice com
+  nível); o EF Core com PostgreSQL, a migração `Inicial_Sensorial` e o seed dos lugares 1 a 6; `GET /api/lugares`,
+  `GET /api/lugares/{id}`, `/health` e o Scalar; 40 testes (MSTest, SQLite em memória). Revisado e rodado no
+  PostgreSQL local. **Mudança no plano:** o discriminador da herança é a coluna `Categoria`, não o `Tipo`.
+
