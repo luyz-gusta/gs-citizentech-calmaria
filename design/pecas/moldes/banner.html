@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Calmaria: banner do repositório 1280 x 640</title>
+<link rel="stylesheet" href="base.css">
+<style>
+/* Prévia social do GitHub. Nada importante nos 40 px da borda; aqui a margem é de 80. */
+body { width: 1280px; height: 640px; overflow: hidden; position: relative; background: var(--crise); color: var(--crise-tx); }
+.in { position: absolute; inset: 80px 96px; display: flex; flex-direction: column; justify-content: space-between; }
+.in .logo { font-size: 43px; }
+.in b { font-size: 52px; line-height: 1.15; letter-spacing: -.01em; max-width: 680px; text-wrap: balance; }
+.in p { font-size: 28px; color: var(--crise-mu); }
+.onda { position: absolute; right: 40px; top: 50%; margin-top: -230px; width: 460px; height: 460px; color: var(--crise-sf); }
+</style>
+</head>
+<body>
+<script src="comum.js"></script>
+<script>
+document.body.innerHTML =
+  '<span class="onda">' + SIMBOLO + '</span>' +
+  '<div class="in">' + logo() +
+  '<b>' + esc(param("frase", "Onde está calmo agora, em São Paulo")) + '</b>' +
+  '<p>' + esc(param("rodape", "Mapa sensorial para pessoas autistas · Global Solution 2026.2 · FIAP")) + '</p></div>';
+</script>
+</body>
+</html>

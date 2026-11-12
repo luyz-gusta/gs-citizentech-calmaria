@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Calmaria: logotipo em PNG</title>
+<link rel="stylesheet" href="base.css">
+<style>
+/* versao=cor: fundo transparente, 800 x 200. versao=invertido: fundo #1F2733 com respiro, 880 x 280. */
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body { display: flex; align-items: center; justify-content: center; background: transparent; }
+body.cor { color: var(--ardosia); }
+body.cor .logo { color: var(--texto); }
+body.cor .logo svg { color: var(--ardosia); }
+body.invertido { background: var(--crise); color: var(--crise-tx); }
+.logo { font-size: 96px; }
+</style>
+</head>
+<body>
+<script src="comum.js"></script>
+<script>
+document.body.className = param("versao", "cor");
+document.body.innerHTML = logo();
+</script>
+</body>
+</html>

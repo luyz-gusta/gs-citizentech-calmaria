@@ -1,0 +1,8 @@
+{
+  "primitivos": ["primitivos.tokens.json", "tipografia.tokens.json", "base.tokens.json"],
+  "temas": {
+    "claro": "tema-claro.tokens.json",
+    "escuro": "tema-escuro.tokens.json"
+  },
+  "pares": "pares-de-contraste.json"
+}

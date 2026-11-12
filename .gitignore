@@ -1,0 +1,41 @@
+# Segredos: nunca versionar. Cada pasta traz um .env.exemplo com as chaves vazias.
+.env
+.env.*
+!.env.exemplo
+*.pfx
+*.pem
+appsettings.Local.json
+
+# .NET (api-dotnet/)
+bin/
+obj/
+.vs/
+*.user
+TestResults/
+
+# Expo (mobile/)
+node_modules/
+.expo/
+dist/
+web-build/
+
+# Python e ML (ml/)
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+# Os CSV brutos do SP156 passam de 100 MB: ficam fora. O filtrado (poucos MB) entra.
+ml/dados/brutos/
+ml/dados/*.csv
+!ml/dados/psiu_filtrado.csv
+
+# Entregas geradas (o ZIP de Cybersecurity sai do security/gerar-zip.ps1)
+*.zip
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

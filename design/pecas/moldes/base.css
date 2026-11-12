@@ -1,0 +1,24 @@
+/* Base das peças exportadas da Calmaria. Fontes locais (OFL) em ../fontes; cores dos tokens de design/tokens. */
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../fontes/next-400.ttf") format("truetype"); font-weight: 400; }
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../fontes/next-500.ttf") format("truetype"); font-weight: 500; }
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../fontes/next-600.ttf") format("truetype"); font-weight: 600; }
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../fontes/next-700.ttf") format("truetype"); font-weight: 700; }
+@font-face { font-family: "Atkinson Hyperlegible Mono"; src: url("../fontes/mono-400.ttf") format("truetype"); font-weight: 400; }
+@font-face { font-family: "Atkinson Hyperlegible Mono"; src: url("../fontes/mono-600.ttf") format("truetype"); font-weight: 600; }
+
+:root {
+  --ardosia: #3D5A73; --ardosia-sub: #E7EEF3;
+  --fundo-claro: #F1F5F7; --superficie: #F8FBFD; --texto: #14191F; --apoio: #4D545B; --borda-forte: #6B737A;
+  --crise: #1F2733; --crise-sf: #313D4D; --crise-tx: #F8FBFD; --crise-mu: #D4E1EA; --crise-ac: #B2C9D8;
+  /* níveis no tema escuro (para peças de fundo escuro) */
+  --calmo-e: #7DAF95; --mod-e: #BBA15E; --int-e: #E08F82; --sobre-e: #06090E;
+  --texto-font: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --mono-font: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: var(--texto-font); -webkit-font-smoothing: antialiased; }
+p { margin: 0; }
+.logo { display: inline-flex; align-items: center; gap: .35em; font-weight: 700; letter-spacing: -.01em; line-height: 1; white-space: nowrap; }
+.logo svg { width: 1.5em; height: 1.5em; flex: none; }
+.mono { font-family: var(--mono-font); }

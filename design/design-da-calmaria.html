@@ -1,0 +1,1227 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Design da Calmaria</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: navegação fixa à esquerda e uma coluna de leitura; as peças largas (telas, painel, vídeos) ocupam a largura toda da coluna. */
+:root{
+  --bg:#F1F5F7; --surface:#F8FBFD; --subtle:#E0E5E9; --fg:#14191F; --muted:#4D545B; --rule:#CED5DA; --strong:#6B737A;
+  --brand:#3D5A73; --on-brand:#FFFFFF; --brand-text:#3D5A73; --brand-subtle:#E7EEF3; --focus:#597590;
+  --calmo:#437E61; --calmo-on:#FFFFFF; --calmo-sub:#E5F0EA; --calmo-tx:#34684F;
+  --mod:#BBA15E; --mod-on:#06090E; --mod-sub:#F0EDDF; --mod-tx:#855318;
+  --int:#B2574D; --int-on:#FFFFFF; --int-sub:#FCE9E5; --int-tx:#95463E;
+  --info-sub:#ECFAFC; --info-tx:#00677F; --info-bd:#A9EAF3;
+  --fab:#313D4D; --fab-tx:#FFFFFF;
+  /* Fixos nos dois temas: a tela de crise, o visor OLED, a moldura do celular e as cartelas de vídeo. */
+  --crise-bg:#1F2733; --crise-sf:#313D4D; --crise-tx:#F8FBFD; --crise-mu:#D4E1EA; --crise-ac:#B2C9D8; --crise-on:#1F2733;
+  --oled-bg:#05080B; --oled-px:#DCE8F2; --bezel:#0B0F14; --paper:#FFFFFF; --ink:#14191F;
+  --font:"Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:"Atkinson Hyperlegible Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14191F; --surface:#22282E; --subtle:#06090E; --fg:#F8FBFD; --muted:#CED5DA; --rule:#3A4148; --strong:#9BA3AA;
+    --brand:#8AA8BE; --on-brand:#06090E; --brand-text:#B2C9D8; --brand-subtle:#1F2733; --focus:#8AA8BE;
+    --calmo:#7DAF95; --calmo-on:#06090E; --calmo-sub:#152B20; --calmo-tx:#AACEBA;
+    --mod:#BBA15E; --mod-on:#06090E; --mod-sub:#3A210E; --mod-tx:#D2C596;
+    --int:#E08F82; --int-on:#06090E; --int-sub:#3F1D1A; --int-tx:#F3B7AC;
+    --info-sub:#002B38; --info-tx:#55D6E7; --info-bd:#005268;
+    --fab:#D4E1EA; --fab-tx:#1F2733;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14191F; --surface:#22282E; --subtle:#06090E; --fg:#F8FBFD; --muted:#CED5DA; --rule:#3A4148; --strong:#9BA3AA;
+  --brand:#8AA8BE; --on-brand:#06090E; --brand-text:#B2C9D8; --brand-subtle:#1F2733; --focus:#8AA8BE;
+  --calmo:#7DAF95; --calmo-on:#06090E; --calmo-sub:#152B20; --calmo-tx:#AACEBA;
+  --mod:#BBA15E; --mod-on:#06090E; --mod-sub:#3A210E; --mod-tx:#D2C596;
+  --int:#E08F82; --int-on:#06090E; --int-sub:#3F1D1A; --int-tx:#F3B7AC;
+  --info-sub:#002B38; --info-tx:#55D6E7; --info-bd:#005268;
+  --fab:#D4E1EA; --fab-tx:#1F2733;
+  color-scheme:dark;
+}
+/* O app tem o próprio tema, trocado pelo botão Claro e Escuro da seção App, independente do tema da página. */
+.app{
+  --bg:#F1F5F7; --surface:#F8FBFD; --subtle:#E0E5E9; --fg:#14191F; --muted:#4D545B; --rule:#E0E5E9; --strong:#6B737A;
+  --brand:#3D5A73; --on-brand:#FFFFFF; --brand-text:#3D5A73; --brand-subtle:#E7EEF3; --focus:#597590;
+  --calmo:#437E61; --calmo-on:#FFFFFF; --calmo-sub:#E5F0EA; --calmo-tx:#34684F;
+  --mod:#BBA15E; --mod-on:#06090E; --mod-sub:#F0EDDF; --mod-tx:#855318;
+  --int:#B2574D; --int-on:#FFFFFF; --int-sub:#FCE9E5; --int-tx:#95463E;
+  --info-sub:#ECFAFC; --info-tx:#00677F; --info-bd:#A9EAF3;
+  --fab:#313D4D; --fab-tx:#FFFFFF;
+}
+.app[data-tema="escuro"]{
+  --bg:#14191F; --surface:#22282E; --subtle:#06090E; --fg:#F8FBFD; --muted:#CED5DA; --rule:#3A4148; --strong:#9BA3AA;
+  --brand:#8AA8BE; --on-brand:#06090E; --brand-text:#B2C9D8; --brand-subtle:#1F2733; --focus:#8AA8BE;
+  --calmo:#7DAF95; --calmo-on:#06090E; --calmo-sub:#152B20; --calmo-tx:#AACEBA;
+  --mod:#BBA15E; --mod-on:#06090E; --mod-sub:#3A210E; --mod-tx:#D2C596;
+  --int:#E08F82; --int-on:#06090E; --int-sub:#3F1D1A; --int-tx:#F3B7AC;
+  --info-sub:#002B38; --info-tx:#55D6E7; --info-bd:#005268;
+  --fab:#D4E1EA; --fab-tx:#1F2733;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5;margin:0}
+a{color:var(--brand-text);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+code,.mono{font-family:var(--mono);font-size:.92em}
+h1,h2,h3,h4{text-wrap:balance;margin:0;line-height:1.2}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+
+.shell{max-width:1240px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:32px 96px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px}
+.nav{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 24px);align-self:start;display:flex;flex-direction:column;gap:2px;font-size:15px}
+.nav .nav-t{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:6px}
+.nav a:hover{color:var(--fg);background:var(--subtle)}
+main{min-width:0;display:flex;flex-direction:column;gap:88px}
+@media (max-width: 960px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:24px;padding-block:20px 72px}
+  .nav{position:static;flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+  .nav .nav-t{display:none}
+  .nav a{white-space:nowrap;background:var(--surface);border:1px solid var(--rule)}
+  main{gap:64px}
+}
+
+/* Abertura */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end;padding-bottom:32px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hero h1{font-size:52px;line-height:60px;font-weight:700;letter-spacing:-.02em;margin-top:12px}
+.hero .lead{font-size:20px;line-height:30px;color:var(--muted);max-width:62ch;margin-top:16px}
+.hero-mark{width:168px;height:168px;color:var(--brand-text)}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.meta span{font-size:14px;padding:4px 12px;border:1px solid var(--rule);border-radius:999px;color:var(--muted);background:var(--surface)}
+@media (max-width: 640px){.hero{grid-template-columns:minmax(0,1fr)}.hero h1{font-size:36px;line-height:44px}.hero .lead{font-size:18px;line-height:28px}.hero-mark{width:96px;height:96px;order:-1}}
+
+/* Seções */
+.sec{display:flex;flex-direction:column;gap:24px;scroll-margin-top:24px}
+.sec-h{display:flex;flex-direction:column;gap:8px;max-width:72ch}
+.sec-h .k{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--brand-text);font-weight:600}
+.sec-h h2{font-size:32px;line-height:40px;font-weight:700;letter-spacing:-.01em}
+.sec-h p{font-size:18px;line-height:28px;color:var(--muted)}
+h3.sub{font-size:22px;line-height:32px;font-weight:600;margin-top:8px}
+.prose{max-width:72ch;display:flex;flex-direction:column;gap:12px}
+.prose p,.prose li{font-size:17px;line-height:27px}
+.prose ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.note{font-size:15px;color:var(--muted)}
+
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width: 860px){.grid2,.grid3{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card h4{font-size:18px;line-height:26px;font-weight:600}
+.card p{font-size:16px;line-height:24px;color:var(--muted)}
+.card .tie{font-size:14px;line-height:21px;color:var(--fg);border-top:1px solid var(--rule);padding-top:10px;margin-top:auto}
+.card .tie b{font-weight:600}
+
+/* Tabelas */
+.tw{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:22px}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--rule)}
+th{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td code{white-space:nowrap}
+.sw{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px;border:1px solid var(--rule)}
+
+/* Código */
+pre.code{margin:0;overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;font-family:var(--mono);font-size:14px;line-height:22px;color:var(--fg)}
+.code-h{font-size:14px;color:var(--muted);margin-bottom:-14px}
+
+/* Selo e forma do nível: cor, letra e forma juntas */
+.selo{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px 0 8px;border-radius:999px;font-size:16px;font-weight:600;white-space:nowrap;background:var(--lv-sub);color:var(--lv-tx);border:1px solid var(--lv-tx)}
+.selo svg{width:16px;height:16px;flex:none}
+.lv-c{--lv:var(--calmo);--lv-on:var(--calmo-on);--lv-sub:var(--calmo-sub);--lv-tx:var(--calmo-tx)}
+.lv-m{--lv:var(--mod);--lv-on:var(--mod-on);--lv-sub:var(--mod-sub);--lv-tx:var(--mod-tx)}
+.lv-i{--lv:var(--int);--lv-on:var(--int-on);--lv-sub:var(--int-sub);--lv-tx:var(--int-tx)}
+.shape{fill:var(--lv);stroke:var(--lv-tx);stroke-width:1.5}
+.mk{width:40px;height:40px;flex:none}
+.mk .shape{stroke-width:2}
+.mk text{font-family:var(--font);font-weight:700;font-size:17px;fill:var(--lv-on)}
+
+/* Escalas de cor */
+.scales{display:flex;flex-direction:column;gap:14px}
+.scale-row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:center}
+.scale-row .nm{font-size:14px;font-weight:600}
+.scale-row .nm small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.steps{display:grid;grid-template-columns:repeat(11,minmax(52px,1fr));gap:4px;overflow-x:auto;padding-bottom:2px}
+.step{height:58px;border-radius:6px;padding:6px;display:flex;flex-direction:column;justify-content:space-between;font-family:var(--mono);font-size:10.5px;line-height:13px}
+.step.ex{outline:2px solid var(--fg);outline-offset:1px}
+@media (max-width: 640px){.scale-row{grid-template-columns:minmax(0,1fr)}}
+
+.levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width: 860px){.levels{grid-template-columns:minmax(0,1fr)}}
+.lvcard{border-radius:12px;padding:20px;background:var(--lv-sub);border:1px solid var(--lv-tx);color:var(--lv-tx);display:flex;flex-direction:column;gap:12px}
+.lvcard .top{display:flex;align-items:center;gap:12px}
+.lvcard .top b{font-size:24px;line-height:32px}
+.lvcard dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:15px;line-height:22px;color:var(--fg)}
+.lvcard dt{color:var(--lv-tx);font-weight:600}
+.lvcard dd{margin:0}
+
+/* Marca */
+.brand-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width: 860px){.brand-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bt{border-radius:12px;border:1px solid var(--rule);aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:12px;min-width:0;max-width:100%}
+.bt span{font-size:13px}
+.bt.t1{background:var(--surface);color:var(--brand-text)}
+.bt.t1 span{color:var(--muted)}
+.bt.t2{background:var(--crise-bg);color:var(--crise-tx);border-color:var(--crise-bg)}
+.bt.t2 span{color:var(--crise-mu)}
+.bt.t3{background:var(--paper);color:var(--ink);border-color:var(--rule)}
+.bt.t4{background:var(--oled-bg);color:var(--oled-px);border-color:var(--oled-bg)}
+.logo{display:inline-flex;align-items:center;gap:.35em;font-weight:700;letter-spacing:-.01em;line-height:1}
+.logo svg{width:1.5em;height:1.5em}
+.construct{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:24px;align-items:center}
+@media (max-width: 700px){.construct{grid-template-columns:minmax(0,1fr)}}
+.construct svg{width:100%;max-width:280px;height:auto;display:block}
+.cgrid line{stroke:var(--rule);stroke-width:.25}
+.cguide{stroke:var(--info-tx);stroke-width:.35;stroke-dasharray:1 1;fill:none}
+.ctext{font-family:var(--mono);font-size:2.6px;fill:var(--muted)}
+
+/* Tipografia */
+.specimen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width: 760px){.specimen{grid-template-columns:minmax(0,1fr)}}
+.spec-big{font-size:56px;line-height:64px;font-weight:700;letter-spacing:-.02em}
+.spec-mono{font-family:var(--mono);font-size:40px;line-height:48px}
+.amb{font-size:28px;line-height:36px;letter-spacing:.06em}
+
+/* Ícones */
+.icons{display:flex;flex-wrap:wrap;gap:8px}
+.ic{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--rule);font-size:14px}
+.ic svg{width:24px;height:24px;color:var(--brand-text)}
+.ic code{font-size:13px;color:var(--muted)}
+.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* Peças */
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filters button{font:inherit;font-size:15px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--fg);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.count{font-size:15px;color:var(--muted)}
+#tabela-pecas td:first-child{font-family:var(--mono);white-space:nowrap;color:var(--brand-text);font-weight:600}
+#tabela-pecas td:nth-child(2){font-weight:600;min-width:150px}
+#tabela-pecas td:nth-child(5){min-width:170px}
+#tabela-pecas td:nth-child(6){min-width:260px;color:var(--muted)}
+
+/* Celulares */
+.toggle{display:inline-flex;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--surface);gap:2px}
+.toggle button{font:inherit;font-size:15px;min-height:40px;padding:0 16px;border-radius:999px;border:0;background:transparent;color:var(--fg);cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
+.phones{display:flex;gap:32px;overflow-x:auto;padding:4px 4px 20px}
+.ph-wrap{flex:0 0 auto;display:flex;flex-direction:column;gap:10px}
+.ph-cap{font-size:14px;color:var(--muted);max-width:390px}
+.ph-cap b{color:var(--fg);font-family:var(--mono);font-weight:600}
+.phone{position:relative;width:390px;height:844px;border-radius:48px;border:10px solid var(--bezel);outline:1px solid var(--rule);overflow:hidden;background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column}
+.ph-st{height:44px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 28px;font-size:15px;font-weight:600}
+.ph-scroll{flex:1;overflow:hidden;padding:8px 16px 120px;display:flex;flex-direction:column;gap:16px}
+.ph-h{font-size:24px;line-height:32px;font-weight:700}
+.ph-sub{font-size:16px;line-height:24px;color:var(--muted)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--subtle);border-radius:12px;padding:4px;gap:4px}
+.seg span{height:40px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:9px;font-size:16px;font-weight:600;color:var(--muted)}
+.seg span.on{background:var(--surface);color:var(--fg);box-shadow:0 0 0 1px var(--rule)}
+.seg svg{width:20px;height:20px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{height:40px;padding:0 14px;display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--strong);font-size:16px;color:var(--fg)}
+.chip.on{background:var(--brand-subtle);border-color:var(--brand);color:var(--brand-text);font-weight:600}
+.cards{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.lc{position:relative;background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 44px 14px 16px;display:flex;flex-direction:column;gap:6px}
+.lc .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lc .dist{font-size:16px;color:var(--muted);font-variant-numeric:tabular-nums}
+.lc .nome{font-size:18px;line-height:26px;font-weight:600}
+.lc .meta2{font-size:16px;color:var(--muted)}
+.lc > svg{position:absolute;right:14px;top:50%;margin-top:-12px;width:24px;height:24px;color:var(--muted)}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:98px;padding-bottom:34px;background:var(--surface);border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(3,1fr)}
+.tabs span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:14px;color:var(--muted)}
+.tabs span.on{color:var(--brand-text);font-weight:600}
+.tabs svg{width:24px;height:24px}
+.fab{position:absolute;right:16px;bottom:114px;height:64px;min-width:176px;padding:0 20px;border-radius:999px;background:var(--fab);color:var(--fab-tx);display:flex;align-items:center;justify-content:center;gap:10px;font-size:18px;font-weight:700;box-shadow:0 4px 12px rgba(6,9,14,.25)}
+.fab svg{width:24px;height:24px}
+.back{display:flex;align-items:center;gap:6px;height:48px;font-size:17px;color:var(--brand-text);font-weight:600}
+.back svg{width:24px;height:24px}
+.lvbig{border-radius:16px;padding:16px;background:var(--lv-sub);border:1px solid var(--lv-tx);display:flex;gap:14px;align-items:center}
+.lvbig b{display:block;font-size:32px;line-height:40px;color:var(--lv-tx)}
+.lvbig small{font-size:16px;color:var(--fg)}
+.blk h4{font-size:18px;line-height:26px;font-weight:700;margin-bottom:8px}
+.mrow{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--rule)}
+.mrow svg{width:24px;height:24px;color:var(--brand-text);margin-top:2px}
+.mrow b{font-family:var(--mono);font-size:17px;font-weight:600}
+.mrow p{font-size:16px;line-height:24px;color:var(--muted)}
+.hr{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--rule);font-size:16px}
+.hr svg{width:16px;height:16px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:17px;font-weight:700;border:1px solid var(--brand);color:var(--brand-text);background:var(--surface)}
+.btn.pri{background:var(--brand);color:var(--on-brand)}
+.btn svg{width:22px;height:22px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:16px;font-weight:600}
+.select{height:56px;border-radius:12px;border:1px solid var(--strong);background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:17px}
+.select svg{width:22px;height:22px;color:var(--muted)}
+.txt{border-radius:12px;border:1px solid var(--strong);background:var(--surface);padding:12px 14px;font-size:17px;line-height:25px;min-height:100px}
+.priv{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:12px 14px;border-radius:12px;background:var(--info-sub);border:1px solid var(--info-bd);color:var(--fg);font-size:16px;line-height:24px}
+.priv svg{width:24px;height:24px;color:var(--info-tx)}
+.priv b{color:var(--info-tx)}
+/* Tela de crise: escura nos dois temas */
+.phone.crise{background:var(--crise-bg);color:var(--crise-tx)}
+.crise .ph-scroll{padding-bottom:24px}
+.crise .close{display:flex;align-items:center;gap:6px;height:48px;font-size:17px;font-weight:600;color:var(--crise-mu)}
+.crise .close svg{width:24px;height:24px}
+.crise h3{font-size:32px;line-height:40px;font-weight:700;color:var(--crise-tx)}
+.crise .box{background:var(--crise-sf);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.crise .box small{font-size:16px;color:var(--crise-mu)}
+.crise .box b{font-size:24px;line-height:32px}
+.crise .box p{font-size:18px;line-height:28px;color:var(--crise-tx)}
+.cbtn{height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:18px;font-weight:700}
+.cbtn.pri{background:var(--crise-ac);color:var(--crise-on)}
+.cbtn.sec{border:2px solid var(--crise-ac);color:var(--crise-tx)}
+.cbtn svg{width:24px;height:24px}
+
+.states td:first-child{white-space:nowrap;font-weight:600}
+.iconrow{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end}
+.appicon{width:120px;height:120px;border-radius:27px;background:#3D5A73;color:#F1F5F7;display:flex;align-items:center;justify-content:center}
+.appicon svg{width:67px;height:67px}
+.adapt{width:120px;height:120px;border-radius:50%;background:#3D5A73;color:#F1F5F7;display:flex;align-items:center;justify-content:center;position:relative}
+.adapt svg{width:56px;height:56px}
+.splash{width:120px;height:240px;border-radius:18px;border:6px solid var(--bezel);display:flex;align-items:center;justify-content:center}
+.splash svg{width:40px;height:40px}
+.splash.l{background:#F1F5F7;color:#3D5A73}
+.splash.d{background:#14191F;color:#B2C9D8}
+.iconrow figcaption{font-size:13px;color:var(--muted);margin-top:8px;max-width:150px}
+.iconrow figure{margin:0}
+
+/* OLED */
+.oleds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width: 960px){.oleds{grid-template-columns:minmax(0,1fr)}}
+.oled{background:var(--bezel);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.oled canvas{width:100%;max-width:512px;height:auto;image-rendering:pixelated;display:block;background:var(--oled-bg);border-radius:2px}
+.oled span{font-size:13px;color:var(--crise-mu)}
+.leds{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.led{display:flex;align-items:center;gap:10px;font-size:15px}
+.led i{width:18px;height:18px;border-radius:50%;display:block;border:2px solid var(--rule)}
+
+/* Painel */
+.browser{border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:var(--bg)}
+.bw-bar{height:40px;display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--subtle);border-bottom:1px solid var(--rule)}
+.bw-bar i{width:10px;height:10px;border-radius:50%;background:var(--strong);display:block;opacity:.5}
+.bw-bar span{margin-left:12px;font-family:var(--mono);font-size:13px;color:var(--muted);background:var(--surface);padding:2px 12px;border-radius:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pm{container-type:inline-size;padding:24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pm > *{min-width:0}
+.pm-head{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.pm-head .logo{font-size:20px;color:var(--brand-text)}
+.pm-head .logo em{font-style:normal;font-weight:500;color:var(--muted)}
+.pm-head .m{font-size:15px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tag{font-size:13px;font-weight:600;padding:2px 10px;border-radius:999px;background:var(--info-sub);color:var(--info-tx);border:1px solid var(--info-bd)}
+.pbtn{font:inherit;height:40px;padding:0 16px;border-radius:8px;border:0;background:var(--brand);color:var(--on-brand);font-weight:700;font-size:15px}
+.pc{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.pc h4{font-size:18px;line-height:26px;font-weight:700}
+.pc .hint{font-size:14px;color:var(--muted)}
+.pc.wide{grid-column:1/-1}
+.kpi{display:flex;flex-wrap:wrap;gap:16px 40px;align-items:flex-end}
+.kpi .v{display:flex;flex-direction:column;gap:4px}
+.kpi .v small{font-size:14px;color:var(--muted)}
+.kpi .v b{font-size:44px;line-height:52px;font-variant-numeric:tabular-nums}
+.band{position:relative;height:64px;margin-top:4px}
+.band .bars{display:flex;height:14px;border-radius:7px;overflow:hidden;position:absolute;left:0;right:0;top:22px}
+.band .bars i{display:block;height:100%}
+.band .tick{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;font-size:13px;font-weight:600;white-space:nowrap}
+.band .tick::after{content:"";width:2px;height:22px;background:var(--fg);margin-top:2px}
+.band .lab{position:absolute;top:42px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.hb{display:grid;grid-template-columns:minmax(110px,auto) minmax(0,1fr) 28px;gap:8px 12px;align-items:center;font-size:15px}
+.hb i{display:block;height:14px;border-radius:0 4px 4px 0;background:var(--brand)}
+.hb b{font-variant-numeric:tabular-nums;text-align:right}
+.ft{width:100%;font-size:14px}
+.ft td,.ft th{padding:8px 10px}
+.ok{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--calmo-tx)}
+.ok svg{width:16px;height:16px}
+.alert{border-left:0;border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+.alert p{font-size:15px;line-height:22px}
+.alert small{font-size:13px;color:var(--muted)}
+@container (max-width: 640px){.pm{grid-template-columns:minmax(0,1fr)}}
+@media (max-width: 700px){.pm{grid-template-columns:minmax(0,1fr);padding:16px}}
+
+/* Diagrama */
+.diagram{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:12px}
+.diagram svg{display:block;min-width:720px;width:100%;height:auto}
+.d-box{fill:var(--surface);stroke:var(--strong);stroke-width:1.5}
+.d-api{fill:var(--brand-subtle);stroke:var(--brand);stroke-width:1.5}
+.d-mod{fill:var(--surface);stroke:var(--brand);stroke-width:1.5}
+.d-vm{fill:none;stroke:var(--strong);stroke-width:1.5;stroke-dasharray:6 5}
+.d-t{font-family:var(--font);font-size:16px;font-weight:700;fill:var(--fg)}
+.d-s{font-family:var(--font);font-size:13px;fill:var(--muted)}
+.d-a{stroke:var(--fg);stroke-width:1.5;fill:none}
+.d-al{font-family:var(--mono);font-size:12px;fill:var(--brand-text)}
+.d-head{fill:var(--fg)}
+
+/* Vídeo, miniatura e PDF: proporção real, texto em medida do quadro */
+.frames{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width: 760px){.frames{grid-template-columns:minmax(0,1fr)}}
+.fr{display:flex;flex-direction:column;gap:8px;min-width:0}
+.fr figcaption{font-size:14px;color:var(--muted)}
+.fr figcaption b{font-family:var(--mono);color:var(--fg)}
+figure{margin:0}
+.v{aspect-ratio:16/9;container-type:inline-size;position:relative;overflow:hidden;border-radius:8px;max-width:100%;border:1px solid var(--rule)}
+.v.dark{background:var(--crise-bg);color:var(--crise-tx)}
+.v.light{background:#F1F5F7;color:#14191F}
+.v .safe{position:absolute;left:5%;right:5%;top:5%;bottom:5%;border:1px dashed rgba(178,201,216,.55);pointer-events:none}
+.v.light .safe{border-color:rgba(61,90,115,.35)}
+.v-open{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(100cqw*24/1920)}
+.v-open .logo{font-size:calc(100cqw*120/1920);color:var(--crise-tx)}
+.v-open p{font-size:calc(100cqw*48/1920);color:var(--crise-mu)}
+.v-open small{position:absolute;bottom:calc(100cqw*80/1920);font-size:calc(100cqw*40/1920);color:var(--crise-mu)}
+.v-photo{position:absolute;inset:0;background:repeating-linear-gradient(135deg,#C9D3DA 0 calc(100cqw*24/1920),#BEC9D1 calc(100cqw*24/1920) calc(100cqw*48/1920))}
+.v-lt{position:absolute;left:5%;bottom:calc(100cqw*96/1920);background:var(--crise-bg);color:var(--crise-tx);padding:calc(100cqw*18/1920) calc(100cqw*32/1920);border-radius:calc(100cqw*12/1920);display:flex;flex-direction:column;gap:calc(100cqw*4/1920)}
+.v-lt b{font-size:calc(100cqw*48/1920);line-height:1.2}
+.v-lt span{font-size:calc(100cqw*40/1920);line-height:1.2;color:var(--crise-mu)}
+.v-ch{position:absolute;left:5%;right:5%;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:calc(100cqw*20/1920)}
+.v-ch small{font-size:calc(100cqw*40/1920);color:#4D545B;font-variant-numeric:tabular-nums}
+.v-ch b{font-size:calc(100cqw*96/1920);line-height:1.1;letter-spacing:-.01em;color:#14191F}
+.v-ch span{font-size:calc(100cqw*40/1920);color:#3D5A73;font-family:var(--mono)}
+.v-end{position:absolute;inset:5%;display:flex;flex-direction:column;justify-content:space-between}
+.v-end .logo{font-size:calc(100cqw*72/1920);color:var(--crise-tx)}
+.v-end b{font-size:calc(100cqw*64/1920);line-height:1.2}
+.v-end p{font-size:calc(100cqw*40/1920);color:var(--crise-mu);font-family:var(--mono)}
+.v-end .ods{display:flex;gap:calc(100cqw*16/1920)}
+.v-end .ods span{font-size:calc(100cqw*40/1920);padding:calc(100cqw*8/1920) calc(100cqw*24/1920);border:calc(100cqw*3/1920) solid var(--crise-ac);border-radius:999px}
+.v-th{position:absolute;inset:0;padding:6% 6%;display:flex;flex-direction:column;justify-content:space-between}
+.v-th .logo{font-size:calc(100cqw*48/1280);color:var(--crise-tx)}
+.v-th b{font-size:calc(100cqw*96/1280);line-height:1.05;letter-spacing:-.02em;max-width:85%}
+.v-th .pills{display:flex;gap:calc(100cqw*16/1280);flex-wrap:wrap}
+.v-th .pill{display:inline-flex;align-items:center;gap:calc(100cqw*10/1280);font-size:calc(100cqw*36/1280);font-weight:700;padding:calc(100cqw*8/1280) calc(100cqw*22/1280);border-radius:999px;background:var(--lv);color:var(--lv-on)}
+.v-th .pill svg{width:calc(100cqw*30/1280);height:calc(100cqw*30/1280)}
+.v-th .pill .shape{stroke:none;fill:currentColor}
+.pdf{aspect-ratio:210/297;max-width:340px;width:100%;container-type:inline-size;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:4px;position:relative;box-shadow:0 2px 10px rgba(6,9,14,.12)}
+.pdf-in{position:absolute;inset:9.52%;display:flex;flex-direction:column;gap:calc(100cqw*14/595)}
+.pdf-in .logo{font-size:calc(100cqw*22/595);color:#3D5A73}
+.pdf-in h5{font-size:calc(100cqw*30/595);line-height:1.15;margin:calc(100cqw*60/595) 0 0;font-weight:700}
+.pdf-in p{font-size:calc(100cqw*13/595);line-height:1.45}
+.pdf-in .lbl{font-size:calc(100cqw*10/595);letter-spacing:.06em;text-transform:uppercase;color:#4D545B;margin-top:calc(100cqw*12/595)}
+.pdf-in .lk{font-family:var(--mono);font-size:calc(100cqw*11/595);color:#3D5A73}
+.pdf-in .ft2{margin-top:auto;font-size:calc(100cqw*11/595);color:#4D545B;border-top:1px solid #CED5DA;padding-top:calc(100cqw*10/595)}
+
+.timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+@media (max-width: 860px){.timeline{grid-template-columns:minmax(0,1fr)}}
+.tl{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.tl small{font-family:var(--mono);font-size:13px;color:var(--brand-text)}
+.tl b{font-size:16px;line-height:22px}
+.tl span{font-size:14px;line-height:20px;color:var(--muted)}
+
+.tree{font-family:var(--mono);font-size:14px;line-height:24px}
+.pend{display:flex;flex-direction:column;gap:10px;max-width:80ch}
+.pend li{font-size:17px;line-height:27px}
+.foot{font-size:14px;color:var(--muted);border-top:1px solid var(--rule);padding-top:20px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="s-logo" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M6 14 C10 9 14 9 18 14 S26 19 30 14 S38 9 42 14"/><path d="M6 24 C10 21.5 14 21.5 18 24 S26 26.5 30 24 S38 21.5 42 24"/><path d="M6 34 H42"/></g></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><g class="i"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></g></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><g class="i"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></g></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><g class="i"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="9" y1="10" x2="15" y2="10"/></g></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><g class="i"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></g></symbol>
+    <symbol id="i-buoy" viewBox="0 0 24 24"><g class="i"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></g></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><g class="i"><polyline points="9 18 15 12 9 6"/></g></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><g class="i"><polyline points="6 9 12 15 18 9"/></g></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><g class="i"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></g></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><g class="i"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></g></symbol>
+    <symbol id="i-vol" viewBox="0 0 24 24"><g class="i"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></g></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><g class="i"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></g></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><g class="i"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><g class="i"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><g class="i"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></g></symbol>
+    <symbol id="i-nav" viewBox="0 0 24 24"><g class="i"><polygon points="3 11 22 2 13 21 11 13 3 11"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g class="i"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></g></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><g class="i"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><g class="i"><polyline points="20 6 9 17 4 12"/></g></symbol>
+    <symbol id="lv-c" viewBox="0 0 16 16"><circle class="shape" cx="8" cy="8" r="6.6"/></symbol>
+    <symbol id="lv-m" viewBox="0 0 16 16"><rect class="shape" x="1.6" y="1.6" width="12.8" height="12.8" rx="2"/></symbol>
+    <symbol id="lv-i" viewBox="0 0 16 16"><path class="shape" d="M8 .9 15.1 8 8 15.1 .9 8z"/></symbol>
+  </defs>
+</svg>
+
+<div class="shell">
+  <nav class="nav" aria-label="Seções">
+    <span class="nav-t">Design da Calmaria</span>
+    <a href="#direcao">Direção</a>
+    <a href="#marca">Marca</a>
+    <a href="#cor">Cor</a>
+    <a href="#tipografia">Tipografia</a>
+    <a href="#forma">Forma e ícones</a>
+    <a href="#pecas">Lista de peças</a>
+    <a href="#app">App</a>
+    <a href="#sensor">Sensor</a>
+    <a href="#painel">Painel</a>
+    <a href="#api">API e diagrama</a>
+    <a href="#ml">Gráficos do ML</a>
+    <a href="#vm">Terminal da VM</a>
+    <a href="#videos">Vídeos e pitch</a>
+    <a href="#arquivos">Arquivos</a>
+    <a href="#pendencias">Pendências</a>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Global Solution 2026.2 · CitizenTech · FIAP</p>
+        <h1>Design da Calmaria</h1>
+        <p class="lead">A identidade e a especificação de cada peça visual das oito entregas: cores com contraste conferido, tipografia, tamanhos, telas e quem faz cada peça. Os valores saem dos tokens em <code>design/</code> no repositório, e o que está aqui é cópia deles.</p>
+        <div class="meta"><span>Versão 1 · 12/11/2026</span><span>86 pares de cor aprovados nos dois temas</span><span>O nome Calmaria ainda é provisório</span></div>
+      </div>
+      <svg class="hero-mark" aria-hidden="true"><use href="#s-logo"/></svg>
+    </header>
+
+    <!-- DIREÇÃO -->
+    <section class="sec" id="direcao">
+      <div class="sec-h">
+        <span class="k">Direção</span>
+        <h2>Ondas que se acalmam</h2>
+        <p>Calmaria é o mar sem vento. A marca desenha isso em três linhas, da onda agitada à linha reta, que é o que o produto faz pela pessoa: mostra onde o barulho, a luz e a multidão baixam. O resto do sistema segue a mesma regra. Pouca cor, nada que se mexa sozinho e tudo escrito por extenso.</p>
+      </div>
+      <div class="grid3">
+        <div class="card"><h4>Previsível antes de bonito</h4><p>A mesma navegação e o botão de crise no mesmo canto em todas as telas. Nenhuma tela muda sozinha.</p><p class="tie"><b>Desempata:</b> entre um layout melhor para uma tela e o padrão das outras, vence o padrão.</p></div>
+        <div class="card"><h4>Literal</h4><p>"Está barulhento agora", nunca "Clima agitado". Botão diz o que acontece: "Abrir o caminho no mapa".</p><p class="tie"><b>Desempata:</b> ícone sozinho não entra. Todo ícone vem com texto.</p></div>
+        <div class="card"><h4>Nível em três sinais</h4><p>Cor, letra e forma juntas: C no círculo, M no quadrado, I no losango. Funciona para quem não distingue cor e no leitor de tela.</p><p class="tie"><b>Desempata:</b> se os três não cabem, muda a peça, não o sinal.</p></div>
+        <div class="card"><h4>Quieto</h4><p>Saturação baixa, sem branco puro no fundo do app, sem som, sem vibração forte e sem animação. LED nunca pisca.</p><p class="tie"><b>Desempata:</b> entre destacar e acalmar, acalma.</p></div>
+        <div class="card"><h4>Escuro na crise</h4><p>A tela de crise é escura e lisa nos dois temas. A mesma paleta escura abre o pitch e os vídeos.</p><p class="tie"><b>Desempata:</b> na crise, menos opções vencem mais informação.</p></div>
+        <div class="card"><h4>Fora do sistema</h4><p>Peça de quebra-cabeça (rejeitada por boa parte da comunidade autista), cérebro, arco-íris, vermelho vivo, gradiente e foto de banco de imagem.</p><p class="tie"><b>Por quê:</b> o produto fala de lugares, não rotula pessoas.</p></div>
+      </div>
+    </section>
+
+    <!-- MARCA -->
+    <section class="sec" id="marca">
+      <div class="sec-h">
+        <span class="k">Marca</span>
+        <h2>Símbolo e logotipo</h2>
+        <p>Três linhas na mesma largura: a primeira é uma onda, a segunda uma onda pela metade, a terceira é reta. Lido de cima para baixo, é a sobrecarga baixando. Também lembra a onda do som que o sensor mede.</p>
+      </div>
+      <div class="construct">
+        <svg viewBox="0 0 48 48" role="img" aria-label="Construção do símbolo numa grade de 48 por 48">
+          <g class="cgrid">
+            <line x1="0" y1="0" x2="0" y2="48"/><line x1="6" y1="0" x2="6" y2="48"/><line x1="12" y1="0" x2="12" y2="48"/><line x1="18" y1="0" x2="18" y2="48"/><line x1="24" y1="0" x2="24" y2="48"/><line x1="30" y1="0" x2="30" y2="48"/><line x1="36" y1="0" x2="36" y2="48"/><line x1="42" y1="0" x2="42" y2="48"/><line x1="48" y1="0" x2="48" y2="48"/>
+            <line x1="0" y1="0" x2="48" y2="0"/><line x1="0" y1="6" x2="48" y2="6"/><line x1="0" y1="12" x2="48" y2="12"/><line x1="0" y1="18" x2="48" y2="18"/><line x1="0" y1="24" x2="48" y2="24"/><line x1="0" y1="30" x2="48" y2="30"/><line x1="0" y1="36" x2="48" y2="36"/><line x1="0" y1="42" x2="48" y2="42"/><line x1="0" y1="48" x2="48" y2="48"/>
+          </g>
+          <line class="cguide" x1="0" y1="10.25" x2="48" y2="10.25"/><line class="cguide" x1="0" y1="17.75" x2="48" y2="17.75"/>
+          <use href="#s-logo" width="48" height="48" style="color:var(--brand-text)"/>
+          <text class="ctext" x="43.5" y="15">±5</text><text class="ctext" x="43.5" y="25">±2,5</text><text class="ctext" x="43.5" y="35">0</text>
+        </svg>
+        <div class="tw"><table>
+          <tr><th>Regra</th><th>Valor</th></tr>
+          <tr><td>Caixa</td><td>48 × 48; linhas de x 6 a 42, em y 14, 24 e 34</td></tr>
+          <tr><td>Traço</td><td>3,5 a 48 px (2 a 24 px, o mesmo traço dos ícones), pontas arredondadas</td></tr>
+          <tr><td>Amplitude</td><td>5, 2,5 e 0: cada onda tem metade da anterior</td></tr>
+          <tr><td>Logotipo</td><td>Símbolo com 1,5 vez a altura das maiúsculas, "calmaria" em minúsculas, Atkinson Hyperlegible Next 700, −0,01em</td></tr>
+          <tr><td>Respiro</td><td>Meia altura do símbolo em volta de tudo</td></tr>
+          <tr><td>Mínimos</td><td>Símbolo 16 px; logotipo 96 px de largura</td></tr>
+          <tr><td>Não fazer</td><td>Girar, contornar, pôr sombra ou gradiente, pintar com a cor de um nível (nível é dado, não marca)</td></tr>
+        </table></div>
+      </div>
+      <div class="brand-tiles">
+        <div class="bt t1"><span class="logo" style="font-size:26px"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria</span><span>Cor, sobre o fundo do app</span></div>
+        <div class="bt t2"><span class="logo" style="font-size:26px"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria</span><span>Invertido, sobre #1F2733</span></div>
+        <div class="bt t3"><span class="logo" style="font-size:26px"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria</span><span style="color:#4D545B">Uma cor, para impressão</span></div>
+        <div class="bt t4"><canvas id="oled-logo" width="160" height="96" style="width:120px;height:72px;image-rendering:pixelated" aria-label="Símbolo em pixels para o visor"></canvas><span style="color:#B2C9D8">1 bit, 40 × 24 px no visor</span></div>
+      </div>
+    </section>
+
+    <!-- COR -->
+    <section class="sec" id="cor">
+      <div class="sec-h">
+        <span class="k">Cor</span>
+        <h2>Ardósia para a marca, três cores só para os níveis</h2>
+        <p>A marca é um azul-ardósia apagado, #3D5A73. Ele não é nenhum dos três níveis, então nunca é lido como dado: verde, ocre e tijolo só aparecem quando dizem como um lugar está. Os neutros puxam para o mesmo azul. As escalas saíram do gerador da skill de design em OKLCH, com luminância fixa por passo: do 50 ao 500 aceitam texto escuro, do 600 ao 950 aceitam texto branco.</p>
+      </div>
+      <div class="scales" id="escalas"></div>
+      <p class="note">O contorno marca o passo exato de cada cor de origem. Neutros do 50 ao 400 aceitam texto escuro; do 500 em diante, texto branco.</p>
+
+      <h3 class="sub">Os níveis, iguais em todas as peças</h3>
+      <div class="levels">
+        <div class="lvcard lv-c"><div class="top"><svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><circle class="shape" cx="20" cy="20" r="18"/><text x="20" y="26" text-anchor="middle">C</text></svg><b>Calmo</b></div>
+          <dl><dt>ISS</dt><dd class="num">0 a 39</dd><dt>Forma</dt><dd>Círculo, letra C</dd><dt>Previsão</dt><dd>BAIXO: poucas reclamações</dd><dt>Risco</dt><dd class="num">Baixo, 0 a 20</dd><dt>LED</dt><dd>Verde, GPIO 25</dd><dt>Texto</dt><dd>"Calmo agora"</dd></dl></div>
+        <div class="lvcard lv-m"><div class="top"><svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><rect class="shape" x="3" y="3" width="34" height="34" rx="5"/><text x="20" y="26" text-anchor="middle">M</text></svg><b>Moderado</b></div>
+          <dl><dt>ISS</dt><dd class="num">40 a 69</dd><dt>Forma</dt><dd>Quadrado, letra M</dd><dt>Previsão</dt><dd>MEDIO: algumas reclamações</dd><dt>Risco</dt><dd class="num">Médio, 21 a 50</dd><dt>LED</dt><dd>Amarelo, GPIO 26</dd><dt>Texto</dt><dd>"Moderado agora"</dd></dl></div>
+        <div class="lvcard lv-i"><div class="top"><svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><path class="shape" d="M20 1.5 38.5 20 20 38.5 1.5 20z"/><text x="20" y="26" text-anchor="middle">I</text></svg><b>Intenso</b></div>
+          <dl><dt>ISS</dt><dd class="num">70 a 100</dd><dt>Forma</dt><dd>Losango, letra I</dd><dt>Previsão</dt><dd>ALTO: muitas reclamações</dd><dt>Risco</dt><dd class="num">Alto, 51 a 100</dd><dt>LED</dt><dd>Vermelho, GPIO 33</dd><dt>Texto</dt><dd>"Intenso agora"</dd></dl></div>
+      </div>
+      <p class="note">O losango no lugar do triângulo é de propósito: o triângulo lê como alerta, e o Intenso é uma informação, não um perigo.</p>
+
+      <h3 class="sub">Papéis</h3>
+      <div class="tw"><table>
+        <tr><th>Papel (token)</th><th>Claro</th><th>Escuro</th><th>Uso</th></tr>
+        <tr><td><code>bg.canvas</code></td><td><i class="sw" style="background:#F1F5F7"></i><code>#F1F5F7</code></td><td><i class="sw" style="background:#14191F"></i><code>#14191F</code></td><td>Fundo das telas. No claro, nunca branco puro.</td></tr>
+        <tr><td><code>bg.surface</code></td><td><i class="sw" style="background:#F8FBFD"></i><code>#F8FBFD</code></td><td><i class="sw" style="background:#22282E"></i><code>#22282E</code></td><td>Cartões, campos, barra de abas</td></tr>
+        <tr><td><code>bg.subtle</code></td><td><i class="sw" style="background:#E0E5E9"></i><code>#E0E5E9</code></td><td><i class="sw" style="background:#06090E"></i><code>#06090E</code></td><td>Áreas rebaixadas, alternância Mapa e Lista</td></tr>
+        <tr><td><code>text.default</code></td><td><i class="sw" style="background:#14191F"></i><code>#14191F</code></td><td><i class="sw" style="background:#F8FBFD"></i><code>#F8FBFD</code></td><td>Texto principal</td></tr>
+        <tr><td><code>text.muted</code></td><td><i class="sw" style="background:#4D545B"></i><code>#4D545B</code></td><td><i class="sw" style="background:#CED5DA"></i><code>#CED5DA</code></td><td>Texto de apoio, distâncias, legendas</td></tr>
+        <tr><td><code>border.default</code></td><td><i class="sw" style="background:#E0E5E9"></i><code>#E0E5E9</code></td><td><i class="sw" style="background:#3A4148"></i><code>#3A4148</code></td><td>Contorno de cartão (decorativo)</td></tr>
+        <tr><td><code>border.strong</code></td><td><i class="sw" style="background:#6B737A"></i><code>#6B737A</code></td><td><i class="sw" style="background:#9BA3AA"></i><code>#9BA3AA</code></td><td>Contorno de campo e de chip (3:1)</td></tr>
+        <tr><td><code>primary.solid</code></td><td><i class="sw" style="background:#3D5A73"></i><code>#3D5A73</code></td><td><i class="sw" style="background:#8AA8BE"></i><code>#8AA8BE</code></td><td>Botão principal; texto branco no claro, #06090E no escuro</td></tr>
+        <tr><td><code>primary.text</code></td><td><i class="sw" style="background:#3D5A73"></i><code>#3D5A73</code></td><td><i class="sw" style="background:#B2C9D8"></i><code>#B2C9D8</code></td><td>Links, aba ativa, ícones de medida</td></tr>
+        <tr><td><code>border.focus</code></td><td><i class="sw" style="background:#597590"></i><code>#597590</code></td><td><i class="sw" style="background:#8AA8BE"></i><code>#8AA8BE</code></td><td>Anel de foco de 2 px, afastado 2 px</td></tr>
+        <tr><td><code>info.subtle / text</code></td><td><i class="sw" style="background:#ECFAFC"></i><code>#ECFAFC</code> / <code>#00677F</code></td><td><i class="sw" style="background:#002B38"></i><code>#002B38</code> / <code>#55D6E7</code></td><td>Aviso de privacidade, faixa "dados de exemplo"</td></tr>
+        <tr><td><code>botao-crise.bg</code></td><td><i class="sw" style="background:#313D4D"></i><code>#313D4D</code></td><td><i class="sw" style="background:#D4E1EA"></i><code>#D4E1EA</code></td><td>Botão de crise flutuante; texto branco no claro, #1F2733 no escuro</td></tr>
+        <tr><td><code>crise.bg / surface</code></td><td colspan="2"><i class="sw" style="background:#1F2733"></i><code>#1F2733</code> / <code>#313D4D</code>, iguais nos dois temas</td><td>Tela de crise; texto #F8FBFD, apoio #D4E1EA</td></tr>
+        <tr><td><code>crise.action</code></td><td colspan="2"><i class="sw" style="background:#B2C9D8"></i><code>#B2C9D8</code> com texto <code>#1F2733</code></td><td>"Abrir o caminho no mapa"</td></tr>
+      </table></div>
+      <p class="note">Conferido com o <code>contraste.mjs</code> (WCAG 2.2 AA): 86 pares por tema, nenhum reprovado. Menor razão no claro, 4,80:1; no escuro, 5,82:1. Os pares estão em <code>design/tokens/pares-de-contraste.json</code>; os valores dos níveis (sólido, fundo, texto e contorno) estão em <code>design/tokens/resolvido.json</code>.</p>
+    </section>
+
+    <!-- TIPOGRAFIA -->
+    <section class="sec" id="tipografia">
+      <div class="sec-h">
+        <span class="k">Tipografia</span>
+        <h2>Atkinson Hyperlegible, em duas versões</h2>
+        <p>Desenhada pelo Braille Institute para quem enxerga pouco, com letras que não se confundem: I, l e 1; O e 0. A versão Next serve para tudo; a Mono, para números de medição, códigos e o terminal. Uma família só também é uma decisão de calma: menos mudança de forma na tela.</p>
+      </div>
+      <div class="specimen">
+        <div class="card"><span class="note">Atkinson Hyperlegible Next 700 e 400</span><p class="spec-big" style="color:var(--fg)">Calmo agora</p><p style="font-size:18px;line-height:28px;color:var(--fg)">Som baixo, como uma conversa tranquila. Menos gente passando entre 10h e 11h.</p><p class="amb" style="color:var(--fg)">Il1 O0 rn m</p></div>
+        <div class="card"><span class="note">Atkinson Hyperlegible Mono 400, algarismos tabulares</span><p class="spec-mono" style="color:var(--fg)">78,5 dB</p><p class="spec-mono" style="color:var(--fg)">1.450 lux</p><p class="amb" style="font-family:var(--mono);color:var(--fg)">Il1 O0 rn m</p></div>
+      </div>
+      <div class="tw"><table>
+        <tr><th>Token</th><th>Tamanho / linha</th><th>Peso</th><th>Onde</th></tr>
+        <tr><td><code>caption</code></td><td class="num">14 / 20</td><td>400</td><td>Só no painel, nos gráficos e no PDF. No app, nada abaixo de 16.</td></tr>
+        <tr><td><code>label</code></td><td class="num">16 / 24</td><td>500</td><td>Rótulo de campo, abas, chips, texto de apoio</td></tr>
+        <tr><td><code>body-md</code></td><td class="num">18 / 28</td><td>400</td><td>Corpo do app</td></tr>
+        <tr><td><code>label-lg</code></td><td class="num">18 / 28</td><td>600</td><td>Nome do lugar no cartão, botões</td></tr>
+        <tr><td><code>title-sm</code></td><td class="num">22 / 32</td><td>600</td><td>Título de bloco no painel</td></tr>
+        <tr><td><code>title-md</code></td><td class="num">24 / 32</td><td>600 a 700</td><td>Título da tela no app</td></tr>
+        <tr><td><code>title-lg</code></td><td class="num">32 / 40</td><td>700</td><td>Nível no detalhe do lugar, título da crise</td></tr>
+        <tr><td><code>heading-lg</code></td><td class="num">44 / 52</td><td>700</td><td>Números do Risco Cidadão</td></tr>
+        <tr><td><code>display</code></td><td class="num">52 / 60</td><td>700</td><td>Banner do repositório. Vídeo usa a escala própria da seção Vídeos.</td></tr>
+      </table></div>
+      <div class="prose">
+        <ul>
+          <li><b>Por que o corpo é 18.</b> A altura-x medida da fonte é 0,496, um pouco abaixo de 0,50. O medidor da skill diz que 17,6 px dela equivalem a 16 px da Inter; o corpo sobe para 18 e o texto nunca fica abaixo de 16.</li>
+          <li><b>Números.</b> Ligar <code>tabular-nums</code> em horários, dB, lux, índice e tabelas (a Next tem; a Mono já vem assim). Escrever com unidade e frase: "88 dB · som muito alto".</li>
+          <li><b>Formatos.</b> "sábado, 14/11", "14h30", "1.450 lux", "700 metros". Nada de 2:30 PM nem de abreviação que o leitor de tela leia errado.</li>
+          <li><b>Tamanho do sistema.</b> O app segue a fonte do sistema e o layout aguenta 200%: cartão cresce para baixo, nunca corta texto.</li>
+          <li><b>Onde a fonte não chega.</b> O visor OLED usa a fonte 5 × 7 do Adafruit GFX, sem acento ("CONSOLACAO"). No matplotlib e no editor de vídeo, instalar a fonte; se não der, a padrão, mantendo os tamanhos.</li>
+        </ul>
+        <p class="note">Links: Google Fonts, famílias "Atkinson Hyperlegible Next" e "Atkinson Hyperlegible Mono" (licença OFL). No Expo, pelos pacotes <code>@expo-google-fonts</code> das duas famílias.</p>
+      </div>
+    </section>
+
+    <!-- FORMA -->
+    <section class="sec" id="forma">
+      <div class="sec-h">
+        <span class="k">Forma e ícones</span>
+        <h2>Grade de 4, alvos grandes, nada se mexe</h2>
+      </div>
+      <div class="tw"><table>
+        <tr><th>Item</th><th>Valor</th><th>Token</th></tr>
+        <tr><td>Grade</td><td>Múltiplos de 4. Margem lateral do app 16; entre cartões 12; dentro do cartão 16; entre blocos 24</td><td><code>space.*</code></td></tr>
+        <tr><td>Raio</td><td>Cartão, campo e botão 12; cartão de nível e da crise 16; chip, selo e botão de crise em pílula</td><td><code>radius.xl</code>, <code>2xl</code>, <code>full</code></td></tr>
+        <tr><td>Alvos</td><td>48 × 48 pt no mínimo; campo e botão comum 56; botão de crise e botões da tela de crise 64</td><td><code>size.touch-min</code>, <code>control-lg</code>, <code>crisis-button</code></td></tr>
+        <tr><td>Borda</td><td>1 px no cartão; 1 px forte em campo e chip; foco de 2 px afastado 2 px</td><td><code>border-width.*</code></td></tr>
+        <tr><td>Sombra</td><td>Só no botão de crise flutuante; o resto é plano</td><td><code>shadow.md</code></td></tr>
+        <tr><td>Movimento</td><td>Nenhum. Duração 0 em todos os tokens; troca de tela sem transição (<code>animation: 'none'</code> no Stack); carregando sem spinner, com texto fixo</td><td><code>duration.*</code> = 0</td></tr>
+      </table></div>
+      <h3 class="sub">Ícones: Lucide, traço 2, 24 px</h3>
+      <p class="note" style="margin-top:-12px">Licença ISC. No app, <code>lucide-react-native</code>; no painel, os SVG. 20 px dentro de linha de texto, 32 na tela de crise. Sempre com texto ao lado.</p>
+      <div class="icons">
+        <span class="ic"><svg><use href="#i-map"/></svg>Mapa <code>map</code></span>
+        <span class="ic"><svg><use href="#i-list"/></svg>Lista <code>list</code></span>
+        <span class="ic"><svg><use href="#i-msg"/></svg>Relatar <code>message-square-plus</code></span>
+        <span class="ic"><svg><use href="#i-bookmark"/></svg>Meus lugares <code>bookmark</code></span>
+        <span class="ic"><svg><use href="#i-buoy"/></svg>Crise <code>life-buoy</code></span>
+        <span class="ic"><svg><use href="#i-vol"/></svg>Som <code>volume-2</code></span>
+        <span class="ic"><svg><use href="#i-sun"/></svg>Luz <code>sun</code></span>
+        <span class="ic"><svg><use href="#i-users"/></svg>Movimento <code>users</code></span>
+        <span class="ic"><svg><use href="#i-clock"/></svg>Horários <code>clock</code></span>
+        <span class="ic"><svg><use href="#i-cal"/></svg>Previsão <code>calendar</code></span>
+        <span class="ic"><svg><use href="#i-nav"/></svg>Como chegar <code>navigation</code></span>
+        <span class="ic"><svg><use href="#i-shield"/></svg>Privacidade <code>shield-check</code></span>
+        <span class="ic"><svg><use href="#i-phone"/></svg>Ligar <code>smartphone</code></span>
+        <span class="ic"><svg><use href="#i-x"/></svg>Fechar <code>x</code></span>
+      </div>
+    </section>
+
+    <!-- PEÇAS -->
+    <section class="sec" id="pecas">
+      <div class="sec-h">
+        <span class="k">Lista de peças</span>
+        <h2>Tudo o que precisa ser produzido, por entrega</h2>
+        <p>Cada peça tem um código para citar no grupo e no commit ("AP-09 pronta"). Filtre pela sua entrega.</p>
+      </div>
+      <div class="filters" id="filtros" role="group" aria-label="Filtrar por entrega"></div>
+      <p class="count" id="contagem" aria-live="polite"></p>
+      <div class="tw"><table id="tabela-pecas">
+        <thead><tr><th>Código</th><th>Peça</th><th>Entrega</th><th>Quem faz</th><th>Tamanho e formato</th><th>Especificação</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </section>
+
+    <!-- APP -->
+    <section class="sec" id="app">
+      <div class="sec-h">
+        <span class="k">App · Mobile Development e IoT</span>
+        <h2>Quatro telas em tamanho real</h2>
+        <p>Quadro de 390 × 844 pt (conferir em 360 × 800). Margem de 16, uma coluna, barra de abas de 64 mais a área segura, botão de crise sempre no mesmo canto. Os dados são os do seed; o refúgio da crise é o Parque Trianon, como no pitch.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <span class="note">Tema do app:</span>
+        <div class="toggle" role="group" aria-label="Tema das telas do app">
+          <button type="button" id="tema-claro" aria-pressed="true">Claro</button>
+          <button type="button" id="tema-escuro" aria-pressed="false">Escuro</button>
+        </div>
+      </div>
+      <div class="phones">
+        <figure class="ph-wrap">
+          <div class="phone app" data-tema="claro" role="img" aria-label="Tela Lugares perto, em lista">
+            <div class="ph-st"><span class="num">14:30</span><span class="num">100%</span></div>
+            <div class="ph-scroll">
+              <div><p class="ph-h">Lugares perto de você</p><p class="ph-sub">Perto da Rua Augusta · medido às 14h30</p></div>
+              <div class="seg"><span><svg><use href="#i-map"/></svg>Mapa</span><span class="on"><svg><use href="#i-list"/></svg>Lista</span></div>
+              <div class="chips"><span class="chip on">Todos</span><span class="chip">Estações</span><span class="chip">Mercados</span><span class="chip">Refúgios</span></div>
+              <ul class="cards">
+                <li class="lc"><div class="row"><span class="selo lv-m"><svg><use href="#lv-m"/></svg>Moderado agora</span><span class="dist">150 m</span></div><p class="nome">Supermercado da Rua Augusta</p><p class="meta2">Mercado · índice <span class="num">53</span></p><svg><use href="#i-chev"/></svg></li>
+                <li class="lc"><div class="row"><span class="selo lv-i"><svg><use href="#lv-i"/></svg>Intenso agora</span><span class="dist">350 m</span></div><p class="nome">Estação Consolação (Linha 2)</p><p class="meta2">Estação · índice <span class="num">78</span></p><svg><use href="#i-chev"/></svg></li>
+                <li class="lc"><div class="row"><span class="selo lv-m"><svg><use href="#lv-m"/></svg>Moderado agora</span><span class="dist">450 m</span></div><p class="nome">Estação Paulista (Linha 4)</p><p class="meta2">Estação · índice <span class="num">61</span></p><svg><use href="#i-chev"/></svg></li>
+                <li class="lc"><div class="row"><span class="selo lv-c"><svg><use href="#lv-c"/></svg>Calmo agora</span><span class="dist">700 m</span></div><p class="nome">Parque Trianon</p><p class="meta2">Refúgio · índice <span class="num">18</span></p><svg><use href="#i-chev"/></svg></li>
+              </ul>
+            </div>
+            <div class="fab"><svg><use href="#i-buoy"/></svg>Preciso de calma</div>
+            <div class="tabs"><span class="on"><svg><use href="#i-map"/></svg>Lugares</span><span><svg><use href="#i-msg"/></svg>Relatar</span><span><svg><use href="#i-bookmark"/></svg>Meus lugares</span></div>
+          </div>
+          <figcaption class="ph-cap"><b>AP-07</b> Lugares perto / Lista / Padrão. Ordem por distância; o nível vem escrito, com a forma e a cor.</figcaption>
+        </figure>
+
+        <figure class="ph-wrap">
+          <div class="phone app" data-tema="claro" role="img" aria-label="Tela Detalhe do lugar, Estação Consolação">
+            <div class="ph-st"><span class="num">14:31</span><span class="num">100%</span></div>
+            <div class="ph-scroll" style="gap:14px">
+              <span class="back"><svg><use href="#i-back"/></svg>Lugares</span>
+              <p class="ph-h">Estação Consolação (Linha 2)</p>
+              <div class="lvbig lv-i"><svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><path class="shape" d="M20 1.5 38.5 20 20 38.5 1.5 20z"/><text x="20" y="26" text-anchor="middle">I</text></svg><div><b>Intenso agora</b><small>Índice <span class="num">78</span> de 100 · medido às 14h30</small></div></div>
+              <div class="blk"><h4>Agora</h4>
+                <div class="mrow"><svg><use href="#i-vol"/></svg><div><b>88 dB</b><p>Som muito alto, como um caminhão passando perto.</p></div></div>
+                <div class="mrow"><svg><use href="#i-sun"/></svg><div><b>2.300 lux</b><p>Luz forte, como uma vitrine iluminada.</p></div></div>
+                <div class="mrow"><svg><use href="#i-users"/></svg><div><b>23 por minuto</b><p>Muita gente passando.</p></div></div>
+              </div>
+              <div class="blk"><h4>Horários mais calmos</h4>
+                <div class="hr"><span class="selo lv-c" style="height:28px"><svg><use href="#lv-c"/></svg>Calmo</span>Domingo, 8h às 9h</div>
+                <div class="hr"><span class="selo lv-c" style="height:28px"><svg><use href="#lv-c"/></svg>Calmo</span>Terça, 10h às 11h</div>
+              </div>
+            </div>
+            <div class="fab"><svg><use href="#i-buoy"/></svg>Preciso de calma</div>
+            <div class="tabs"><span class="on"><svg><use href="#i-map"/></svg>Lugares</span><span><svg><use href="#i-msg"/></svg>Relatar</span><span><svg><use href="#i-bookmark"/></svg>Meus lugares</span></div>
+          </div>
+          <figcaption class="ph-cap"><b>AP-08</b> Detalhe do lugar / Padrão. Continua rolando: previsão do distrito ("Sábado, 14/11: muitas reclamações de barulho"), resumo dos relatos, Como chegar e Favoritar.</figcaption>
+        </figure>
+
+        <figure class="ph-wrap">
+          <div class="phone crise" role="img" aria-label="Tela de crise">
+            <div class="ph-st"><span class="num">14:32</span><span class="num">100%</span></div>
+            <div class="ph-scroll" style="gap:18px">
+              <span class="close"><svg><use href="#i-x"/></svg>Fechar</span>
+              <h3>Você está seguro. Vamos até um lugar calmo.</h3>
+              <div class="box"><small>Refúgio mais perto</small><b>Parque Trianon</b><p>Parque Trianon, a 700 metros, cerca de 9 minutos a pé.</p></div>
+              <div class="cbtn pri"><svg><use href="#i-nav"/></svg>Abrir o caminho no mapa</div>
+              <div class="box"><small>Respiração · passo 2 de 5</small><p style="font-size:22px;line-height:32px">Puxe o ar pelo nariz contando até 4.</p></div>
+              <div class="cbtn sec">Próximo passo</div>
+              <div class="cbtn sec"><svg><use href="#i-phone"/></svg>Ligar para Ana</div>
+            </div>
+          </div>
+          <figcaption class="ph-cap"><b>AP-09</b> Crise / Com internet. Fundo #1F2733 nos dois temas, sem abas nem botão flutuante. Sem internet, uma faixa no topo: "Sem internet. Usando os refúgios salvos no celular."</figcaption>
+        </figure>
+
+        <figure class="ph-wrap">
+          <div class="phone app" data-tema="claro" role="img" aria-label="Tela Relatar uma visita">
+            <div class="ph-st"><span class="num">18:40</span><span class="num">82%</span></div>
+            <div class="ph-scroll" style="gap:14px">
+              <p class="ph-h">Relatar uma visita</p>
+              <div class="field"><label>Lugar</label><div class="select">Supermercado da Rua Augusta<svg><use href="#i-down"/></svg></div></div>
+              <div class="field"><label>Como foi?</label><div class="chips"><span class="chip">1 · Insuportável</span><span class="chip on">2 · Difícil</span><span class="chip">3 · Deu para ficar</span><span class="chip">4 · Tranquilo</span><span class="chip">5 · Muito calmo</span></div></div>
+              <div class="field"><label>O que incomodou?</label><div class="chips"><span class="chip on">Barulho</span><span class="chip">Luz forte</span><span class="chip on">Multidão</span><span class="chip">Cheiro</span><span class="chip on">Fila</span><span class="chip">Outro</span></div></div>
+              <div class="field"><label>Comentário (opcional)</label><div class="txt">Fui às 18h e estava lotado. Meu telefone é (11) 91234-5678 se quiserem falar.</div></div>
+              <div class="priv"><svg><use href="#i-shield"/></svg><p><b>Antes de enviar:</b> vamos tirar do comentário o telefone (11) 91234-5678. O relato é publicado sem ele.</p></div>
+            </div>
+            <div class="fab"><svg><use href="#i-buoy"/></svg>Preciso de calma</div>
+            <div class="tabs"><span><svg><use href="#i-map"/></svg>Lugares</span><span class="on"><svg><use href="#i-msg"/></svg>Relatar</span><span><svg><use href="#i-bookmark"/></svg>Meus lugares</span></div>
+          </div>
+          <figcaption class="ph-cap"><b>AP-10</b> Relatar / Aviso de privacidade. O aviso vem do <code>POST /api/privacidade/analisar</code>; o botão "Enviar relato" (56, primário) fica logo abaixo. O telefone é fictício.</figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sub">Estados que toda tela precisa ter</h3>
+      <div class="tw"><table class="states">
+        <tr><th>Estado</th><th>O que aparece (texto literal)</th><th>Forma</th></tr>
+        <tr><td>Carregando</td><td>"Buscando os lugares perto de você."</td><td>Texto fixo no lugar da lista, sem spinner girando</td></tr>
+        <tr><td>Vazio</td><td>"Ainda não temos medições deste lugar."</td><td>Texto e o botão "Relatar uma visita"</td></tr>
+        <tr><td>Erro</td><td>"Não consegui falar com o servidor." e o botão "Tentar de novo"</td><td>Cartão em <code>bg.surface</code>, sem vermelho</td></tr>
+        <tr><td>Dados de exemplo</td><td>"Mostrando dados de exemplo"</td><td>Faixa fina em <code>info.subtle</code> no topo, quando a API não responde em 3 s</td></tr>
+        <tr><td>Sem internet (crise)</td><td>"Sem internet. Usando os refúgios salvos no celular."</td><td>Faixa no topo da tela de crise, em <code>crise.surface</code></td></tr>
+        <tr><td>Sem localização</td><td>"Não consegui achar sua localização. Estes são os refúgios da região:"</td><td>Lista dos refúgios, em vez do cartão único</td></tr>
+        <tr><td>Relato enviado</td><td>"Relato enviado. Obrigado por ajudar quem vai depois."</td><td>Texto no lugar do formulário, sem toast que some sozinho</td></tr>
+      </table></div>
+
+      <h3 class="sub">Ícone e abertura</h3>
+      <div class="iconrow">
+        <figure><div class="appicon"><svg><use href="#s-logo"/></svg></div><figcaption><b>AP-01</b> 1024 × 1024, fundo #3D5A73, símbolo com 56% da largura</figcaption></figure>
+        <figure><div class="adapt"><svg><use href="#s-logo"/></svg></div><figcaption><b>AP-02</b> Android adaptativo: símbolo dentro do círculo de 66%</figcaption></figure>
+        <figure><div class="splash l"><svg><use href="#s-logo"/></svg></div><figcaption><b>AP-04</b> Abertura no claro, #F1F5F7</figcaption></figure>
+        <figure><div class="splash d"><svg><use href="#s-logo"/></svg></div><figcaption><b>AP-04</b> Abertura no escuro, #14191F</figcaption></figure>
+      </div>
+      <pre class="code">// app.json (trecho)
+"icon": "./assets/icone.png",
+"android": { "adaptiveIcon": { "foregroundImage": "./assets/icone-frente.png",
+  "monochromeImage": "./assets/icone-mono.png", "backgroundColor": "#3D5A73" } },
+"plugins": [["expo-splash-screen", { "image": "./assets/abertura.png", "imageWidth": 160,
+  "backgroundColor": "#F1F5F7",
+  "dark": { "image": "./assets/abertura-escuro.png", "backgroundColor": "#14191F" } }]]</pre>
+      <p class="note">As cores, a escala de texto e os tamanhos já estão em TypeScript em <code>design/codigo/tema.ts</code>: copiar para <code>mobile/src/theme/</code>. Ele substitui a tabela de cores antiga do <code>mobile.md</code>.</p>
+    </section>
+
+    <!-- SENSOR -->
+    <section class="sec" id="sensor">
+      <div class="sec-h">
+        <span class="k">Sensor · Physical Computing</span>
+        <h2>O visor de 128 × 64 pixels</h2>
+        <p>SSD1306 de 1 bit no Wokwi. Desenhos abaixo em pixel real, ampliados quatro vezes. A fonte é a 5 × 7 do Adafruit GFX: cada letra ocupa 6 × 8 pixels no tamanho 1, e ela não tem acento.</p>
+      </div>
+      <div class="oleds">
+        <div class="oled"><canvas id="oled-1" width="512" height="256" aria-label="Visor medindo: Estação Consolação, índice 78, Intenso"></canvas><span><b>SE-01</b> Medindo</span></div>
+        <div class="oled"><canvas id="oled-2" width="512" height="256" aria-label="Visor inicializando"></canvas><span><b>SE-02</b> Inicializando</span></div>
+        <div class="oled"><canvas id="oled-3" width="512" height="256" aria-label="Visor sem MQTT"></canvas><span><b>SE-03</b> Sem MQTT</span></div>
+      </div>
+      <div class="tw"><table>
+        <tr><th>Linha</th><th>y (px)</th><th>Tamanho do texto</th><th>Conteúdo</th><th>Máximo</th></tr>
+        <tr><td>Lugar</td><td class="num">0 a 7</td><td>1 (6 × 8 por letra)</td><td><code>EST. CONSOLACAO</code>, alinhado à esquerda</td><td>21 letras</td></tr>
+        <tr><td>Índice</td><td class="num">11 a 31</td><td>3 (18 × 24) e "/100" no 1</td><td><code>78</code>, grupo centralizado</td><td>3 dígitos</td></tr>
+        <tr><td>Nível</td><td class="num">38 a 51</td><td>2 (12 × 16)</td><td><code>INTENSO</code>, centralizado</td><td>10 letras</td></tr>
+        <tr><td>Medidas</td><td class="num">56 a 62</td><td>1</td><td><code>88dB 2300lx 23/min</code>, centralizado</td><td>21 letras</td></tr>
+      </table></div>
+      <pre class="code">// largura de um texto na fonte padrão: n letras x 6 x tamanho, menos o espaço da última
+int larg(const char* s, int t) { return strlen(s) * 6 * t - t; }
+
+display.clearDisplay();
+display.setTextColor(SSD1306_WHITE);
+display.setTextSize(1); display.setCursor(0, 0);   display.print(NOME_CURTO);   // "EST. CONSOLACAO"
+int g = larg(issTxt, 3) + 3 + larg("/100", 1);                                  // índice + "/100"
+int x = (128 - g) / 2;
+display.setTextSize(3); display.setCursor(x, 11);  display.print(issTxt);
+display.setTextSize(1); display.setCursor(x + larg(issTxt, 3) + 3, 25); display.print("/100");
+display.setTextSize(2); display.setCursor((128 - larg(nivel, 2)) / 2, 38); display.print(nivel);
+display.setTextSize(1); display.setCursor((128 - larg(medidas, 1)) / 2, 56); display.print(medidas);
+display.display();   // redesenha a cada leitura (2 s): o número troca, nada pisca</pre>
+      <div class="grid2">
+        <div class="card"><h4>LEDs de nível</h4>
+          <div class="leds"><span class="led"><i style="background:#3FA34D"></i>Verde · GPIO 25</span><span class="led"><i style="background:#E0B22E"></i>Amarelo · 26</span><span class="led"><i style="background:#D9483B"></i>Vermelho · 33</span></div>
+          <p>Um aceso por vez, fixo, com PWM em 40 de 255 (brilho baixo). Nunca piscam, nem na inicialização. Resistores de 220 ohms.</p></div>
+        <div class="card"><h4>Fios no Wokwi (<code>diagram.json</code>)</h4>
+          <p>3V3 em <code>red</code>, GND em <code>black</code>, SDA em <code>blue</code>, SCL em <code>gold</code>, sinal do potenciômetro, do fotoresistor e do PIR em <code>green</code>, cada LED na cor dele. Fio em ângulo reto, sem cruzar o ESP32. O desenho limpo aparece no vídeo de 4 minutos.</p></div>
+      </div>
+    </section>
+
+    <!-- PAINEL -->
+    <section class="sec" id="painel">
+      <div class="sec-h">
+        <span class="k">Painel · Cybersecurity</span>
+        <h2>Risco Cidadão em /seguranca</h2>
+        <p>Um HTML servido pela API, com <code>tokens.css</code> e Chart.js por CDN, sem build. Quadro de 1440 × 900, conferido em 1280 e 768. Segue o tema do sistema (o <code>tokens.css</code> já troca sozinho). Abaixo, a estrutura com dados de exemplo.</p>
+      </div>
+      <div class="browser">
+        <div class="bw-bar"><i></i><i></i><i></i><span>localhost:5000/seguranca/</span></div>
+        <div class="pm">
+          <div class="pm-head">
+            <span class="logo"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria <em>· Segurança</em></span>
+            <span class="m">Última varredura: 12/11/2026, 21h40 <span class="tag">Dados de exemplo</span></span>
+            <button class="pbtn" type="button" tabindex="-1">Rodar varredura</button>
+          </div>
+          <div class="pc wide">
+            <h4>Risco Cidadão</h4>
+            <div class="kpi">
+              <div class="v"><small>Antes da correção</small><b>64</b><span class="selo lv-i"><svg><use href="#lv-i"/></svg>Alto</span></div>
+              <div class="v"><small>Depois da correção</small><b>9</b><span class="selo lv-c"><svg><use href="#lv-c"/></svg>Baixo</span></div>
+            </div>
+            <div class="band" aria-hidden="true">
+              <div class="bars"><i style="width:20%;background:var(--calmo)"></i><i style="width:30%;background:var(--mod)"></i><i style="width:50%;background:var(--int)"></i></div>
+              <span class="tick" style="left:9%">depois 9</span><span class="tick" style="left:64%">antes 64</span>
+              <span class="lab" style="left:0">0</span><span class="lab" style="left:20%">20</span><span class="lab" style="left:50%">50</span><span class="lab" style="right:0">100</span>
+            </div>
+            <p class="hint">Escala de 0 a 100 com as três faixas, não um mostrador redondo: dá para ver a distância entre antes e depois.</p>
+          </div>
+          <div class="pc"><h4>Achados por categoria</h4>
+            <div class="hb"><span>Saúde</span><i style="width:100%"></i><b>7</b><span>Telefone</span><i style="width:71%"></i><b>5</b><span>E-mail</span><i style="width:43%"></i><b>3</b><span>Localização exata</span><i style="width:29%"></i><b>2</b><span>Nome</span><i style="width:29%"></i><b>2</b></div>
+            <p class="hint">Barras de uma cor, ordenadas, número escrito na ponta.</p></div>
+          <div class="pc"><h4>Achados por destino</h4>
+            <div class="hb"><span>Log da API</span><i style="width:100%"></i><b>6</b><span>Resposta pública</span><i style="width:83%"></i><b>5</b><span>LLM externo</span><i style="width:67%"></i><b>4</b><span>Banco</span><i style="width:50%"></i><b>3</b><span>Broker MQTT</span><i style="width:17%"></i><b>1</b></div>
+            <p class="hint">Mesma regra: cor só significa nível.</p></div>
+          <div class="pc wide"><h4>Fluxos bloqueados</h4>
+            <div class="tw" style="border-radius:8px"><table class="ft">
+              <tr><th>Origem</th><th>Destino</th><th>Como foi barrado</th><th>Situação</th></tr>
+              <tr><td>Comentário do relato</td><td>Log da API</td><td><code>TextoNaoConfiavel</code> não entra no logger</td><td><span class="ok"><svg><use href="#i-check"/></svg>Bloqueado</span></td></tr>
+              <tr><td>Perfil sensorial</td><td>Resposta de <code>/api/relatos</code></td><td>Filtro da resposta pública</td><td><span class="ok"><svg><use href="#i-check"/></svg>Bloqueado</span></td></tr>
+              <tr><td>Comentário do relato</td><td>LLM externo</td><td>Vira <code>TextoSanitizado</code> antes de sair</td><td><span class="ok"><svg><use href="#i-check"/></svg>Bloqueado</span></td></tr>
+            </table></div></div>
+          <div class="pc wide"><h4>Alertas traduzidos pela IA</h4>
+            <div class="grid2">
+              <div class="alert"><p>Um telefone escrito num relato ia aparecer na lista pública de relatos. Agora ele sai como [removido].</p><small>Regra Telefone · destino resposta pública · traduzido pelo LLM</small></div>
+              <div class="alert"><p>O nível de sensibilidade a som de uma pessoa ia para o log. É dado de saúde e agora fica fora do log.</p><small>Regra Saúde · destino log · frase pronta (sem chave do LLM)</small></div>
+            </div></div>
+        </div>
+      </div>
+      <pre class="code">// Chart.js: cores lidas do tokens.css, sem animação, fonte da Calmaria
+const css = getComputedStyle(document.documentElement);
+const cor = n => css.getPropertyValue(n).trim();
+Chart.defaults.font.family = '"Atkinson Hyperlegible Next", system-ui, sans-serif';
+Chart.defaults.font.size = 14;
+Chart.defaults.color = cor('--color-text-muted');
+Chart.defaults.borderColor = cor('--color-border-default');
+Chart.defaults.animation = false;
+// barras: backgroundColor: cor('--color-primary-solid'), indexAxis: 'y', borderRadius: 4
+// faixas de risco: --color-nivel-calmo-solid, --color-nivel-moderado-solid, --color-nivel-intenso-solid</pre>
+      <p class="note">Grade de 12 colunas a 1440, margem 32, calha 24. De 768 a 1279, os cartões de categoria e destino ficam lado a lado; abaixo de 768, um por linha. O print da entrega (PA-02) é em 2x, 2880 × 1800, tema claro.</p>
+    </section>
+
+    <!-- API -->
+    <section class="sec" id="api">
+      <div class="sec-h">
+        <span class="k">API e diagrama · C# e SOA</span>
+        <h2>O Scalar com a cara do projeto e um diagrama só</h2>
+        <p>O mesmo diagrama vai para o README, para o pitch (bloco 4) e para os relatórios. Ele mostra as partes e o protocolo de cada seta.</p>
+      </div>
+      <div class="diagram">
+        <svg viewBox="0 0 1000 460" role="img" aria-label="Arquitetura: sensor, broker, API com três módulos, PostgreSQL, app, notebook de ML e LLM externo">
+          <defs><marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="d-head" d="M0 0 10 5 0 10z"/></marker></defs>
+          <rect class="d-vm" x="250" y="20" width="520" height="420" rx="14"/>
+          <text class="d-s" x="268" y="46">VM Ubuntu · systemd · nginx (Operating Systems)</text>
+          <rect class="d-box" x="20" y="14" width="180" height="72" rx="10"/><text class="d-t" x="38" y="44">Sensor ESP32</text><text class="d-s" x="38" y="68">Wokwi · som, luz, PIR</text>
+          <rect class="d-box" x="20" y="118" width="180" height="72" rx="10"/><text class="d-t" x="38" y="148">Broker MQTT</text><text class="d-s" x="38" y="172">broker.hivemq.com</text>
+          <rect class="d-box" x="20" y="330" width="180" height="76" rx="10"/><text class="d-t" x="38" y="362">Notebook de ML</text><text class="d-s" x="38" y="386">SP156 · previsões</text>
+          <rect class="d-api" x="280" y="64" width="300" height="352" rx="12"/><text class="d-t" x="298" y="94">API Calmaria</text><text class="d-s" x="420" y="94">.NET 10 · EF Core</text>
+          <rect class="d-mod" x="300" y="112" width="260" height="84" rx="10"/><text class="d-t" x="318" y="146">Sensorial</text><text class="d-s" x="318" y="170">lugares, leituras, ISS, crise</text>
+          <rect class="d-mod" x="300" y="214" width="260" height="84" rx="10"/><text class="d-t" x="318" y="248">Comunidade</text><text class="d-s" x="318" y="272">usuário anônimo, perfil, relatos</text>
+          <rect class="d-mod" x="300" y="316" width="260" height="84" rx="10"/><text class="d-t" x="318" y="350">Privacidade</text><text class="d-s" x="318" y="374">PII, taint, Risco Cidadão</text>
+          <rect class="d-box" x="610" y="200" width="140" height="84" rx="10"/><text class="d-t" x="628" y="234">PostgreSQL</text><text class="d-s" x="628" y="258">Npgsql</text>
+          <rect class="d-box" x="800" y="60" width="180" height="84" rx="10"/><text class="d-t" x="818" y="94">App Calmaria</text><text class="d-s" x="818" y="118">Expo · SQLite</text>
+          <rect class="d-box" x="800" y="320" width="180" height="84" rx="10"/><text class="d-t" x="818" y="354">LLM externo</text><text class="d-s" x="818" y="378">tradução do alerta</text>
+          <path class="d-a" d="M110 86 V118" marker-end="url(#seta)"/><text class="d-al" x="118" y="107">publica</text>
+          <path class="d-a" d="M200 154 H300" marker-end="url(#seta)"/><text class="d-al" x="210" y="146">MQTT</text>
+          <path class="d-a" d="M200 368 H280" marker-end="url(#seta)"/><text class="d-al" x="210" y="360">CSV</text>
+          <path class="d-a" d="M800 102 H580" marker-start="url(#seta)" marker-end="url(#seta)"/><text class="d-al" x="660" y="94">REST</text>
+          <path class="d-a" d="M580 242 H610" marker-end="url(#seta)"/>
+          <path class="d-a" d="M560 358 H800" marker-end="url(#seta)"/><text class="d-al" x="660" y="350">REST</text>
+        </svg>
+      </div>
+      <div class="grid2">
+        <div class="card"><h4>Estilo do diagrama (AD-02)</h4><p>Caixas de raio 10 com traço de 1,5; a API em <code>primary.subtle</code> com borda da marca; partes externas em <code>bg.surface</code> com borda forte; a VM tracejada em volta. Setas de 1,5 com o protocolo escrito em Mono. Título 16, apoio 13. Exportar em SVG e PNG 1920 × 1080.</p></div>
+        <div class="card"><h4>Banner do repositório (AD-03)</h4><p>1280 × 640 PNG até 1 MB, em Settings &gt; Social preview do GitHub. Fundo #1F2733, logotipo invertido de 64 px de altura, a frase "Onde está calmo agora, em São Paulo" em 52 px. Nada importante nos 40 px da borda.</p></div>
+      </div>
+      <p class="code-h">Scalar: CSS customizado servido pela API (conferir os nomes das variáveis na versão instalada)</p>
+      <pre class="code">/* wwwroot/scalar-calmaria.css, passado no MapScalarApiReference junto com o título "API Calmaria" */
+:root { --scalar-font: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+        --scalar-font-code: "Atkinson Hyperlegible Mono", ui-monospace, monospace; }
+.light-mode { --scalar-color-accent: #3D5A73; --scalar-background-1: #F8FBFD; --scalar-color-1: #14191F; }
+.dark-mode  { --scalar-color-accent: #B2C9D8; --scalar-background-1: #22282E; --scalar-color-1: #F8FBFD; }</pre>
+    </section>
+
+    <!-- ML -->
+    <section class="sec" id="ml">
+      <div class="sec-h">
+        <span class="k">Gráficos · IA e Machine Learning</span>
+        <h2>Cor só para o que é nível</h2>
+        <p>Os gráficos do notebook e do relatório usam a mesma regra do app: a marca para a série principal, cinza para o real, e verde, ocre e tijolo só quando o gráfico mostra BAIXO, MEDIO e ALTO. O título diz a conclusão: "Sábado tem mais reclamações em Consolação", não "Gráfico 3".</p>
+      </div>
+      <pre class="code">import matplotlib as mpl
+mpl.rcParams.update({
+    "figure.figsize": (10, 5), "figure.dpi": 150, "savefig.dpi": 150,   # 1500 x 750 px
+    "font.family": ["Atkinson Hyperlegible Next", "DejaVu Sans"],
+    "font.size": 12, "axes.titlesize": 16, "axes.titleweight": "bold", "axes.labelsize": 12,
+    "text.color": "#14191F", "axes.labelcolor": "#14191F",
+    "xtick.color": "#4D545B", "ytick.color": "#4D545B", "axes.edgecolor": "#6B737A",
+    "axes.grid": True, "grid.color": "#E0E5E9", "grid.linewidth": 0.8,
+    "axes.spines.top": False, "axes.spines.right": False,
+    "figure.facecolor": "#F8FBFD", "axes.facecolor": "#F8FBFD", "savefig.facecolor": "#F8FBFD",
+    "axes.prop_cycle": mpl.cycler(color=["#3D5A73", "#4D545B", "#00677F"]),
+})
+REAL, PREVISTO = "#4D545B", "#3D5A73"                                   # real contínuo, previsto tracejado
+NIVEL = {"BAIXO": "#437E61", "MEDIO": "#BBA15E", "ALTO": "#B2574D"}     # mesmas cores do app
+MATRIZ = mpl.colors.LinearSegmentedColormap.from_list("calmaria", ["#F5F8FA", "#B2C9D8", "#597590", "#3C4D61"])</pre>
+      <div class="tw"><table>
+        <tr><th>Código</th><th>Gráfico</th><th>Como</th></tr>
+        <tr><td><code>ML-02</code></td><td>Total mensal de reclamações do PSIU</td><td>Linha da marca; cada quebra de série anotada com texto, não só com uma linha vertical</td></tr>
+        <tr><td><code>ML-03</code></td><td>Previsto contra real, 3 distritos</td><td>Um painel por distrito, mesma escala no eixo y; legenda escrita na ponta das linhas</td></tr>
+        <tr><td><code>ML-04</code></td><td>Importância dos atributos</td><td>Barras horizontais de uma cor, ordenadas, valor na ponta, nomes legíveis ("dia da semana", não <code>dow</code>)</td></tr>
+        <tr><td><code>ML-05</code></td><td>Matriz de confusão do nível</td><td>900 × 900 px, colormap <code>MATRIZ</code>, número em cada célula, texto branco do meio da escala para cima</td></tr>
+      </table></div>
+      <p class="note">No vídeo de 5 minutos, gravar o notebook com zoom de 125% em 1920 × 1080: o texto de 12 pt a 150 dpi chega a 25 px na imagem.</p>
+    </section>
+
+    <!-- VM -->
+    <section class="sec" id="vm">
+      <div class="sec-h">
+        <span class="k">Terminal · Operating Systems</span>
+        <h2>Sete minutos de terminal legível</h2>
+        <p>O vídeo é quase todo terminal. Fonte Mono em 20 pt, janela maximizada em 1920 × 1080, margem interna de 24 e o esquema de cores da Calmaria. Status escrito por extenso, além da cor.</p>
+      </div>
+      <div class="grid2">
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0"><p class="code-h" style="margin:0">Windows Terminal, em <code>schemes</code></p>
+          <pre class="code">{ "name": "Calmaria",
+  "background": "#14191F", "foreground": "#F8FBFD",
+  "cursorColor": "#B2C9D8", "selectionBackground": "#3A4148",
+  "black": "#06090E", "red": "#E08F82", "green": "#7DAF95",
+  "yellow": "#BBA15E", "blue": "#8AA8BE", "purple": "#B2C9D8",
+  "cyan": "#55D6E7", "white": "#CED5DA",
+  "brightBlack": "#6B737A", "brightRed": "#F3B7AC",
+  "brightGreen": "#AACEBA", "brightYellow": "#D2C596",
+  "brightBlue": "#B2C9D8", "brightPurple": "#D4E1EA",
+  "brightCyan": "#A9EAF3", "brightWhite": "#F8FBFD" }</pre></div>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0"><p class="code-h" style="margin:0">Saída dos scripts de monitoramento (VM-02)</p>
+          <pre class="code" style="background:#14191F;color:#F8FBFD;border-color:#3A4148">calmaria@vm:~$ ./monitorar.sh
+[2026-11-18 20:14:03] <span style="color:#7DAF95">OK</span>     calmaria-api ativa (porta 5000)
+[2026-11-18 20:14:03] <span style="color:#7DAF95">OK</span>     postgresql ativo
+[2026-11-18 20:14:04] <span style="color:#BBA15E">AVISO</span>  disco em 78% (/var)
+[2026-11-18 20:14:09] <span style="color:#E08F82">FALHA</span>  calmaria-api parou
+[2026-11-18 20:14:14] <span style="color:#7DAF95">OK</span>     systemd reiniciou a API</pre>
+          <p class="note">Hostname <code>calmaria-vm</code>, prompt curto. O teste de falha aparece como FALHA seguida de OK, com 5 segundos de intervalo.</p></div>
+      </div>
+    </section>
+
+    <!-- VÍDEOS -->
+    <section class="sec" id="videos">
+      <div class="sec-h">
+        <span class="k">Vídeos e pitch · Testing e todas as entregas</span>
+        <h2>Um kit para os seis vídeos</h2>
+        <p>Pitch, Mobile, Physical, ML, OS e Cybersecurity usam o mesmo quadro: 1920 × 1080, 30 quadros por segundo, H.264, áudio AAC 48 kHz com a voz por volta de −16 LUFS. Margem segura de 96 px nas laterais e 54 em cima e embaixo (o tracejado abaixo). Texto de 40 px no mínimo. Cortes secos, sem transição de efeito, sem efeito sonoro; trilha, se houver, 20 dB abaixo da voz.</p>
+      </div>
+      <div class="frames">
+        <figure class="fr"><div class="v dark"><div class="v-open"><span class="logo"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria</span><p>Onde está calmo agora, em São Paulo</p><small>Global Solution 2026.2 · FIAP · Engenharia de Software</small></div><div class="safe"></div></div><figcaption><b>VI-03</b> Abertura, 3 s. Logotipo de 120 px de altura de letra, frase em 48.</figcaption></figure>
+        <figure class="fr"><div class="v"><div class="v-photo"></div><div class="v-lt"><b>Integrante 2</b><span>O app · Mobile Development</span></div><div class="safe"></div></div><figcaption><b>VI-02</b> Tarja de nome sobre a gravação: nome em 48, parte em 40, fundo #1F2733, 96 px acima da borda.</figcaption></figure>
+        <figure class="fr"><div class="v light"><div class="v-ch"><small>3 de 5</small><b>A demo de ponta a ponta</b><span>0:50 a 2:30</span></div><div class="safe"></div></div><figcaption><b>VI-04</b> Cartela de bloco do pitch, 2 s, fundo #F1F5F7. Título em 96.</figcaption></figure>
+        <figure class="fr"><div class="v dark"><div class="v-end"><span class="logo"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria</span><b>Menos de 10 minutos a pé até um lugar calmo.</b><div class="ods"><span>ODS 3</span><span>ODS 10</span><span>ODS 11</span></div><p>github.com/(repositório)</p></div><div class="safe"></div></div><figcaption><b>VI-05</b> Cartela final, 5 s: o indicador de impacto, os ODS e o link.</figcaption></figure>
+        <figure class="fr"><div class="v dark" style="aspect-ratio:16/9"><div class="v-th"><span class="logo"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria</span><b>O lugar calmo mais perto de você</b><div class="pills"><span class="pill lv-c"><svg viewBox="0 0 16 16"><circle class="shape" cx="8" cy="8" r="6.6"/></svg>Calmo</span><span class="pill lv-m"><svg viewBox="0 0 16 16"><rect class="shape" x="1.6" y="1.6" width="12.8" height="12.8" rx="2"/></svg>Moderado</span><span class="pill lv-i"><svg viewBox="0 0 16 16"><path class="shape" d="M8 .9 15.1 8 8 15.1 .9 8z"/></svg>Intenso</span></div></div></div><figcaption><b>VI-06</b> Miniatura do YouTube, 1280 × 720 JPG até 2 MB. Texto de 96 px: ainda lê no tamanho de celular.</figcaption></figure>
+        <figure class="fr" style="align-items:flex-start"><div class="pdf"><div class="pdf-in"><span class="logo"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria</span><h5>Testing, Compliance e QA</h5><p>Features e test cases no Azure Boards<br>Global Solution 2026.2 · CitizenTech</p><span class="lbl">Projeto no Azure DevOps</span><span class="lk">dev.azure.com/(organização)/calmaria</span><span class="lbl">Pitch no YouTube</span><span class="lk">youtu.be/(link)</span><span class="lbl">Equipe</span><p>Luiz Gustavo da Silva · Integrante 2 · Integrante 3 · Integrante 4 · Integrante 5</p><span class="ft2">3ESPW · 19/11/2026</span></div></div><figcaption><b>QA-01</b> Capa do PDF, A4 retrato, margens de 20 mm. Os prints vêm depois, com 170 mm de largura e o ID na legenda.</figcaption></figure>
+      </div>
+      <h3 class="sub">Onde cada cartela entra no pitch</h3>
+      <div class="timeline">
+        <div class="tl"><small>0:00 a 0:30</small><b>A frase da entrevista</b><span>Abertura (VI-03), depois a foto da estação. Tarja em quem falou.</span></div>
+        <div class="tl"><small>0:30 a 0:50</small><b>O problema e o cidadão</b><span>Cartela 2 de 5 e a narração do Integrante 5.</span></div>
+        <div class="tl"><small>0:50 a 2:30</small><b>A demo de ponta a ponta</b><span>Cartela 3 de 5; tela do app ao lado do Wokwi, os dois no mesmo quadro.</span></div>
+        <div class="tl"><small>2:30 a 3:20</small><b>Como foi construído</b><span>Cartela 4 de 5; o diagrama (AD-02), o painel e o terminal.</span></div>
+        <div class="tl"><small>3:20 a 4:00</small><b>Impacto e o que vem depois</b><span>Cartela 5 de 5 e a final (VI-05).</span></div>
+      </div>
+      <p class="note">Tela do celular no vídeo: gravação vertical centralizada no quadro 1920 × 1080 sobre #1F2733, com a frase do que acontece à esquerda em 48 px. Legendas em .srt (VI-07), enviadas no YouTube, até 42 caracteres por linha.</p>
+    </section>
+
+    <!-- ARQUIVOS -->
+    <section class="sec" id="arquivos">
+      <div class="sec-h">
+        <span class="k">Arquivos</span>
+        <h2>O que já está no repositório</h2>
+        <p>Pasta <code>design/</code> do GS-CitizenTech. Mudou uma cor? Muda no token e gera de novo; nada se edita à mão nos arquivos gerados.</p>
+      </div>
+      <div class="tw"><table>
+        <tr><th>Caminho</th><th>Para quem</th><th>O que é</th></tr>
+        <tr><td><code>plano-de-design.md</code></td><td>Todos</td><td>O documento-fonte: direção, decisões, telas e estados</td></tr>
+        <tr><td><code>design-da-calmaria.html</code></td><td>Todos</td><td>Esta página, para abrir no navegador sem precisar do link</td></tr>
+        <tr><td><code>tokens/*.tokens.json</code></td><td>Quem mexer em cor ou tamanho</td><td>Primitivos, tipografia, base e os dois temas, no formato DTCG</td></tr>
+        <tr><td><code>tokens/tokens.css</code></td><td>Luiz (painel e Scalar)</td><td>Variáveis CSS, com o escuro seguindo o sistema</td></tr>
+        <tr><td><code>tokens/resolvido.json</code></td><td>Todos</td><td>Cada papel já com o hex final, nos dois temas</td></tr>
+        <tr><td><code>codigo/tema.ts</code></td><td>Integrante 2 (app)</td><td>Cores, tipografia, espaços e tamanhos em TypeScript</td></tr>
+        <tr><td><code>marca/*.svg</code></td><td>Todos</td><td>Símbolo, logotipo, logotipo invertido, favicon, ícone do app (normal, frente e monocromático) e as duas aberturas</td></tr>
+        <tr><td><code>pecas/png/</code></td><td>Todos</td><td>As 25 peças prontas: ícones, abertura, logotipos, diagrama, banner, cartelas, tarjas, miniatura e a capa em PDF</td></tr>
+        <tr><td><code>pecas/exportar.py</code></td><td>Integrante 5 (pitch) e Integrante 4 (capa do PDF)</td><td>Refaz as peças com os nomes e os links certos, ou uma cartela avulsa para qualquer vídeo</td></tr>
+        <tr><td><code>pecas/fontes/</code></td><td>Todos</td><td>As duas fontes (licença OFL), para instalar no computador</td></tr>
+        <tr><td><code>figma-import/</code></td><td>Quem for usar o Figma</td><td>Import nativo das variáveis (sem plugin)</td></tr>
+        <tr><td><code>previa.html</code></td><td>Todos</td><td>As fundações abertas no navegador, com o teste de contraste</td></tr>
+      </table></div>
+    </section>
+
+    <!-- PENDÊNCIAS -->
+    <section class="sec" id="pendencias">
+      <div class="sec-h">
+        <span class="k">Pendências</span>
+        <h2>O que ainda depende de alguém</h2>
+      </div>
+      <ul class="pend">
+        <li><b>Nome.</b> Calmaria ainda é provisório. Se mudar, mudam o logotipo e os textos; cores, tipografia e peças ficam.</li>
+        <li><b>Rótulo do botão de crise.</b> "Preciso de calma" é uma suposição. Validar na entrevista do fim de semana; a alternativa é "Lugar calmo agora".</li>
+        <li><b>Nomes e links nas peças.</b> Os 25 arquivos estão em <code>design/pecas/png/</code>, mas a cartela final, as tarjas e a capa do PDF saíram com "Integrante 2" a "Integrante 5" e os links como marcador. Quando existirem, refazer com <code>python design/pecas/exportar.py --equipe "..." --repo ... --azure ... --youtube ...</code>.</li>
+        <li><b>Figma.</b> Não montado: o conector do Figma não está autorizado nesta sessão. As variáveis estão prontas em <code>figma-import/</code>.</li>
+        <li><b>Editor de vídeo.</b> Conferir se o Clipchamp aceita fonte enviada. Se não aceitar, as cartelas entram como imagem.</li>
+        <li><b>Rubricas.</b> Mobile e Physical Computing ainda sem rubrica do professor (perguntar em 13/11). O design não muda por isso, só a ênfase.</li>
+      </ul>
+      <p class="foot">Feito em 12/11/2026 a partir do escopo global e dos oito planos de disciplina. Cores calculadas e conferidas pelos scripts da skill de design (WCAG 2.2 AA). Dados de lugares, índices e achados são de exemplo, tirados do seed.</p>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  /* ---------- Escalas de cor ---------- */
+  var ESC = [
+    ["Marca","ardósia","brand",["#F5F8FA","#E7EEF3","#D4E1EA","#B2C9D8","#8AA8BE","#708FAA","#597590","#3D5A73","#3C4D61","#313D4D","#1F2733"],7],
+    ["Neutro","puxa para a marca","neutral",["#F8FBFD","#F1F5F7","#E0E5E9","#CED5DA","#9BA3AA","#6B737A","#4D545B","#3A4148","#22282E","#14191F","#06090E"],-1],
+    ["Calmo","verde apagado","calmo",["#F4F8F6","#E5F0EA","#D0E4D9","#AACEBA","#7DAF95","#5C977A","#437E61","#34684F","#2A5340","#234233","#152B20"],-1],
+    ["Moderado","ocre","moderado",["#F9F7F1","#F0EDDF","#E6E0C4","#D2C596","#BBA15E","#AC8535","#99681C","#855318","#6C4118","#563418","#3A210E"],-1],
+    ["Intenso","tijolo","intenso",["#FEF5F4","#FCE9E5","#FCD7D0","#F3B7AC","#E08F82","#CE7165","#B2574D","#95463E","#783832","#5F2E29","#3F1D1A"],-1]
+  ];
+  var PASSOS = ["50","100","200","300","400","500","600","700","800","900","950"];
+  var box = document.getElementById("escalas");
+  ESC.forEach(function(e){
+    var row = document.createElement("div"); row.className = "scale-row";
+    var nm = document.createElement("div"); nm.className = "nm"; nm.innerHTML = e[0] + "<small>" + e[1] + "</small>";
+    var st = document.createElement("div"); st.className = "steps";
+    e[3].forEach(function(hex, i){
+      var d = document.createElement("div"); d.className = "step" + (i === e[4] ? " ex" : "");
+      var escuro = e[2] === "neutral" ? i >= 5 : i >= 6;
+      d.style.background = hex; d.style.color = escuro ? "#FFFFFF" : "#14191F";
+      d.title = e[2] + "." + PASSOS[i] + " " + hex;
+      d.innerHTML = "<span>" + PASSOS[i] + "</span><span>" + hex.slice(1) + "</span>";
+      st.appendChild(d);
+    });
+    row.appendChild(nm); row.appendChild(st); box.appendChild(row);
+  });
+
+  /* ---------- Lista de peças ---------- */
+  var ROT = {marca:"Marca", mobile:"Mobile", physical:"Physical", cyber:"Cyber", csharp:"C#", soa:"SOA", ml:"ML", os:"OS", testing:"Testing", videos:"Vídeos", todas:"Todas"};
+  var P = [
+    ["MA-01","Símbolo",["marca"],"Pronto","SVG, caixa de 48 × 48","Três linhas: onda, meia onda, linha reta. Traço 3,5 a 48 px, pontas arredondadas."],
+    ["MA-02","Logotipo horizontal",["marca"],"Pronto","SVG; mínimo 96 px de largura","Símbolo e “calmaria” em minúsculas, Atkinson Hyperlegible Next 700. Respiro de meio símbolo."],
+    ["MA-03","Logotipo invertido",["marca"],"Pronto","SVG","Traço e texto #F8FBFD sobre #1F2733. Abertura, banner e miniatura."],
+    ["MA-04","Símbolo em pixels",["marca","physical"],"Integrante 5","40 × 24 px, 1 bit","Na tela de inicialização do visor. Desenho na seção Sensor."],
+    ["AP-01","Ícone do app",["mobile"],"Integrante 2","1024 × 1024 PNG, sem transparência","Fundo #3D5A73, símbolo #F1F5F7 com 56% da largura, centralizado. expo.icon."],
+    ["AP-02","Ícone adaptativo",["mobile"],"Integrante 2","Frente 1024 × 1024 PNG transparente","Símbolo dentro do círculo central de 684 px (66%); fundo #3D5A73."],
+    ["AP-03","Ícone monocromático",["mobile"],"Integrante 2","1024 × 1024 PNG, só alfa","O mesmo desenho da frente, para os ícones temáticos do Android 13 em diante."],
+    ["AP-04","Abertura (splash)",["mobile"],"Integrante 2","Imagem 1024 × 1024; imageWidth 160","Fundo #F1F5F7 no claro, #14191F no escuro. Sem animação."],
+    ["AP-05","Boas-vindas",["mobile"],"Integrante 2","390 × 844 pt; conferir em 360 × 800","Três frases literais; “Criar meu perfil” (primário) e “Pular”."],
+    ["AP-06","Perfil sensorial",["mobile"],"Integrante 2","390 × 844 pt","Som, luz e multidão de 1 a 5, com a frase de cada valor; contato de apoio."],
+    ["AP-07","Lugares perto",["mobile"],"Integrante 2","390 × 844 pt","Mapa e Lista; filtro por tipo; cartão com selo do nível e distância."],
+    ["AP-08","Detalhe do lugar",["mobile"],"Integrante 2","390 × 844 pt","Nível em 32; medidas com frase; horários calmos; previsão do distrito; Como chegar."],
+    ["AP-09","Crise",["mobile"],"Integrante 2","390 × 844 pt","Fundo #1F2733 nos dois temas; botões de 64; respiração passo a passo; versão sem internet."],
+    ["AP-10","Relatar",["mobile"],"Integrante 2","390 × 844 pt","Lugar, nota com rótulo, gatilhos, comentário e o aviso do dado que será removido."],
+    ["AP-11","Meus lugares",["mobile"],"Integrante 2","390 × 844 pt","Favoritos com selo; histórico de crises dizendo que fica só no celular."],
+    ["AP-12","Marcador do mapa",["mobile"],"Integrante 2","40 pt visível, alvo de 48 pt","Forma, letra e cor; contorno de 2 pt; selecionado ganha anel de 4 pt na cor da marca."],
+    ["AP-13","Selo de nível",["mobile","cyber"],"Integrante 2 e Luiz","32 pt de altura, pílula","Forma de 16 e texto de 16. O mesmo selo no painel."],
+    ["AP-14","Botão de crise",["mobile"],"Integrante 2","64 pt de altura, 176 de largura mínima","Canto inferior direito, 16 da borda e 16 acima das abas; life-buoy e “Preciso de calma”."],
+    ["AP-15","Prints do README",["mobile","testing"],"Integrante 2","PNG do aparelho, sem moldura","Todas as telas, a crise sem internet e uma com o leitor de tela ligado."],
+    ["SE-01","Visor: medindo",["physical"],"Integrante 5","128 × 64 px, 1 bit","Lugar, índice grande, nível e as três medidas. Posições na seção Sensor."],
+    ["SE-02","Visor: inicializando",["physical"],"Integrante 5","128 × 64 px","Símbolo em pixels, CALMARIA e o passo da conexão."],
+    ["SE-03","Visor: sem MQTT",["physical"],"Integrante 5","128 × 64 px","Continua medindo; a última linha diz SEM MQTT. SO NO VISOR."],
+    ["SE-04","LEDs de nível",["physical"],"Integrante 5","3 LEDs, PWM 40 de 255","Um aceso por vez, fixo. Verde 25, amarelo 26, vermelho 33."],
+    ["SE-05","Fios no Wokwi",["physical"],"Integrante 5","diagram.json","3V3 red, GND black, SDA blue, SCL gold, sinais green, LEDs na cor do LED."],
+    ["PA-01","Painel Risco Cidadão",["cyber"],"Luiz","1440 × 900; conferir em 1280 e 768","wwwroot/seguranca/index.html com tokens.css; segue o tema do sistema."],
+    ["PA-02","Print do painel",["cyber","testing"],"Luiz","PNG 2880 × 1800 (2x)","Tema claro, antes e depois visíveis, selo “Dados de exemplo” se for seed."],
+    ["PA-03","Favicon",["cyber","csharp"],"Luiz","SVG 32 × 32","O símbolo em #3D5A73, servido pela API."],
+    ["AD-01","Scalar com o tema",["csharp","soa"],"Luiz","CSS da API","Título “API Calmaria”, acento #3D5A73 (#B2C9D8 no escuro), fonte Atkinson."],
+    ["AD-02","Diagrama da arquitetura",["csharp","soa","testing"],"Luiz","SVG e PNG 1920 × 1080","Estilo na seção API. README, pitch e relatórios."],
+    ["AD-03","Banner do repositório",["todas"],"Luiz","PNG 1280 × 640, até 1 MB","Prévia social do GitHub: logotipo invertido e a frase; 40 px livres na borda."],
+    ["ML-01","Estilo dos gráficos",["ml"],"Integrante 3","matplotlib, 10 × 5 pol a 150 dpi","1500 × 750 px. rcParams na seção ML; título diz a conclusão."],
+    ["ML-02","Total mensal de reclamações",["ml"],"Integrante 3","1500 × 750 px","Linha na cor da marca; quebras de série anotadas com texto."],
+    ["ML-03","Previsto contra real",["ml"],"Integrante 3","1500 × 750 px por distrito","Real #4D545B contínuo, previsto #3D5A73 tracejado; 3 distritos."],
+    ["ML-04","Importância dos atributos",["ml"],"Integrante 3","1500 × 750 px","Barras horizontais de uma cor, ordenadas, valor na ponta."],
+    ["ML-05","Matriz de confusão",["ml"],"Integrante 3","900 × 900 px","Escala da marca, número em cada célula, BAIXO, MEDIO e ALTO nos eixos."],
+    ["VM-01","Perfil do terminal",["os"],"Integrante 4","Mono 20 pt, janela 1920 × 1080","Esquema Calmaria (seção Terminal); prompt curto calmaria@vm."],
+    ["VM-02","Saída dos scripts",["os"],"Integrante 4","Texto no terminal e no log","[data hora] OK, AVISO ou FALHA escrito, além da cor."],
+    ["VI-01","Kit de vídeo",["videos","todas"],"Integrante 5 monta; todos usam","1920 × 1080, 30 qps, H.264","Margem segura de 96 e 54 px, texto de 40 px no mínimo, cortes secos."],
+    ["VI-02","Tarja de nome",["videos"],"Integrante 5","Caixa de 140 px, PNG transparente","Nome em 48, parte em 40, fundo #1F2733, 96 px acima da borda."],
+    ["VI-03","Abertura",["videos","testing"],"Integrante 5","3 s","Logotipo invertido e a frase do problema sobre #1F2733."],
+    ["VI-04","Cartela de bloco",["videos","testing"],"Integrante 5","2 s","“3 de 5”, o título do bloco e o tempo."],
+    ["VI-05","Cartela final",["videos","testing"],"Integrante 5","5 s","Indicador de impacto, ODS 3, 10 e 11, link do repositório."],
+    ["VI-06","Miniatura do YouTube",["testing"],"Integrante 5","1280 × 720 JPG, até 2 MB","Texto de 96 px; os três selos de nível."],
+    ["VI-07","Legendas",["videos"],"Quem grava cada vídeo","Arquivo .srt em pt-BR","Enviadas no YouTube, não gravadas na imagem; até 42 caracteres por linha."],
+    ["VI-08","Vídeos das disciplinas",["videos","mobile","physical","ml","os","cyber"],"Cada dono","1920 × 1080","Mobile 3 min, Physical 4, ML 5, OS 7, Cyber (a atividade), pitch 4."],
+    ["QA-01","PDF do Azure Boards",["testing"],"Integrante 4","A4 retrato, margens de 20 mm","Capa com os dois links; prints com 170 mm de largura e o ID na legenda."]
+  ];
+  var FILTROS = [["todas","Todas"],["marca","Marca"],["mobile","Mobile"],["physical","Physical"],["cyber","Cyber"],["csharp","C# e SOA"],["ml","ML"],["os","OS"],["testing","Testing e pitch"],["videos","Vídeos"]];
+  var fbox = document.getElementById("filtros"), tbody = document.querySelector("#tabela-pecas tbody"), cont = document.getElementById("contagem");
+  var atual = "todas";
+  try { var salvo = localStorage.getItem("calmaria-filtro"); if (salvo) atual = salvo; } catch (e) {}
+  function casa(p, f){
+    if (f === "todas") return true;
+    if (p[2].indexOf("todas") >= 0) return true;
+    if (f === "csharp") return p[2].indexOf("csharp") >= 0 || p[2].indexOf("soa") >= 0;
+    return p[2].indexOf(f) >= 0;
+  }
+  function desenhar(){
+    tbody.innerHTML = "";
+    var n = 0;
+    P.forEach(function(p){
+      if (!casa(p, atual)) return;
+      n++;
+      var tr = document.createElement("tr");
+      [p[0], p[1], p[2].map(function(k){ return ROT[k]; }).join(", "), p[3], p[4], p[5]].forEach(function(v){
+        var td = document.createElement("td"); td.textContent = v; tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    cont.textContent = n + (n === 1 ? " peça" : " peças") + (atual === "todas" ? " no total" : " nesta entrega, contando as que servem a todas");
+    Array.prototype.forEach.call(fbox.children, function(b){ b.setAttribute("aria-pressed", b.dataset.f === atual ? "true" : "false"); });
+  }
+  FILTROS.forEach(function(f){
+    var b = document.createElement("button"); b.type = "button"; b.dataset.f = f[0]; b.textContent = f[1];
+    b.addEventListener("click", function(){ atual = f[0]; try { localStorage.setItem("calmaria-filtro", atual); } catch (e) {} desenhar(); });
+    fbox.appendChild(b);
+  });
+  if (!FILTROS.some(function(f){ return f[0] === atual; })) atual = "todas";
+  desenhar();
+
+  /* ---------- Tema das telas do app ---------- */
+  var bc = document.getElementById("tema-claro"), be = document.getElementById("tema-escuro");
+  function tema(t){
+    document.querySelectorAll(".phone.app").forEach(function(ph){ ph.setAttribute("data-tema", t); });
+    bc.setAttribute("aria-pressed", t === "claro" ? "true" : "false");
+    be.setAttribute("aria-pressed", t === "escuro" ? "true" : "false");
+  }
+  bc.addEventListener("click", function(){ tema("claro"); });
+  be.addEventListener("click", function(){ tema("escuro"); });
+
+  /* ---------- Visor OLED: fonte 5 x 7 do Adafruit GFX, célula de 6 x 8 ---------- */
+  var F = {
+    "0":[14,17,19,21,25,17,14],"1":[4,12,4,4,4,4,14],"2":[14,17,1,2,4,8,31],"3":[31,2,4,2,1,17,14],"4":[2,6,10,18,31,2,2],
+    "5":[31,16,30,1,1,17,14],"6":[6,8,16,30,17,17,14],"7":[31,1,2,4,8,8,8],"8":[14,17,17,14,17,17,14],"9":[14,17,17,15,1,2,12],
+    "A":[14,17,17,31,17,17,17],"B":[30,17,17,30,17,17,30],"C":[14,17,16,16,16,17,14],"D":[28,18,17,17,17,18,28],"E":[31,16,16,30,16,16,31],
+    "F":[31,16,16,30,16,16,16],"I":[14,4,4,4,4,4,14],"L":[16,16,16,16,16,16,31],"M":[17,27,21,21,17,17,17],"N":[17,17,25,21,19,17,17],
+    "O":[14,17,17,17,17,17,14],"Q":[14,17,17,17,21,18,13],"R":[30,17,17,30,20,18,17],"S":[15,16,16,14,1,1,30],"T":[31,4,4,4,4,4,4],
+    "V":[17,17,17,17,17,10,4],"W":[17,17,17,21,21,21,10],
+    "d":[1,1,13,19,17,19,13],"l":[12,4,4,4,4,4,14],"x":[0,0,17,10,4,10,17],"m":[0,0,26,21,21,17,17],"i":[4,0,12,4,4,4,14],"n":[0,0,22,25,17,17,17],
+    ".":[0,0,0,0,0,12,12],"/":[0,1,2,4,8,16,0],"-":[0,0,0,31,0,0,0],":":[0,12,12,0,12,12,0]," ":[0,0,0,0,0,0,0]
+  };
+  var Z = 4;
+  function px(ctx, x, y){ ctx.fillRect(x * Z, y * Z, Z, Z); }
+  function texto(ctx, s, x, y, t){
+    for (var k = 0; k < s.length; k++){
+      var g = F[s[k]] || F[" "];
+      for (var r = 0; r < 7; r++) for (var c = 0; c < 5; c++) if ((g[r] >> (4 - c)) & 1)
+        for (var a = 0; a < t; a++) for (var b = 0; b < t; b++) px(ctx, x + k * 6 * t + c * t + a, y + r * t + b);
+    }
+  }
+  function larg(s, t){ return s.length * 6 * t - t; }
+  function limpar(cv){ var ctx = cv.getContext("2d"); ctx.fillStyle = "#05080B"; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = "#DCE8F2"; return ctx; }
+  function medindo(cv, nome, iss, nivel, ultima){
+    var ctx = limpar(cv);
+    texto(ctx, nome, 0, 0, 1);
+    var g = larg(iss, 3) + 3 + larg("/100", 1), x = Math.floor((128 - g) / 2);
+    texto(ctx, iss, x, 11, 3);
+    texto(ctx, "/100", x + larg(iss, 3) + 3, 25, 1);
+    texto(ctx, nivel, Math.floor((128 - larg(nivel, 2)) / 2), 38, 2);
+    texto(ctx, ultima, Math.floor((128 - larg(ultima, 1)) / 2), 56, 1);
+  }
+  function simbolo(ctx, ox, oy){
+    // três linhas de 40 px: onda de amplitude 3, de 1,5 e reta (1 bit, 2 px de espessura)
+    var amp = [3, 1.5, 0];
+    for (var l = 0; l < 3; l++){
+      var base = oy + 3 + l * 8, ant = null;
+      for (var xx = 0; xx < 40; xx++){
+        var y = Math.round(base - amp[l] * Math.sin(xx / 40 * Math.PI * 3));
+        var de = ant === null ? y : Math.min(ant, y), ate = ant === null ? y : Math.max(ant, y);
+        for (var yy = de; yy <= ate; yy++){ px(ctx, ox + xx, yy); px(ctx, ox + xx, yy + 1); }
+        ant = y;
+      }
+    }
+  }
+  var o1 = document.getElementById("oled-1"), o2 = document.getElementById("oled-2"), o3 = document.getElementById("oled-3");
+  medindo(o1, "EST. CONSOLACAO", "78", "INTENSO", "88dB 2300lx 23/min");
+  var c2 = limpar(o2); simbolo(c2, 44, 1); texto(c2, "CALMARIA", Math.floor((128 - larg("CALMARIA", 2)) / 2), 30, 2); texto(c2, "CONECTANDO WI-FI", Math.floor((128 - larg("CONECTANDO WI-FI", 1)) / 2), 54, 1);
+  medindo(o3, "EST. CONSOLACAO", "53", "MODERADO", "SEM MQTT. SO NO VISOR");
+  var ol = document.getElementById("oled-logo"); if (ol){ var cl = ol.getContext("2d"); cl.fillStyle = "#05080B"; cl.fillRect(0, 0, ol.width, ol.height); cl.fillStyle = "#DCE8F2"; simbolo(cl, 0, 0); }
+})();
+</script>
+
+</html>

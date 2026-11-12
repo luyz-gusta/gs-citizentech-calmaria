@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Calmaria: capa do PDF de Testing (A4)</title>
+<link rel="stylesheet" href="base.css">
+<style>
+@page { size: A4; margin: 0; }
+html, body { width: 210mm; height: 297mm; overflow: hidden; }
+body { background: #FFFFFF; color: var(--texto); position: relative; }
+.in { position: absolute; inset: 20mm; display: flex; flex-direction: column; gap: 4mm; }
+.in > .logo { font-size: 22pt; color: var(--texto); }
+.in > .logo svg { color: var(--ardosia); }
+h1 { font-size: 30pt; line-height: 1.15; margin: 40mm 0 0; font-weight: 700; letter-spacing: -.01em; }
+.sub { font-size: 14pt; line-height: 1.45; color: var(--apoio); }
+.lbl { font-size: 9.5pt; letter-spacing: .08em; text-transform: uppercase; color: var(--apoio); margin-top: 8mm; font-weight: 600; }
+.lk { font-family: var(--mono-font); font-size: 12pt; color: var(--ardosia); word-break: break-all; }
+.eq { font-size: 13pt; line-height: 1.6; }
+.rodape { margin-top: auto; font-size: 11pt; color: var(--apoio); border-top: 0.3mm solid #CED5DA; padding-top: 4mm; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<script src="comum.js"></script>
+<script>
+var equipe = param("equipe", "Luiz Gustavo da Silva;Integrante 2;Integrante 3;Integrante 4;Integrante 5").split(";");
+document.body.innerHTML = '<div class="in">' + logo() +
+  '<h1>' + esc(param("disciplina", "Testing, Compliance e QA")) + '</h1>' +
+  '<p class="sub">Features e test cases no Azure Boards<br>Global Solution 2026.2 · CitizenTech · Calmaria</p>' +
+  '<p class="lbl">Projeto no Azure DevOps</p><p class="lk">' + esc(param("azure", "dev.azure.com/(organização)/calmaria")) + '</p>' +
+  '<p class="lbl">Pitch no YouTube</p><p class="lk">' + esc(param("youtube", "youtu.be/(link)")) + '</p>' +
+  '<p class="lbl">Equipe</p><p class="eq">' + equipe.map(esc).join('<br>') + '</p>' +
+  '<p class="rodape"><span>FIAP · Engenharia de Software · ' + esc(param("turma", "3ESPW")) + '</span><span>' + esc(param("data", "19/11/2026")) + '</span></p></div>';
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Calmaria: quadro de vídeo 1920 x 1080</title>
+<link rel="stylesheet" href="base.css">
+<style>
+/* Quadro de 1920 x 1080. Margem segura: 96 px nas laterais, 54 em cima e embaixo. Texto de 40 px no mínimo. */
+body { width: 1920px; height: 1080px; overflow: hidden; position: relative; background: transparent; }
+.escuro { background: var(--crise); color: var(--crise-tx); }
+.claro { background: var(--fundo-claro); color: var(--texto); }
+
+.abertura { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+.abertura .logo { font-size: 120px; }
+.abertura p { font-size: 48px; color: var(--crise-mu); }
+.abertura small { position: absolute; bottom: 80px; font-size: 40px; color: var(--crise-mu); }
+
+.bloco { position: absolute; left: 96px; right: 96px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; gap: 22px; }
+.bloco small { font-size: 40px; color: var(--apoio); font-variant-numeric: tabular-nums; }
+.bloco b { font-size: 96px; line-height: 1.1; letter-spacing: -.01em; max-width: 1500px; text-wrap: balance; }
+.bloco .tempo { font-size: 40px; color: var(--ardosia); }
+.canto { position: absolute; right: 96px; bottom: 54px; font-size: 40px; color: var(--ardosia); }
+
+.final { position: absolute; top: 54px; bottom: 54px; left: 96px; right: 96px; display: flex; flex-direction: column; justify-content: space-between; }
+.final .logo { font-size: 72px; }
+.final b { font-size: 64px; line-height: 1.2; max-width: 1400px; text-wrap: balance; }
+.final .ods { display: flex; gap: 16px; }
+.final .ods span { font-size: 40px; padding: 8px 24px; border: 3px solid var(--crise-ac); border-radius: 999px; }
+.final .rodape { display: flex; flex-direction: column; gap: 10px; }
+.final .rodape p { font-size: 40px; color: var(--crise-mu); }
+
+.tarja { position: absolute; left: 96px; bottom: 96px; background: var(--crise); color: var(--crise-tx); padding: 14px 32px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; }
+.tarja b { font-size: 48px; line-height: 1.2; }
+.tarja span { font-size: 40px; line-height: 1.2; color: var(--crise-mu); }
+</style>
+</head>
+<body>
+<script src="comum.js"></script>
+<script>
+var peca = param("peca", "abertura");
+var h = "";
+if (peca === "abertura") {
+  document.body.className = "escuro";
+  h = '<div class="abertura">' + logo() + '<p>' + esc(param("frase", "Onde está calmo agora, em São Paulo")) + '</p>' +
+      '<small>' + esc(param("rodape", "Global Solution 2026.2 · FIAP · Engenharia de Software")) + '</small></div>';
+} else if (peca === "bloco") {
+  document.body.className = "claro";
+  h = '<div class="bloco"><small>' + esc(param("n", "1")) + ' de ' + esc(param("total", "5")) + '</small>' +
+      '<b>' + esc(param("titulo", "Título do bloco")) + '</b><span class="tempo mono">' + esc(param("tempo", "")) + '</span></div>' +
+      '<span class="canto">' + logo() + '</span>';
+} else if (peca === "final") {
+  document.body.className = "escuro";
+  h = '<div class="final">' + logo() +
+      '<b>' + esc(param("frase", "Menos de 10 minutos a pé até um lugar calmo.")) + '</b>' +
+      '<div class="ods"><span>ODS 3</span><span>ODS 10</span><span>ODS 11</span></div>' +
+      '<div class="rodape"><p class="mono">' + esc(param("repo", "github.com/(repositório)")) + '</p>' +
+      '<p>' + esc(param("equipe", "")) + '</p></div></div>';
+} else if (peca === "tarja") {
+  h = '<div class="tarja"><b>' + esc(param("nome", "Nome")) + '</b><span>' + esc(param("parte", "Parte")) + '</span></div>';
+}
+document.body.insertAdjacentHTML("beforeend", h);
+</script>
+</body>
+</html>

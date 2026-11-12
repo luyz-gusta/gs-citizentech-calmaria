@@ -1,0 +1,555 @@
+{
+  "space": {
+    "$type": "dimension",
+    "$description": "Escala de 4px. A chave é o múltiplo de 4 (convenção do Tailwind): space.4 = 16px.",
+    "0": {
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      }
+    },
+    "0-5": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      }
+    },
+    "1": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      }
+    },
+    "1-5": {
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "Só como ajuste interno de componente."
+    },
+    "2": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      }
+    },
+    "3": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      }
+    },
+    "4": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      }
+    },
+    "5": {
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      }
+    },
+    "6": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      }
+    },
+    "8": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      }
+    },
+    "10": {
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      }
+    },
+    "12": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      }
+    },
+    "16": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      }
+    },
+    "20": {
+      "$value": {
+        "value": 80,
+        "unit": "px"
+      }
+    },
+    "24": {
+      "$value": {
+        "value": 96,
+        "unit": "px"
+      }
+    },
+    "32": {
+      "$value": {
+        "value": 128,
+        "unit": "px"
+      }
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "$description": "Nomes e valores do Tailwind v4. Controle 6 a 8, card 8 a 12, modal 12 a 16. Aninhado: externo = interno + padding.",
+    "none": {
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      }
+    },
+    "xs": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      }
+    },
+    "sm": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      }
+    },
+    "2xl": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      }
+    },
+    "3xl": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      }
+    },
+    "full": {
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      }
+    }
+  },
+  "border-width": {
+    "$type": "dimension",
+    "default": {
+      "$value": {
+        "value": 1,
+        "unit": "px"
+      }
+    },
+    "strong": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Anel de foco e item selecionado."
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "control-sm": {
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$description": "Altura de controle em UI densa (desktop)."
+    },
+    "control-md": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$description": "Altura padrão de botão e campo."
+    },
+    "control-lg": {
+      "$value": {
+        "value": 56,
+        "unit": "px"
+      },
+      "$description": "Toque (mobile, tablet) e ação principal."
+    },
+    "touch-min": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$description": "Alvo mínimo de toque da Calmaria: 48 por 48 pontos."
+    },
+    "icon-sm": {
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      }
+    },
+    "icon-md": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      }
+    },
+    "icon-lg": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      }
+    },
+    "crisis-button": {
+      "$type": "dimension",
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$description": "Altura do botão de crise flutuante; a tela de crise usa botões de 64."
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "$description": "Duas camadas: uma curta e nítida (contato) e uma longa e difusa (ambiente).",
+    "xs": {
+      "$value": [
+        {
+          "color": "#0000000D",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 2,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        }
+      ]
+    },
+    "sm": {
+      "$value": [
+        {
+          "color": "#0000001A",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 3,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": "#0000001A",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 2,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -1,
+            "unit": "px"
+          }
+        }
+      ]
+    },
+    "md": {
+      "$value": [
+        {
+          "color": "#0000001A",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 4,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 6,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -1,
+            "unit": "px"
+          }
+        },
+        {
+          "color": "#0000001A",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 2,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 4,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -2,
+            "unit": "px"
+          }
+        }
+      ]
+    },
+    "lg": {
+      "$value": [
+        {
+          "color": "#0000001A",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 10,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 15,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -3,
+            "unit": "px"
+          }
+        },
+        {
+          "color": "#0000001A",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 4,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 6,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -4,
+            "unit": "px"
+          }
+        }
+      ]
+    },
+    "xl": {
+      "$value": [
+        {
+          "color": "#0000001A",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 20,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 25,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -5,
+            "unit": "px"
+          }
+        },
+        {
+          "color": "#0000001A",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 8,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 10,
+            "unit": "px"
+          },
+          "spread": {
+            "value": -6,
+            "unit": "px"
+          }
+        }
+      ]
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "fast": {
+      "$value": {
+        "value": 0,
+        "unit": "ms"
+      },
+      "$description": "Hover, troca de cor, micro feedback."
+    },
+    "base": {
+      "$value": {
+        "value": 0,
+        "unit": "ms"
+      },
+      "$description": "Abrir menu, tooltip, expandir item."
+    },
+    "slow": {
+      "$value": {
+        "value": 0,
+        "unit": "ms"
+      },
+      "$description": "Modal, gaveta, transição de painel."
+    },
+    "slower": {
+      "$value": {
+        "value": 0,
+        "unit": "ms"
+      },
+      "$description": "Transição de página ou de grande área; use pouco."
+    },
+    "$description": "A Calmaria não anima: toda mudança de estado é instantânea (pedido do público e da acessibilidade)."
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "standard": {
+      "$value": [
+        0.2,
+        0,
+        0,
+        1
+      ],
+      "$description": "Movimento dentro da tela (Material 3 standard)."
+    },
+    "enter": {
+      "$value": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "$description": "Elemento entrando: desacelera até parar."
+    },
+    "exit": {
+      "$value": [
+        0.3,
+        0,
+        1,
+        1
+      ],
+      "$description": "Elemento saindo: acelera para fora."
+    }
+  },
+  "z-index": {
+    "$type": "number",
+    "$description": "Popover acima do modal: um select aberto dentro do diálogo precisa aparecer. Nada de 9999; <dialog> e a API popover vão para a top layer.",
+    "base": {
+      "$value": 0
+    },
+    "raised": {
+      "$value": 1
+    },
+    "sticky": {
+      "$value": 1000
+    },
+    "overlay": {
+      "$value": 1100,
+      "$description": "Véu (scrim) e gaveta."
+    },
+    "modal": {
+      "$value": 1200
+    },
+    "popover": {
+      "$value": 1300,
+      "$description": "Menu, select, date picker, dropdown."
+    },
+    "toast": {
+      "$value": 1400
+    },
+    "tooltip": {
+      "$value": 1500
+    }
+  },
+  "breakpoint": {
+    "$type": "dimension",
+    "$description": "Mesmos valores do Tailwind: sm 640, md 768, lg 1024, xl 1280, 2xl 1536.",
+    "sm": {
+      "$value": {
+        "value": 640,
+        "unit": "px"
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 768,
+        "unit": "px"
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 1024,
+        "unit": "px"
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 1280,
+        "unit": "px"
+      }
+    },
+    "2xl": {
+      "$value": {
+        "value": 1536,
+        "unit": "px"
+      }
+    }
+  }
+}

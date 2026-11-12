@@ -1,0 +1,32 @@
+{
+  "duration": {
+    "fast": {
+      "$type": "duration",
+      "$value": {
+        "value": 0,
+        "unit": "s"
+      }
+    },
+    "base": {
+      "$type": "duration",
+      "$value": {
+        "value": 0,
+        "unit": "s"
+      }
+    },
+    "slow": {
+      "$type": "duration",
+      "$value": {
+        "value": 0,
+        "unit": "s"
+      }
+    },
+    "slower": {
+      "$type": "duration",
+      "$value": {
+        "value": 0,
+        "unit": "s"
+      }
+    }
+  }
+}

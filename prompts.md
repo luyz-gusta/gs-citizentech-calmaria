@@ -1,0 +1,71 @@
+# Prompts de IA usados no projeto
+
+O briefing permite IA como copiloto, desde que os prompts fiquem registrados aqui e cada integrante saiba
+explicar o que foi aproveitado. Uma entrada por uso relevante, a mais recente no fim.
+
+| Campo | O que escrever |
+|---|---|
+| Data | Quando |
+| Quem | O integrante |
+| Parte | A pasta ou disciplina |
+| Ferramenta | A IA usada |
+| Prompt | O texto enviado (ou um resumo fiel, se for longo) |
+| O que foi aproveitado | O que entrou no projeto e o que foi revisado ou descartado |
+
+---
+
+## 12/11/2026: escopo do projeto e planos das disciplinas
+- **Quem:** Luiz
+- **Parte:** `docs/` (escopo global e os 8 arquivos de disciplina)
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Vou te mandar a ideia do que tivemos até agora e quero que você desenvolva essa ideia: [a ideia
+  em docs/00-ideia-original.md]. Quero que você prepare o escopo ao todo, tudo que precisa para o projeto, e
+  também já prepare um .md detalhado do que precisa para cada matéria com base no escopo global do projeto."
+  Antes, o briefing da GS (PDF da FIAP) foi lido pela mesma ferramenta.
+- **O que foi aproveitado:** a estrutura do escopo, os contratos entre as partes, o plano de cada disciplina,
+  as features e os test cases. A contagem das reclamações de barulho foi feita sobre o arquivo real do SP156
+  (3º trimestre de 2026). **A revisar pela equipe:** nome do projeto, pesos do índice depois da entrevista,
+  divisão de tarefas e as dúvidas para os professores.
+
+## 12/11/2026: uma API em C# para C#, SOA e Cybersecurity
+- **Quem:** Luiz
+- **Parte:** `docs/` (escopo global e os arquivos de C#, SOA, Cybersecurity, Mobile, Testing e Operating
+  Systems)
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Estava pensando em matar três matérias com um projeto só: fazer a API em C# e já implementar
+  nela o que Cybersecurity pede e o de SOA também." Depois da análise de cada rubrica: "Sim, atualiza agora."
+- **O que foi aproveitado:** a API única em três módulos (Sensorial, Comunidade e Privacidade), o PostgreSQL
+  no lugar do SQLite, o módulo de Cybersecurity em C# com taint pelo sistema de tipos, o mapa da rubrica no
+  README e os planos B de SOA e de Cybersecurity. **A confirmar com os professores em 13/11.**
+
+## 12/11/2026: design da Calmaria
+- **Quem:** Luiz
+- **Parte:** `design/` e a seção "Design da sua parte" dos 8 arquivos de disciplina
+- **Ferramenta:** Claude (Anthropic), no Claude Code, com uma skill de design que calcula a paleta e confere o
+  contraste por script
+- **Prompt:** "Quero já transformar todo esse escopo e briefing do projeto em um design de verdade, com
+  especificações, tamanhos, direção de cor e lista de peças, para as entregas acima, e pode criar um artefato
+  para isso."
+- **O que foi aproveitado:** a identidade (símbolo, logotipo, ardósia #3D5A73, Atkinson Hyperlegible), os
+  tokens dos dois temas com o contraste conferido (WCAG 2.2 AA), o tema do app em TypeScript, as telas do app,
+  o visor, o painel, o kit de vídeo e a lista de 46 peças. **A validar pela equipe:** o rótulo do botão de
+  crise ("Preciso de calma") e a preferência de cor, na entrevista.
+
+## 12/11/2026: exportação das peças
+- **Quem:** Luiz
+- **Parte:** `design/pecas/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Sim, exporta" (resposta a "quer que eu exporte agora os PNG das peças?")
+- **O que foi aproveitado:** os moldes HTML das peças, o script `exportar.py` (Chrome sem janela) e os 25
+  arquivos em `design/pecas/png/`. Nomes da equipe e links ainda como marcador.
+
+## 12/11/2026: cores da marca no plano e nos documentos
+- **Quem:** Luiz
+- **Parte:** `README.md`, `docs/01-escopo-global.md`, `docs/disciplinas/*.md` e o artefato "Plano da Calmaria"
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Coloque agora as cores da marca no artefato que é sobre o projeto para eu enviar no grupo do
+  pessoal, o artefato e os .md."
+- **O que foi aproveitado:** o plano passou a usar as cores, a fonte e o símbolo da marca, com o diagrama da
+  arquitetura no estilo da identidade e a seção "A cara da Calmaria"; a paleta entrou no README, no escopo
+  global e na parte comum de cada arquivo de disciplina.
+

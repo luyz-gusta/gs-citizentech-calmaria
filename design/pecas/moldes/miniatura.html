@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Calmaria: miniatura do YouTube 1280 x 720</title>
+<link rel="stylesheet" href="base.css">
+<style>
+/* Duas colunas: o texto nunca invade o símbolo decorativo da direita. */
+body { width: 1280px; height: 720px; overflow: hidden; position: relative; background: var(--crise); color: var(--crise-tx);
+       display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 40px; padding: 64px 76px; }
+.in { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
+.in .logo { font-size: 48px; }
+.in b { font-size: 96px; line-height: 1.05; letter-spacing: -.02em; text-wrap: balance; }
+.pills { display: flex; gap: 16px; }
+.pill { display: inline-flex; align-items: center; gap: 12px; font-size: 36px; font-weight: 700; padding: 8px 24px 8px 18px; border-radius: 999px; color: var(--sobre-e); }
+.pill svg { width: 30px; height: 30px; fill: currentColor; }
+.c { background: var(--calmo-e); } .m { background: var(--mod-e); } .i { background: var(--int-e); }
+.onda { align-self: center; width: 320px; height: 320px; color: var(--crise-sf); }
+.onda svg { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<script src="comum.js"></script>
+<script>
+document.body.innerHTML =
+  '<div class="in">' + logo() +
+  '<b>' + esc(param("frase", "O lugar calmo mais perto de você")) + '</b>' +
+  '<div class="pills"><span class="pill c">' + FORMA.c + 'Calmo</span><span class="pill m">' + FORMA.m + 'Moderado</span><span class="pill i">' + FORMA.i + 'Intenso</span></div></div>' +
+  '<span class="onda">' + SIMBOLO + '</span>';
+</script>
+</body>
+</html>

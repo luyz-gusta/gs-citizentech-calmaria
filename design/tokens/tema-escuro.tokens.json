@@ -1,0 +1,276 @@
+{
+  "color": {
+    "$type": "color",
+    "bg": {
+      "canvas": {
+        "$value": "{palette.neutral.900}",
+        "$description": "Fundo da página: cinza quase preto, nunca #000."
+      },
+      "surface": {
+        "$value": "{palette.neutral.800}",
+        "$description": "No escuro, elevação é luminosidade: quanto mais alto, mais claro."
+      },
+      "raised": {
+        "$value": "{palette.neutral.800}"
+      },
+      "subtle": {
+        "$value": "{palette.neutral.950}"
+      },
+      "inverse": {
+        "$value": "{palette.neutral.50}"
+      },
+      "overlay": {
+        "$value": "{palette.scrim}"
+      }
+    },
+    "text": {
+      "default": {
+        "$value": "{palette.neutral.50}"
+      },
+      "muted": {
+        "$value": "{palette.neutral.300}"
+      },
+      "subtle": {
+        "$value": "{palette.neutral.400}"
+      },
+      "disabled": {
+        "$value": "{palette.neutral.600}"
+      },
+      "inverse": {
+        "$value": "{palette.neutral.950}"
+      },
+      "link": {
+        "$value": "{palette.brand.300}"
+      }
+    },
+    "border": {
+      "default": {
+        "$value": "{palette.neutral.700}",
+        "$description": "Um passo acima de bg.raised e bg.subtle (neutral.800), senão a borda some em popover e área rebaixada."
+      },
+      "strong": {
+        "$value": "{palette.neutral.400}"
+      },
+      "focus": {
+        "$value": "{palette.brand.400}"
+      }
+    },
+    "primary": {
+      "solid": {
+        "$value": "{palette.brand.400}",
+        "$description": "No escuro o sólido clareia e o texto sobre ele escurece."
+      },
+      "solid-hover": {
+        "$value": "{palette.brand.300}"
+      },
+      "solid-pressed": {
+        "$value": "{palette.brand.200}"
+      },
+      "on-solid": {
+        "$value": "{palette.neutral.950}"
+      },
+      "subtle": {
+        "$value": "{palette.brand.950}"
+      },
+      "subtle-hover": {
+        "$value": "{palette.brand.900}"
+      },
+      "text": {
+        "$value": "{palette.brand.300}"
+      },
+      "border": {
+        "$value": "{palette.brand.400}"
+      }
+    },
+    "success": {
+      "solid": {
+        "$value": "{palette.calmo.400}"
+      },
+      "on-solid": {
+        "$value": "{palette.neutral.950}"
+      },
+      "subtle": {
+        "$value": "{palette.calmo.950}"
+      },
+      "text": {
+        "$value": "{palette.calmo.300}"
+      },
+      "icon": {
+        "$value": "{palette.calmo.400}"
+      },
+      "border": {
+        "$value": "{palette.calmo.800}"
+      }
+    },
+    "warning": {
+      "solid": {
+        "$value": "{palette.moderado.400}"
+      },
+      "on-solid": {
+        "$value": "{palette.neutral.950}"
+      },
+      "subtle": {
+        "$value": "{palette.moderado.950}"
+      },
+      "text": {
+        "$value": "{palette.moderado.300}"
+      },
+      "icon": {
+        "$value": "{palette.moderado.400}"
+      },
+      "border": {
+        "$value": "{palette.moderado.800}"
+      }
+    },
+    "danger": {
+      "solid": {
+        "$value": "{palette.intenso.400}"
+      },
+      "solid-hover": {
+        "$value": "{palette.intenso.300}"
+      },
+      "solid-pressed": {
+        "$value": "{palette.intenso.200}"
+      },
+      "on-solid": {
+        "$value": "{palette.neutral.950}"
+      },
+      "subtle": {
+        "$value": "{palette.intenso.950}"
+      },
+      "text": {
+        "$value": "{palette.intenso.300}"
+      },
+      "icon": {
+        "$value": "{palette.intenso.400}"
+      },
+      "border": {
+        "$value": "{palette.intenso.800}"
+      }
+    },
+    "info": {
+      "solid": {
+        "$value": "{palette.cyan.400}"
+      },
+      "on-solid": {
+        "$value": "{palette.neutral.950}"
+      },
+      "subtle": {
+        "$value": "{palette.cyan.950}"
+      },
+      "text": {
+        "$value": "{palette.cyan.300}"
+      },
+      "icon": {
+        "$value": "{palette.cyan.400}"
+      },
+      "border": {
+        "$value": "{palette.cyan.800}"
+      }
+    },
+    "nivel": {
+      "calmo": {
+        "solid": {
+          "$value": "{palette.calmo.400}",
+          "$description": "Preenchimento do selo e do marcador do nível."
+        },
+        "on-solid": {
+          "$value": "{palette.neutral.950}",
+          "$description": "Letra e texto sobre o preenchimento."
+        },
+        "subtle": {
+          "$value": "{palette.calmo.950}",
+          "$description": "Fundo do cartão do nível."
+        },
+        "text": {
+          "$value": "{palette.calmo.300}",
+          "$description": "Nome do nível escrito em texto e ícone."
+        },
+        "border": {
+          "$value": "{palette.calmo.300}",
+          "$description": "Contorno de 2px do marcador no mapa (3:1 contra o fundo)."
+        }
+      },
+      "moderado": {
+        "solid": {
+          "$value": "{palette.moderado.400}",
+          "$description": "Preenchimento do selo e do marcador do nível."
+        },
+        "on-solid": {
+          "$value": "{palette.neutral.950}",
+          "$description": "Letra e texto sobre o preenchimento."
+        },
+        "subtle": {
+          "$value": "{palette.moderado.950}",
+          "$description": "Fundo do cartão do nível."
+        },
+        "text": {
+          "$value": "{palette.moderado.300}",
+          "$description": "Nome do nível escrito em texto e ícone."
+        },
+        "border": {
+          "$value": "{palette.moderado.300}",
+          "$description": "Contorno de 2px do marcador no mapa (3:1 contra o fundo)."
+        }
+      },
+      "intenso": {
+        "solid": {
+          "$value": "{palette.intenso.400}",
+          "$description": "Preenchimento do selo e do marcador do nível."
+        },
+        "on-solid": {
+          "$value": "{palette.neutral.950}",
+          "$description": "Letra e texto sobre o preenchimento."
+        },
+        "subtle": {
+          "$value": "{palette.intenso.950}",
+          "$description": "Fundo do cartão do nível."
+        },
+        "text": {
+          "$value": "{palette.intenso.300}",
+          "$description": "Nome do nível escrito em texto e ícone."
+        },
+        "border": {
+          "$value": "{palette.intenso.300}",
+          "$description": "Contorno de 2px do marcador no mapa (3:1 contra o fundo)."
+        }
+      }
+    },
+    "crise": {
+      "bg": {
+        "$value": "{palette.brand.950}",
+        "$description": "Fundo da tela de crise, igual nos dois temas."
+      },
+      "surface": {
+        "$value": "{palette.brand.900}",
+        "$description": "Cartão do refúgio na tela de crise."
+      },
+      "text": {
+        "$value": "{palette.neutral.50}",
+        "$description": "Texto principal da tela de crise."
+      },
+      "muted": {
+        "$value": "{palette.brand.200}",
+        "$description": "Texto de apoio da tela de crise."
+      },
+      "action": {
+        "$value": "{palette.brand.300}",
+        "$description": "Botão principal da tela de crise (Abrir o caminho no mapa)."
+      },
+      "on-action": {
+        "$value": "{palette.brand.950}",
+        "$description": "Texto do botão principal da tela de crise."
+      }
+    },
+    "botao-crise": {
+      "bg": {
+        "$value": "{palette.brand.200}",
+        "$description": "Botão de crise flutuante, sempre no mesmo canto."
+      },
+      "text": {
+        "$value": "{palette.brand.950}",
+        "$description": "Rótulo e ícone do botão de crise."
+      }
+    }
+  }
+}

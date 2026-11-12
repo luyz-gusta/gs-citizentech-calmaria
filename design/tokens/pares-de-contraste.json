@@ -1,0 +1,462 @@
+[
+  {
+    "frente": "color.text.default",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.default",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.default",
+    "fundo": "color.bg.raised",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.default",
+    "fundo": "color.bg.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.default",
+    "fundo": "color.primary.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.default",
+    "fundo": "color.success.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.default",
+    "fundo": "color.warning.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.default",
+    "fundo": "color.danger.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.default",
+    "fundo": "color.info.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.muted",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.muted",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.muted",
+    "fundo": "color.bg.raised",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.muted",
+    "fundo": "color.bg.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.subtle",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto",
+    "nota": "placeholder e ajuda; proibido sobre bg.subtle"
+  },
+  {
+    "frente": "color.text.subtle",
+    "fundo": "color.bg.surface",
+    "tipo": "texto",
+    "nota": "placeholder e ajuda; proibido sobre bg.subtle"
+  },
+  {
+    "frente": "color.text.subtle",
+    "fundo": "color.bg.raised",
+    "tipo": "texto",
+    "nota": "placeholder e ajuda; proibido sobre bg.subtle"
+  },
+  {
+    "frente": "color.text.link",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto",
+    "nota": "sublinhar: cor sozinha não distingue link (WCAG 1.4.1)"
+  },
+  {
+    "frente": "color.text.link",
+    "fundo": "color.bg.surface",
+    "tipo": "texto",
+    "nota": "sublinhar: cor sozinha não distingue link (WCAG 1.4.1)"
+  },
+  {
+    "frente": "color.text.inverse",
+    "fundo": "color.bg.inverse",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.text.disabled",
+    "fundo": "color.bg.surface",
+    "tipo": "decorativo",
+    "nota": "controle desabilitado é isento (WCAG 1.4.3)"
+  },
+  {
+    "frente": "color.primary.on-solid",
+    "fundo": "color.primary.solid",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.primary.on-solid",
+    "fundo": "color.primary.solid-hover",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.primary.on-solid",
+    "fundo": "color.primary.solid-pressed",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.primary.text",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.primary.text",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.primary.text",
+    "fundo": "color.primary.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.primary.text",
+    "fundo": "color.primary.subtle-hover",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.success.on-solid",
+    "fundo": "color.success.solid",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.success.text",
+    "fundo": "color.success.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.success.text",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.success.text",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.success.icon",
+    "fundo": "color.success.subtle",
+    "tipo": "nao-texto"
+  },
+  {
+    "frente": "color.warning.on-solid",
+    "fundo": "color.warning.solid",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.warning.text",
+    "fundo": "color.warning.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.warning.text",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.warning.text",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.warning.icon",
+    "fundo": "color.warning.subtle",
+    "tipo": "nao-texto"
+  },
+  {
+    "frente": "color.danger.on-solid",
+    "fundo": "color.danger.solid",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.danger.text",
+    "fundo": "color.danger.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.danger.text",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.danger.text",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.danger.icon",
+    "fundo": "color.danger.subtle",
+    "tipo": "nao-texto"
+  },
+  {
+    "frente": "color.info.on-solid",
+    "fundo": "color.info.solid",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.info.text",
+    "fundo": "color.info.subtle",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.info.text",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.info.text",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.info.icon",
+    "fundo": "color.info.subtle",
+    "tipo": "nao-texto"
+  },
+  {
+    "frente": "color.border.strong",
+    "fundo": "color.bg.canvas",
+    "tipo": "nao-texto",
+    "nota": "borda que identifica o controle (WCAG 1.4.11)"
+  },
+  {
+    "frente": "color.border.strong",
+    "fundo": "color.bg.surface",
+    "tipo": "nao-texto",
+    "nota": "borda que identifica o controle (WCAG 1.4.11)"
+  },
+  {
+    "frente": "color.border.strong",
+    "fundo": "color.bg.raised",
+    "tipo": "nao-texto",
+    "nota": "borda que identifica o controle (WCAG 1.4.11)"
+  },
+  {
+    "frente": "color.border.focus",
+    "fundo": "color.bg.canvas",
+    "tipo": "nao-texto",
+    "nota": "anel de foco (WCAG 2.4.13)"
+  },
+  {
+    "frente": "color.border.focus",
+    "fundo": "color.bg.surface",
+    "tipo": "nao-texto",
+    "nota": "anel de foco (WCAG 2.4.13)"
+  },
+  {
+    "frente": "color.primary.solid",
+    "fundo": "color.bg.canvas",
+    "tipo": "decorativo",
+    "nota": "WCAG 1.4.11 não exige o limite do botão quando o rótulo o identifica; vira nao-texto se o botão não tiver rótulo nem borda"
+  },
+  {
+    "frente": "color.primary.solid",
+    "fundo": "color.bg.surface",
+    "tipo": "decorativo",
+    "nota": "WCAG 1.4.11 não exige o limite do botão quando o rótulo o identifica; vira nao-texto se o botão não tiver rótulo nem borda"
+  },
+  {
+    "frente": "color.primary.border",
+    "fundo": "color.bg.surface",
+    "tipo": "nao-texto"
+  },
+  {
+    "frente": "color.border.default",
+    "fundo": "color.bg.surface",
+    "tipo": "decorativo",
+    "nota": "divisor"
+  },
+  {
+    "frente": "color.text.muted",
+    "fundo": "color.primary.subtle",
+    "tipo": "texto",
+    "nota": "texto secundário em linha selecionada"
+  },
+  {
+    "frente": "color.danger.on-solid",
+    "fundo": "color.danger.solid-hover",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.danger.on-solid",
+    "fundo": "color.danger.solid-pressed",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.nivel.calmo.on-solid",
+    "fundo": "color.nivel.calmo.solid",
+    "tipo": "texto",
+    "nota": "Letra do marcador e texto do selo."
+  },
+  {
+    "frente": "color.nivel.calmo.text",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.nivel.calmo.text",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.nivel.calmo.text",
+    "fundo": "color.nivel.calmo.subtle",
+    "tipo": "texto",
+    "nota": "Nível escrito no cartão do nível."
+  },
+  {
+    "frente": "color.nivel.calmo.border",
+    "fundo": "color.bg.canvas",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: contorno do marcador."
+  },
+  {
+    "frente": "color.nivel.calmo.border",
+    "fundo": "color.bg.surface",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: contorno do marcador."
+  },
+  {
+    "frente": "color.nivel.moderado.on-solid",
+    "fundo": "color.nivel.moderado.solid",
+    "tipo": "texto",
+    "nota": "Letra do marcador e texto do selo."
+  },
+  {
+    "frente": "color.nivel.moderado.text",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.nivel.moderado.text",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.nivel.moderado.text",
+    "fundo": "color.nivel.moderado.subtle",
+    "tipo": "texto",
+    "nota": "Nível escrito no cartão do nível."
+  },
+  {
+    "frente": "color.nivel.moderado.border",
+    "fundo": "color.bg.canvas",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: contorno do marcador."
+  },
+  {
+    "frente": "color.nivel.moderado.border",
+    "fundo": "color.bg.surface",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: contorno do marcador."
+  },
+  {
+    "frente": "color.nivel.intenso.on-solid",
+    "fundo": "color.nivel.intenso.solid",
+    "tipo": "texto",
+    "nota": "Letra do marcador e texto do selo."
+  },
+  {
+    "frente": "color.nivel.intenso.text",
+    "fundo": "color.bg.canvas",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.nivel.intenso.text",
+    "fundo": "color.bg.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.nivel.intenso.text",
+    "fundo": "color.nivel.intenso.subtle",
+    "tipo": "texto",
+    "nota": "Nível escrito no cartão do nível."
+  },
+  {
+    "frente": "color.nivel.intenso.border",
+    "fundo": "color.bg.canvas",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: contorno do marcador."
+  },
+  {
+    "frente": "color.nivel.intenso.border",
+    "fundo": "color.bg.surface",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: contorno do marcador."
+  },
+  {
+    "frente": "color.crise.text",
+    "fundo": "color.crise.bg",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.crise.muted",
+    "fundo": "color.crise.bg",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.crise.text",
+    "fundo": "color.crise.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.crise.muted",
+    "fundo": "color.crise.surface",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.crise.on-action",
+    "fundo": "color.crise.action",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.crise.action",
+    "fundo": "color.crise.bg",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: limite do botão principal."
+  },
+  {
+    "frente": "color.botao-crise.text",
+    "fundo": "color.botao-crise.bg",
+    "tipo": "texto"
+  },
+  {
+    "frente": "color.botao-crise.bg",
+    "fundo": "color.bg.canvas",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: o botão de crise se separa do fundo."
+  },
+  {
+    "frente": "color.botao-crise.bg",
+    "fundo": "color.bg.surface",
+    "tipo": "nao-texto",
+    "nota": "WCAG 1.4.11: o botão de crise se separa do cartão."
+  }
+]
