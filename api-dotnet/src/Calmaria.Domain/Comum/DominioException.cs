@@ -1,0 +1,11 @@
+namespace Calmaria.Domain.Comum;
+
+/// <summary>Regra de negócio violada. A API traduz para um ProblemDetails com a mensagem.</summary>
+public class DominioException(string mensagem) : Exception(mensagem);
+
+/// <summary>Valor físico impossível para o sensor (som, luz ou movimento fora da faixa aceita).</summary>
+public sealed class ValorForaDaFaixaException(string campo, double valor, double minimo, double maximo)
+    : DominioException($"{campo} deve estar entre {minimo} e {maximo}; veio {valor}.")
+{
+    public string Campo { get; } = campo;
+}
