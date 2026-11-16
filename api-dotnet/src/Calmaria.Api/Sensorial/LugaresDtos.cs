@@ -1,4 +1,4 @@
-using Calmaria.Api.Comum;
+using Calmaria.Domain.Comum;
 using Calmaria.Domain.Sensorial;
 
 namespace Calmaria.Api.Sensorial;
