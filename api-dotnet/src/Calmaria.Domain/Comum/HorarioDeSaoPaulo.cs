@@ -1,6 +1,9 @@
-namespace Calmaria.Api.Comum;
+namespace Calmaria.Domain.Comum;
 
-/// <summary>O banco guarda em UTC; a resposta sai no horário de São Paulo, com o fuso (-03:00).</summary>
+/// <summary>
+/// O banco guarda tudo em UTC. A resposta da API sai no horário de São Paulo, com o fuso (-03:00), e os
+/// horários calmos são agrupados pela hora local, que é a que a pessoa vive.
+/// </summary>
 public static class HorarioDeSaoPaulo
 {
     private static readonly TimeZoneInfo Fuso = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");

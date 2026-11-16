@@ -50,6 +50,13 @@ internal sealed class CalmariaApiFactory(DateTimeOffset agora) : WebApplicationF
         await db.SaveChangesAsync();
     }
 
+    /// <summary>Roda algo com os serviços da API num escopo próprio (banco, calculadora, relógio).</summary>
+    public async Task<T> ComEscopoAsync<T>(Func<IServiceProvider, Task<T>> acao)
+    {
+        using var escopo = Services.CreateScope();
+        return await acao(escopo.ServiceProvider);
+    }
+
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);

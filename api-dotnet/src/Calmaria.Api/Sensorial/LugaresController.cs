@@ -8,8 +8,14 @@ namespace Calmaria.Api.Sensorial;
 [ApiController]
 [Route("api/lugares")]
 [Tags("Sensorial")]
-public sealed class LugaresController(ILugarService lugares) : ControllerBase
+public sealed class LugaresController(
+    ILugarService lugares,
+    ILeituraService leituras,
+    IHorarioCalmoService horariosCalmos,
+    TimeProvider relogio) : ControllerBase
 {
+    private static readonly TimeSpan HistoricoPadrao = TimeSpan.FromHours(24);
+
     /// <summary>Lista os lugares; com lat e lng, só os que ficam no raio, do mais perto ao mais longe.</summary>
     /// <param name="lat">Latitude de onde a pessoa está (de -90 a 90). Vai junto com lng.</param>
     /// <param name="lng">Longitude de onde a pessoa está (de -180 a 180). Vai junto com lat.</param>
@@ -53,9 +59,43 @@ public sealed class LugaresController(ILugarService lugares) : ControllerBase
     public async Task<IActionResult> Obter(int id, CancellationToken ct)
     {
         var lugar = await lugares.ObterAsync(id, ct);
-        return lugar is null
-            ? Problem(statusCode: StatusCodes.Status404NotFound, title: "Lugar não encontrado",
-                detail: $"Não existe lugar com o id {id}.")
-            : Ok(LugarDetalheDto.De(lugar));
+        return lugar is null ? LugarNaoEncontrado(id) : Ok(LugarDetalheDto.De(lugar));
     }
+
+    /// <summary>O histórico de leituras do lugar, da mais nova para a mais velha (no máximo 2.000).</summary>
+    /// <param name="id">Identificador do lugar.</param>
+    /// <param name="desde">Data e hora com fuso (ex.: 2026-11-16T00:00:00-03:00). Padrão: as últimas 24 horas.</param>
+    /// <param name="ct">Cancelamento da requisição.</param>
+    /// <response code="200">As leituras.</response>
+    /// <response code="404">Não existe lugar com esse id.</response>
+    [HttpGet("{id:int}/leituras")]
+    [ProducesResponseType<IReadOnlyList<LeituraDto>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
+    public async Task<IActionResult> Leituras(int id, [FromQuery] DateTimeOffset? desde, CancellationToken ct)
+    {
+        var inicio = desde?.UtcDateTime ?? relogio.GetUtcNow().UtcDateTime - HistoricoPadrao;
+        var historico = await leituras.ListarAsync(id, inicio, ct);
+        return historico is null ? LugarNaoEncontrado(id) : Ok(historico.Select(LeituraDto.De));
+    }
+
+    /// <summary>
+    /// As 3 horas mais calmas da semana (dentro do horário de funcionamento) e a grade de médias, pelas leituras
+    /// dos últimos 28 dias, no horário de São Paulo.
+    /// </summary>
+    /// <param name="id">Identificador do lugar.</param>
+    /// <param name="ct">Cancelamento da requisição.</param>
+    /// <response code="200">Os horários calmos; com menos de 20 leituras, "suficiente" vem falso.</response>
+    /// <response code="404">Não existe lugar com esse id.</response>
+    [HttpGet("{id:int}/horarios-calmos")]
+    [ProducesResponseType<HorariosCalmosDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
+    public async Task<IActionResult> HorariosCalmos(int id, CancellationToken ct)
+    {
+        var resultado = await horariosCalmos.CalcularAsync(id, ct);
+        return resultado is null ? LugarNaoEncontrado(id) : Ok(HorariosCalmosDto.De(resultado));
+    }
+
+    private ObjectResult LugarNaoEncontrado(int id) =>
+        Problem(statusCode: StatusCodes.Status404NotFound, title: "Lugar não encontrado",
+            detail: $"Não existe lugar com o id {id}.");
 }

@@ -5,10 +5,26 @@ Cybersecurity. Três módulos que só conversam por interface: **Sensorial** (lu
 **Comunidade** (perfil anônimo e relatos) e **Privacidade** (dado sensível, taint, Risco Cidadão). O plano
 completo está em `docs/disciplinas/csharp.md`.
 
-## Estado (12/11)
-Feito: a solução, o domínio do módulo Sensorial, o PostgreSQL com EF Core, a migração `Inicial_Sensorial`, o
-seed dos lugares (1 a 6; o 7 entra depois da observação), `GET /api/lugares`, `GET /api/lugares/{id}`,
-`/health`, o Scalar e 40 testes. Os próximos passos seguem a ordem do `csharp.md`.
+## Estado (15/11)
+O módulo **Sensorial** está completo, menos as previsões do ML (entram com o CSV, na segunda):
+
+| Rota | O que faz |
+|---|---|
+| `GET /api/lugares` | Lugares perto (`lat`, `lng`, `raioM`, `tipo`), com o nível de agora (leitura dos últimos 15 min) |
+| `GET /api/lugares/{id}` | Um lugar com a última leitura |
+| `GET /api/lugares/{id}/leituras` | Histórico (`desde`; padrão: últimas 24 horas) |
+| `GET /api/lugares/{id}/horarios-calmos` | As 3 horas mais calmas da semana e a grade de médias (28 dias, horário de São Paulo) |
+| `POST /api/leituras` | Ingestão por HTTP, no formato da mensagem MQTT (201, 404, 422) |
+| `GET /api/crise/refugio-mais-proximo` | O refúgio fixo ou o lugar CALMO agora mais perto, com minutos a pé e o trajeto |
+| `GET /api/refugios` | Os refúgios fixos, para o app guardar e usar sem internet |
+| `GET /health` | Banco e MQTT (`Healthy`; `Degraded` se o MQTT cair; `Unhealthy` se o banco cair) |
+
+O **worker MQTT** assina `calmaria/v1/lugares/+/leituras` no `broker.hivemq.com`, grava cada leitura pelo mesmo
+serviço do `POST /api/leituras` e reconecta sozinho. Mensagem inválida vai para o log com o motivo, nunca com o
+conteúdo. Ligado em desenvolvimento (`Mqtt:Habilitado`); na VM, `Mqtt__Habilitado=true`.
+
+Em desenvolvimento, com a tabela vazia, a API grava **4 semanas de leituras simuladas** dos 4 lugares
+monitorados (semente fixa, a mesma base em qualquer computador). São 84 testes.
 
 ## Como rodar
 

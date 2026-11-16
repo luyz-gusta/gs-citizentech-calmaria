@@ -80,3 +80,15 @@ explicar o que foi aproveitado. Uma entrada por uso relevante, a mais recente no
   `GET /api/lugares/{id}`, `/health` e o Scalar; 40 testes (MSTest, SQLite em memória). Revisado e rodado no
   PostgreSQL local. **Mudança no plano:** o discriminador da herança é a coluna `Categoria`, não o `Tipo`.
 
+## 15/11/2026: leituras, MQTT, horários calmos e botão de crise
+- **Quem:** Luiz
+- **Parte:** `api-dotnet/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Sim, adianta" (adiantar a etapa de sábado do `csharp.md`).
+- **O que foi aproveitado:** ingestão de leituras (HTTP e MQTT pelo mesmo serviço), o worker MQTT com MQTTnet e
+  reconexão, o histórico de leituras, os horários calmos (regra pura no domínio, horário de São Paulo, horário
+  de funcionamento), o refúgio da crise (retângulo no banco e Haversine em memória), `/api/refugios`, o MQTT no
+  `/health` e 4 semanas de leituras simuladas com semente fixa. 84 testes; conferido no PostgreSQL local e com uma
+  mensagem publicada no `broker.hivemq.com`. Dois testes acharam erros meus (um comentário que contradizia a
+  regra do horário de funcionamento e uma distância calculada de cabeça) e foram corrigidos.
+
