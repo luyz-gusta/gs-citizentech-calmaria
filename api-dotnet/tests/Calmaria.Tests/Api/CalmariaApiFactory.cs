@@ -16,11 +16,15 @@ namespace Calmaria.Tests.Api;
 /// </summary>
 internal sealed class CalmariaApiFactory(DateTimeOffset agora) : WebApplicationFactory<Program>
 {
+    /// <summary>Chave administrativa só dos testes.</summary>
+    public const string ChaveAdmin = "chave-de-teste-calmaria";
+
     private readonly SqliteConnection conexao = AbrirConexao();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
+        builder.UseSetting("Privacidade:ChaveAdmin", ChaveAdmin);
         builder.ConfigureServices(services =>
         {
             // Tira o PostgreSQL registrado no Program.cs e põe o SQLite em memória.

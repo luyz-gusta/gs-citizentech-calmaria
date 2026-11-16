@@ -1,0 +1,46 @@
+[
+  // Regras extras do motor de PII. Edite aqui e reinicie a API: não precisa recompilar.
+  // Campos: id, categoria (Cpf, Documento, Telefone, Email, Saude, Segredo, LocalizacaoPrecisa,
+  // QuaseIdentificador), peso (1 a 5), padrao (expressão regular .NET), contexto (palavras que precisam aparecer
+  // até 30 caracteres antes; lista vazia dispensa), mascara e exemplos (viram teste automático).
+  {
+    "id": "rg",
+    "categoria": "Documento",
+    "peso": 4,
+    "padrao": "(?<!\\d)\\d{1,2}\\.?\\d{3}\\.?\\d{3}-?[0-9Xx](?![\\dA-Za-z])",
+    "contexto": ["rg", "identidade", "registro geral"],
+    "mascara": "<RG>",
+    "exemplos": {
+      "positivos": [
+        "Meu RG é 12.345.678-9",
+        "identidade 23.456.789-X, pode conferir",
+        "RG: 345678901"
+      ],
+      "negativos": [
+        "O pedido 12.345.678-9 chegou ontem",
+        "Fiquei na fila 12 minutos",
+        "Meu RG está vencido"
+      ]
+    }
+  },
+  {
+    "id": "cartao-sus",
+    "categoria": "Documento",
+    "peso": 4,
+    "padrao": "(?<!\\d)[1-2789]\\d{2}\\s?\\d{4}\\s?\\d{4}\\s?\\d{4}(?!\\d)",
+    "contexto": ["sus", "cns", "cartao nacional de saude"],
+    "mascara": "<CNS>",
+    "exemplos": {
+      "positivos": [
+        "Cartão SUS 898 0012 3456 7890",
+        "meu CNS é 700000000000000",
+        "cartao do sus: 200 3456 7890 1234"
+      ],
+      "negativos": [
+        "O protocolo 898 0012 3456 7890 foi aberto",
+        "O SUS atende todo mundo",
+        "Paguei 1500 reais"
+      ]
+    }
+  }
+]

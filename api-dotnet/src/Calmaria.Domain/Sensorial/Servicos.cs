@@ -19,6 +19,17 @@ public interface IHorarioCalmoService
     Task<HorariosCalmos?> CalcularAsync(int lugarId, CancellationToken ct = default);
 }
 
+/// <summary>As previsões de barulho do modelo de ML (contrato do CSV).</summary>
+public interface IPrevisaoService
+{
+    /// <summary>Lê o CSV do notebook e grava; o mesmo distrito e dia é substituído. Devolve quantas linhas importou.</summary>
+    Task<int> ImportarAsync(Stream csv, CancellationToken ct = default);
+
+    /// <summary>As previsões do distrito de <paramref name="inicio"/> em diante; nulo se o distrito não tem nenhuma.</summary>
+    Task<IReadOnlyList<PrevisaoBarulho>?> ConsultarAsync(string distrito, DateOnly inicio, int dias,
+        CancellationToken ct = default);
+}
+
 public interface IRefugioService
 {
     /// <summary>O refúgio fixo ou o lugar CALMO agora mais perto da pessoa; nulo se não há nenhum.</summary>

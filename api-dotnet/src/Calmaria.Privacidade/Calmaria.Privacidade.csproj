@@ -1,9 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+  <!-- O módulo de Cybersecurity: recebe texto e devolve achados. Sem ASP.NET nem banco, para ir sozinho no ZIP. -->
+
+  <ItemGroup>
+    <!-- Só a persistência (reidratar o texto gravado) e os testes enxergam o que é interno. -->
+    <InternalsVisibleTo Include="Calmaria.Infrastructure" />
+    <InternalsVisibleTo Include="Calmaria.Privacidade.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Regras novas sem recompilar: o arquivo vai junto da API e é lido ao subir. -->
+    <None Update="Regras\regras-pii.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>

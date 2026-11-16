@@ -22,6 +22,90 @@ namespace Calmaria.Infrastructure.Persistencia.Migracoes
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Calmaria.Domain.Comunidade.PerfilSensorial", b =>
+                {
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ContatoApoioNome")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("ContatoApoioTelefone")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("SensibilidadeLuz")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SensibilidadeMultidao")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SensibilidadeSom")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UsuarioId");
+
+                    b.ToTable("PerfisSensoriais", (string)null);
+                });
+
+            modelBuilder.Entity("Calmaria.Domain.Comunidade.Relato", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Comentario")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("LugarId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Nota")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("VisitadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LugarId", "CriadoEm");
+
+                    b.HasIndex("UsuarioId", "LugarId", "CriadoEm");
+
+                    b.ToTable("Relatos");
+                });
+
+            modelBuilder.Entity("Calmaria.Domain.Comunidade.Usuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Apelido")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("Calmaria.Domain.Sensorial.Dispositivo", b =>
                 {
                     b.Property<string>("Id")
@@ -288,6 +372,58 @@ namespace Calmaria.Infrastructure.Persistencia.Migracoes
                             Tipo = "Refugio",
                             Descricao = "Casa e jardim de um centro cultural, com áreas quietas para sentar."
                         });
+                });
+
+            modelBuilder.Entity("Calmaria.Domain.Comunidade.PerfilSensorial", b =>
+                {
+                    b.HasOne("Calmaria.Domain.Comunidade.Usuario", null)
+                        .WithOne()
+                        .HasForeignKey("Calmaria.Domain.Comunidade.PerfilSensorial", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Calmaria.Domain.Comunidade.Relato", b =>
+                {
+                    b.HasOne("Calmaria.Domain.Sensorial.Lugar", null)
+                        .WithMany()
+                        .HasForeignKey("LugarId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Calmaria.Domain.Comunidade.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("Calmaria.Domain.Comunidade.RelatoGatilho", "Gatilhos", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Gatilho")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)");
+
+                            b1.Property<long>("RelatoId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("RelatoId");
+
+                            b1.ToTable("RelatoGatilhos", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("RelatoId");
+                        });
+
+                    b.Navigation("Gatilhos");
                 });
 
             modelBuilder.Entity("Calmaria.Domain.Sensorial.Dispositivo", b =>
