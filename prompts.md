@@ -92,3 +92,15 @@ explicar o que foi aproveitado. Uma entrada por uso relevante, a mais recente no
   mensagem publicada no `broker.hivemq.com`. Dois testes acharam erros meus (um comentário que contradizia a
   regra do horário de funcionamento e uma distância calculada de cabeça) e foram corrigidos.
 
+## 16/11/2026: Comunidade, núcleo da Privacidade, previsões do ML e pacote da VM
+- **Quem:** Luiz
+- **Parte:** `api-dotnet/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Se mais coisa que eu possa fazer, faça" (seguir o `csharp.md` e o `cybersecurity.md`).
+- **O que foi aproveitado:** o módulo Comunidade (usuário anônimo, perfil sensorial, relatos com a regra dos 30
+  minutos, listagem pública sem autor, resumo e exclusão pela LGPD); o motor de PII (uma classe por regra e regras
+  do JSON), os tipos de taint e o Sanitizador; a importação e a consulta das previsões do ML com chave de
+  administrador; o script do pacote linux-x64 e do efbundle. 170 testes; conferido no PostgreSQL local.
+  **Revisado:** dois exemplos errados do JSON de regras (Cartão SUS com 16 dígitos) e as expressões de CPF e
+  telefone, que não achavam o número no fim de uma frase.
+

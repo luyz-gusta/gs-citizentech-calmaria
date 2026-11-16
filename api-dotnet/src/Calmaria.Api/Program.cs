@@ -20,6 +20,8 @@ if (string.IsNullOrWhiteSpace(conexao) && !builder.Environment.IsEnvironment("Te
 
 builder.Services.AddPersistencia(conexao ?? string.Empty);
 builder.Services.AddModuloSensorial(builder.Configuration);
+builder.Services.AddModuloComunidade();
+builder.Services.AddModuloPrivacidade(builder.Configuration);
 
 // Valores fixos saem em maiúsculas com sublinhado (ESTACAO, LUZ_FORTE), como manda o contrato.
 var conversorDeEnum = new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper);

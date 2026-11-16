@@ -92,11 +92,17 @@ public sealed class PrevisaoBarulho
     {
         if (string.IsNullOrWhiteSpace(distrito))
             throw new DominioException("A previsão precisa do distrito.");
-        if (reclamacoesPrevistas < 0)
-            throw new DominioException("O número de reclamações previstas não pode ser negativo.");
 
-        Distrito = distrito.Trim().ToUpperInvariant();
+        Distrito = Sensorial.Distrito.Normalizar(distrito);
         Data = data;
+        Atualizar(reclamacoesPrevistas, nivel);
+    }
+
+    /// <summary>Uma importação nova do CSV troca a previsão do mesmo distrito e dia, em vez de duplicar.</summary>
+    public void Atualizar(double reclamacoesPrevistas, NivelPrevisao nivel)
+    {
+        if (double.IsNaN(reclamacoesPrevistas) || reclamacoesPrevistas < 0)
+            throw new DominioException("O número de reclamações previstas não pode ser negativo.");
         ReclamacoesPrevistas = reclamacoesPrevistas;
         Nivel = nivel;
     }

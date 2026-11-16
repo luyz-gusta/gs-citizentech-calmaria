@@ -10,6 +10,12 @@ public sealed class ValorForaDaFaixaException(string campo, double valor, double
     public string Campo { get; } = campo;
 }
 
+/// <summary>A operação bate com algo que já existe (relato repetido em 30 minutos). Vira 409.</summary>
+public sealed class ConflitoException(string titulo, string mensagem) : DominioException(mensagem)
+{
+    public string Titulo { get; } = titulo;
+}
+
 /// <summary>O recurso pedido não existe (lugar, dispositivo, usuário). Vira 404.</summary>
 public sealed class RecursoNaoEncontradoException(string titulo, string mensagem) : DominioException(mensagem)
 {

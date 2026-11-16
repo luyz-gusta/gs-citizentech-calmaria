@@ -35,6 +35,7 @@ public sealed class TratadorDeErrosDeDominio(IProblemDetailsService problemas) :
         var (status, titulo) = erro switch
         {
             RecursoNaoEncontradoException nao => (StatusCodes.Status404NotFound, nao.Titulo),
+            ConflitoException conflito => (StatusCodes.Status409Conflict, conflito.Titulo),
             ValorForaDaFaixaException => (StatusCodes.Status422UnprocessableEntity, "Valor fora da faixa"),
             _ => (StatusCodes.Status400BadRequest, ErrosDaApi.TituloDadosInvalidos)
         };
