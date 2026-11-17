@@ -3,6 +3,7 @@ using Calmaria.Api.Comunidade;
 using Calmaria.Api.Privacidade;
 using Calmaria.Api.Sensorial;
 using Calmaria.Privacidade.Taint;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 
@@ -64,7 +65,20 @@ internal static class DocumentacaoOpenApi
             """
     };
 
-    public static void Configurar(OpenApiOptions opcoes) =>
+    public static void Configurar(OpenApiOptions opcoes)
+    {
+        // Contorno de um defeito do gerador de comentários XML do .NET 10: numa ação com [FromBody] e
+        // CancellationToken, o corpo da requisição recebe a descrição do <param name="ct"> ("Cancelamento da
+        // requisição."). Sem ela, o Scalar mostra a descrição do próprio DTO, que é a certa.
+        opcoes.AddOperationTransformer((operacao, contexto, _) =>
+        {
+            if (operacao.RequestBody is OpenApiRequestBody corpo &&
+                contexto.Description.ActionDescriptor is ControllerActionDescriptor acao &&
+                acao.MethodInfo.GetParameters().Any(p => p.ParameterType == typeof(CancellationToken)))
+                corpo.Description = null;
+            return Task.CompletedTask;
+        });
+
         opcoes.AddSchemaTransformer((schema, contexto, _) =>
         {
             var tipo = contexto.JsonTypeInfo.Type;
@@ -79,4 +93,5 @@ internal static class DocumentacaoOpenApi
                 schema.Examples = [JsonNode.Parse(exemplo)!];
             return Task.CompletedTask;
         });
+    }
 }

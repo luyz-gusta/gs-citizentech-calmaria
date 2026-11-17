@@ -3,6 +3,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* O atributo hidden vence o display das classes (.cartao é flex): sem isto, o cartão da chave nunca some. */
+[hidden] { display: none !important; }
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {

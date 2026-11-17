@@ -1,5 +1,5 @@
 ﻿Demonstração do antes e depois (security/demo-antes-depois.ps1)
-Rodada em 17/11/2026 12:12, com um relato fictício (CPF de exemplo e a palavra autista).
+Rodada em 17/11/2026 16:17, com um relato fictício (CPF de exemplo e a palavra autista).
 
 ANTES   Risco Cidadão 52 (ALTO): 2 dado(s) exposto(s), 2 barrado(s). CPF cru no log: sim.
 DEPOIS  Risco Cidadão 20 (BAIXO): 0 dado(s) exposto(s), 6 barrado(s). CPF cru no log: não.

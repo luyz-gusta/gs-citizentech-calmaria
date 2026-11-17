@@ -123,7 +123,15 @@ app.UseStaticFiles();
 app.MapGet("/seguranca", () => Results.Redirect("/seguranca/index.html")).ExcludeFromDescription();
 
 app.MapOpenApi();
-app.MapScalarApiReference(o => o.WithTitle("API Calmaria"));
+app.MapScalarApiReference(o => o
+    .WithTitle("API Calmaria")
+    .WithFavicon("/favicon.svg")
+    .DisableDefaultFonts()
+    .WithCustomCss(TemaDoScalar.Css)
+    // Sem a barra de ferramentas, sem o chat de IA (mandaria a documentação ao serviço do Scalar) e sem telemetria.
+    .HideDeveloperTools()
+    .DisableAgent()
+    .DisableTelemetry());
 app.MapControllers();
 app.MapHealthChecks("/health");
 

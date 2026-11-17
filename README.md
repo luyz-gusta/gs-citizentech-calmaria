@@ -29,6 +29,7 @@ Global Solution 2026.2 (CitizenTech), FIAP, Engenharia de Software, 3º ano.
 | `infra/` | Operating Systems | [operating-systems.md](docs/disciplinas/operating-systems.md) |
 | `qa/` | Testing, Compliance e QA | [testing-qa.md](docs/disciplinas/testing-qa.md) |
 | `design/` | Todas (identidade, cores, fonte e o desenho de cada peça) | [plano-de-design.md](design/plano-de-design.md) e `design/design-da-calmaria.html` |
+| `entrega/` | C#, SOA e Cybersecurity (as evidências e o vídeo, gerados de execuções reais) | [entrega/LEIA-ME.md](entrega/LEIA-ME.md) |
 
 ## Identidade visual
 ![Calmaria](design/pecas/png/ma-02-logotipo.png)
@@ -87,13 +88,15 @@ O escopo completo, com os contratos entre as partes, está em
   Dados Abertos da Prefeitura de São Paulo. Detalhes em `ml/dados/README.md`.
 
 ## Integrantes
+Turma 3ESPW, FIAP, Engenharia de Software.
+
 | Nome | RM |
 |---|---|
-| Vinicius Monteiro Araújo | 555088 |
 | Guilherme Almeida | 555180 |
+| Luiz Gustavo da Silva | 558358 |
 | Rafael Duarte de Freitas | 558644 |
 | Rafael Gaspar Bragança Martins | 557228 |
-| Luiz Gustavo da Silva | 558358 |
+| Vinicius Monteiro Araújo | 555088 |
 
 ## Uso de IA
 Os prompts usados estão em [prompts.md](prompts.md), como o briefing pede.

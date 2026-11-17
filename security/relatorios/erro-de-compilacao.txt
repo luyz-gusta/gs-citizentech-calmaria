@@ -1,5 +1,5 @@
 ﻿Prova do taint pelo sistema de tipos: as linhas do controller vulnerável, coladas na API.
-Gerado em 17/11/2026 12:07 por security/provar-erro-de-compilacao.ps1.
+Gerado em 17/11/2026 16:16 por security/provar-erro-de-compilacao.ps1.
 
 Resultado do build: FALHOU, como devia
 

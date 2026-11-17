@@ -3,7 +3,10 @@
 A API em C# (.NET 10) que atende três disciplinas da GS: C# Software Development, SOA e Web Services e
 Cybersecurity. Três módulos que só conversam por interface: **Sensorial** (lugares, leituras, índice, crise),
 **Comunidade** (perfil anônimo e relatos) e **Privacidade** (dado sensível, taint, Risco Cidadão). O plano
-completo está em `docs/disciplinas/csharp.md`; os integrantes, no [README da raiz](../README.md#integrantes).
+completo está em `docs/disciplinas/csharp.md`; a Ficha da CitizenTech, no [README da raiz](../README.md).
+
+**Integrantes (3ESPW):** Guilherme Almeida (RM 555180), Luiz Gustavo da Silva (RM 558358), Rafael Duarte de
+Freitas (RM 558644), Rafael Gaspar Bragança Martins (RM 557228) e Vinicius Monteiro Araújo (RM 555088).
 
 ## Estado (17/11)
 Os três módulos completos. A parte de Cybersecurity (varreduras, tradução por IA, Risco Cidadão, painel, Semgrep e
@@ -51,7 +54,7 @@ fluxo no painel. (3) No código: as regras do Semgrep em `security/semgrep/`. De
 **Rotas administrativas** exigem o cabeçalho `X-Admin-Key` igual a `Privacidade:ChaveAdmin` (user-secrets em
 desenvolvimento; `Privacidade__ChaveAdmin` na VM). A comparação é em tempo constante.
 
-São 240 testes: 136 da API e 104 do módulo de privacidade.
+São 241 testes: 137 da API e 104 do módulo de privacidade.
 
 ## Para a avaliação de SOA
 
@@ -60,9 +63,9 @@ São 240 testes: 136 da API e 104 do módulo de privacidade.
 | Estruturação do domínio (3,0) | `src/Calmaria.Domain/Sensorial/` (lugar, refúgio, dispositivo, leitura, índice, previsão) e `src/Calmaria.Domain/Comunidade/` (usuário, perfil, relato), com objetos de valor (`Coordenada`, `NotaSensorial`, `Sensibilidade`) e as regras dentro das entidades | O diagrama abaixo; uma regra barrando dado inválido: nota 6 (400), leitura de -10 dB (422), relato repetido (409) |
 | Conexão com banco (3,0) | PostgreSQL com EF Core e Npgsql em `src/Calmaria.Infrastructure/Persistencia/`: herança numa tabela (TPH), 1:1 (usuário e perfil), 1:N com cascata (usuário e relatos), restrição (lugar com relato), índices | `\dt` no `psql`; a conexão vem de `ConnectionStrings__Calmaria`, nunca do código |
 | Migrações (1,5) | Uma por módulo em `src/Calmaria.Infrastructure/Persistencia/Migracoes/`: `Inicial_Sensorial`, `Comunidade` e `Privacidade`; o `efbundle` que a VM aplica | `dotnet ef migrations list` e o banco criado do zero |
-| Documentação automática (1,5) | OpenAPI gerado pelo código (comentários XML e `[ProducesResponseType]` em cada status), Scalar em `/scalar` com os três módulos e exemplos (`src/Calmaria.Api/Comum/DocumentacaoOpenApi.cs`) | Um endpoint testado no próprio Scalar |
-| Testes automatizados (1,0) | `tests/Calmaria.Tests` (domínio e endpoints com `WebApplicationFactory` e SQLite em memória) e `tests/Calmaria.Privacidade.Tests` (MSTest) | `dotnet test` com 240 testes |
-| Chamada a API REST | O `TradutorLlm` chama o LLM por `HttpClient` tipado com tempo limite, nova tentativa e disjuntor (`Microsoft.Extensions.Http.Resilience`) e cai na frase pronta se o serviço falhar | O log da chamada, só com o trecho mascarado, e o alerta que voltou |
+| Documentação automática (1,5) | OpenAPI gerado pelo código (comentários XML e `[ProducesResponseType]` em cada status), Scalar em `/scalar` com os três módulos, exemplos e o tema da Calmaria (`src/Calmaria.Api/Comum/DocumentacaoOpenApi.cs` e `TemaDoScalar.cs`) | Um endpoint testado no próprio Scalar |
+| Testes automatizados (1,0) | `tests/Calmaria.Tests` (domínio e endpoints com `WebApplicationFactory` e SQLite em memória) e `tests/Calmaria.Privacidade.Tests` (MSTest) | `dotnet test` com 241 testes |
+| Chamada a API REST | O `TradutorLlm` chama o LLM por `HttpClient` tipado com tempo limite, nova tentativa e disjuntor (`Microsoft.Extensions.Http.Resilience`) e cai na frase pronta se o serviço falhar; testado com um serviço simulado (resposta certa, erro 500, 401, sem rede, resposta fora do formato) | O alerta no painel `/seguranca`, que diz se veio do LLM ou da frase pronta, e por quê |
 
 **Onde está a orientação a serviços.** Os três módulos têm fronteira e contrato: cada um tem os próprios
 controllers, serviços, tabelas e migração, e só conversam por interface (`ILugarConsulta`, `ISanitizador`,
@@ -168,6 +171,24 @@ sequenceDiagram
     Serv->>BD: INSERT Relatos (só TextoSanitizado)
     Ctrl-->>App: 201 { id, comentario, removidos }
 ```
+
+## Evidências
+
+Em `docs/evidencias/`, geradas de execuções reais por `node entrega/gerar-evidencias.mjs` (como funciona:
+[entrega/LEIA-ME.md](../entrega/LEIA-ME.md)). As de Cybersecurity ficam em
+[security/evidencias](../security/evidencias/LEIA-ME.md).
+
+| Print | Critério | O que mostra |
+|---|---|---|
+| [migracoes.png](docs/evidencias/migracoes.png) | Migrações; EF Core | Um schema vazio, `dotnet ef migrations list` com as três migrações e `database update` criando tudo do zero |
+| [tabelas-postgresql.png](docs/evidencias/tabelas-postgresql.png) | Conexão com banco | As tabelas dos três módulos no PostgreSQL (`\dt`) |
+| [scalar.png](docs/evidencias/scalar.png) | Documentação automática | O Scalar com os grupos Sensorial, Privacidade e Comunidade |
+| [scalar-relato.png](docs/evidencias/scalar-relato.png) | Documentação automática | `POST /api/relatos` com o corpo, o exemplo e as respostas 201, 400, 404 e 409 |
+| [testes.png](docs/evidencias/testes.png) | Testes | `dotnet test` com os dois projetos passando |
+| [relato-mascarado.png](docs/evidencias/relato-mascarado.png) | Web API; domínio | Um relato com CPF fictício: o pedido, a resposta, a listagem pública e o banco, já mascarados |
+| [leitura-mqtt.png](docs/evidencias/leitura-mqtt.png) | Integração por mensagem | Uma leitura publicada no broker MQTT e lida pela API em `GET /api/lugares/1`, com o índice recalculado |
+
+![O Scalar com os três módulos](docs/evidencias/scalar.png)
 
 ## Pacote para a VM
 `powershell -ExecutionPolicy Bypass -File api-dotnet/scripts/empacotar-vm.ps1` gera, em `api-dotnet/artefatos/`
