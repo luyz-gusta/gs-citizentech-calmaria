@@ -84,6 +84,22 @@ vai para as tabelas `Varreduras`, `AchadosDeVarredura` e `EventosDeFluxo` (migra
 O exemplo vulnerável e o corrigido ficam em `exemplos/`, fora da solução. A senha do exemplo vulnerável é
 fictícia.
 
+**O resultado do Semgrep (17/11, versão 1.185.0, no contêiner oficial).**
+
+| Alvo | Achados | Onde |
+|---|---|---|
+| Vulnerável | 4 | A senha (linha 31); o log, o console e o LLM (linhas 59, 60 e 63) |
+| Corrigido | 0 | |
+| API | 0 | 77 arquivos |
+
+Nenhum alvo teve erro de leitura. A gravação crua no banco (o item 3 do vulnerável) não é acusada, porque o banco
+não é destino da regra: esse caso fica com a camada dos tipos.
+
+**Construtor primário.** O parser de C# do Semgrep não entende o construtor primário do C# 12. Na primeira rodada,
+isso escondeu metade do controller corrigido, e o "zero" dele não provava nada. Por isso os dois exemplos usam o
+construtor clássico. Na API, o Semgrep pula só a lista de parâmetros e lê o corpo da classe. Para conferir, um
+vazamento plantado numa cópia do `RelatoService` (console e arquivo) foi acusado nas duas linhas.
+
 ## 3. Tradução via IA
 
 O `TradutorLlm` chama o LLM por REST com `HttpClient` tipado, tempo limite por tentativa, uma nova tentativa e
@@ -137,6 +153,8 @@ O painel: `http://localhost:5080/seguranca`. As rotas: `POST /api/privacidade/va
 ## O que fica de fora, dito com clareza
 - O Semgrep não roda nativo neste computador: o Application Control do Windows barra o `semgrep-core.exe`. O
   `rodar-semgrep.ps1` usa o contêiner oficial, então precisa do Docker Desktop aberto.
+- O parser de C# do Semgrep 1.185 não lê o construtor primário do C# 12. Na API, ele pula a lista de parâmetros
+  e analisa o resto, o que foi conferido com um vazamento plantado (ver a Auditoria do Protótipo).
 - A tradução pelo LLM foi testada com um serviço simulado nos testes (resposta certa, erro 500, 401, sem rede,
   resposta fora do formato). A chamada a um LLM de verdade depende de configurar `Llm__UrlBase` e `Llm__Modelo`.
 - A `FonteLogs` lê linha a linha; um dado quebrado em duas linhas do log escaparia da varredura (o guarda de log,

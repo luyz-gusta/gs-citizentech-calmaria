@@ -35,11 +35,19 @@ try {
         $saida = "security/relatorios/semgrep-$nome.json"
         $argumentos = @('scan', '--config', $regras, '--metrics=off', '--disable-version-check', '--json',
             '--output', $saida, $alvos[$nome])
+        # No Windows PowerShell 5.1, com 'Stop', até o progresso que o Semgrep escreve no stderr vira erro fatal.
+        # Aqui quem diz se deu errado é o código de saída: 0 e 1 são análise feita, 2 ou mais é falha.
+        $ErrorActionPreference = 'Continue'
         if ($nativo) {
             & semgrep @argumentos 2>$null | Out-Null
         }
         else {
             & docker run --rm -v "${raiz}:/src" -w /src "semgrep/semgrep:$versao" semgrep @argumentos 2>$null | Out-Null
+        }
+        $codigo = $LASTEXITCODE
+        $ErrorActionPreference = 'Stop'
+        if ($codigo -ge 2) {
+            throw "O Semgrep falhou no alvo '$nome' (código $codigo)."
         }
 
         $resultado = Get-Content $saida -Raw -Encoding utf8 | ConvertFrom-Json
