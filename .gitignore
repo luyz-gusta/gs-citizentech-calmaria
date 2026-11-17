@@ -49,3 +49,6 @@ logs/
 # A entrega de Cybersecurity é gerada por security/gerar-zip.ps1 e vai pelo Teams, não pelo Git.
 security/calmaria-cybersecurity.zip
 security/relatorios/demo-logs/
+
+# Entrega: capturas, slides, áudio e o vídeo gerados (entrega/LEIA-ME.md)
+entrega/saida/

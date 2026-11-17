@@ -16,6 +16,10 @@ a rotina dela e o telefone de quem cuida dela.
 | Inovação com IA na remediação | 2,0 | `Remediacao/` (TradutorLlm, prompt versionado, frases prontas de reserva) |
 | Dashboard executivo (Risco Cidadão) | 2,0 | `Risco/` e o painel em `api/wwwroot/seguranca/` |
 
+**Integrantes (3ESPW):** Guilherme Almeida (RM 555180), Luiz Gustavo da Silva (RM 558358), Rafael Duarte de
+Freitas (RM 558644), Rafael Gaspar Bragança Martins (RM 557228) e Vinicius Monteiro Araújo (RM 555088).
+Repositório: https://github.com/luyz-gusta/gs-citizentech-calmaria
+
 No repositório, o módulo fica em `api-dotnet/src/Calmaria.Privacidade/` e os testes em
 `api-dotnet/tests/Calmaria.Privacidade.Tests/`. O módulo não depende de ASP.NET nem de banco: recebe texto e devolve
 achados, por isso vai sozinho no ZIP e tem testes próprios.
@@ -84,13 +88,13 @@ vai para as tabelas `Varreduras`, `AchadosDeVarredura` e `EventosDeFluxo` (migra
 O exemplo vulnerável e o corrigido ficam em `exemplos/`, fora da solução. A senha do exemplo vulnerável é
 fictícia.
 
-**O resultado do Semgrep (17/11, versão 1.185.0, no contêiner oficial).**
+**O resultado do Semgrep (17/11, versão 1.185.0, no contêiner oficial; refeito pelo gerador de evidências).**
 
 | Alvo | Achados | Onde |
 |---|---|---|
 | Vulnerável | 4 | A senha (linha 31); o log, o console e o LLM (linhas 59, 60 e 63) |
 | Corrigido | 0 | |
-| API | 0 | 77 arquivos |
+| API | 0 | 78 arquivos |
 
 Nenhum alvo teve erro de leitura. A gravação crua no banco (o item 3 do vulnerável) não é acusada, porque o banco
 não é destino da regra: esse caso fica com a camada dos tipos.
@@ -144,8 +148,15 @@ powershell -ExecutionPolicy Bypass -File security/medir-precisao.ps1
 powershell -ExecutionPolicy Bypass -File security/provar-erro-de-compilacao.ps1
 powershell -ExecutionPolicy Bypass -File security/rodar-semgrep.ps1
 powershell -ExecutionPolicy Bypass -File security/demo-antes-depois.ps1
-powershell -ExecutionPolicy Bypass -File security/gerar-zip.ps1 -LinkDoVideo "https://..."
+node entrega/gerar-evidencias.mjs
+node entrega/video/gerar-video.mjs
+powershell -ExecutionPolicy Bypass -File security/gerar-zip.ps1
 ```
+
+Os prints de `evidencias/` e o vídeo saem de execuções reais, com os dois comandos em `node` (como funciona:
+`entrega/LEIA-ME.md`). O vídeo (pasta `video/` do ZIP) segue o roteiro de seis blocos: por que o dado de saúde, as
+regras e a precisão, o taint em três camadas, o relato com CPF em execução, a tradução por IA e o painel antes e
+depois. A narração é a voz pt-BR do Windows, e a legenda vai em `.srt`.
 
 O painel: `http://localhost:5080/seguranca`. As rotas: `POST /api/privacidade/varreduras`,
 `GET /api/privacidade/risco-cidadao`, `/achados` e `/fluxos`, todas com o cabeçalho `X-Admin-Key`.

@@ -25,4 +25,27 @@ public sealed class DocumentacaoEndpointTests
         Assert.AreEqual(4, exemplo.GetProperty("nota").GetInt32());
         Assert.IsTrue(esquemas.GetProperty("LugarEntradaDto").TryGetProperty("examples", out _));
     }
+
+    [TestMethod]
+    public async Task Corpo_da_requisicao_nao_herda_a_descricao_do_cancelamento_nem_resumo_tem_html()
+    {
+        using var fabrica = new CalmariaApiFactory(DateTimeOffset.UtcNow);
+        using var cliente = fabrica.CreateClient();
+
+        var documento = await cliente.GetFromJsonAsync<JsonElement>("/openapi/v1.json");
+
+        var operacoes = documento.GetProperty("paths").EnumerateObject()
+            .SelectMany(caminho => caminho.Value.EnumerateObject().Select(m => (Rota: $"{m.Name} {caminho.Name}", Operacao: m.Value)))
+            .ToList();
+        foreach (var (rota, operacao) in operacoes)
+        {
+            if (operacao.TryGetProperty("requestBody", out var corpo) && corpo.TryGetProperty("description", out var descricao))
+                Assert.DoesNotContain("Cancelamento", descricao.GetString()!, $"O corpo de {rota} herdou a descrição do CancellationToken.");
+            if (operacao.TryGetProperty("summary", out var resumo))
+                Assert.DoesNotContain("<", resumo.GetString()!, $"O resumo de {rota} tem marcação HTML.");
+        }
+
+        var analisar = documento.GetProperty("paths").GetProperty("/api/privacidade/analisar").GetProperty("post");
+        Assert.AreEqual("O texto, até 2.000 caracteres.", analisar.GetProperty("requestBody").GetProperty("description").GetString());
+    }
 }

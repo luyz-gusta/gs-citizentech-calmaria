@@ -10,7 +10,8 @@ Uso:
   python exportar.py cartela --n 2 --total 6 --titulo "O provisionamento" --tempo "0:40 a 2:10" \
       --saida png/os-cartela-2.png         uma cartela de capítulo para qualquer vídeo
 
-A ordem da equipe é a da divisão: Luiz (C#, SOA e Cybersecurity), Mobile, ML, OS e Testing, Physical e pitch.
+Cada integrante da --equipe é "Nome|RM|Parte" (o RM e a parte são opcionais). Sem a parte, vale a de PARTES
+na mesma posição. A cartela final mostra os nomes; a capa, os nomes com o RM; cada tarja, o nome e a parte.
 """
 import argparse
 import functools
@@ -44,6 +45,15 @@ PARTES = [
     "A VM e os testes · Operating Systems e Testing",
     "O sensor e o pitch · Physical Computing",
 ]
+
+# A equipe da Calmaria, em ordem alfabética (3ESPW).
+EQUIPE = ";".join([
+    "Guilherme Almeida|555180|O sensor e o pitch · Physical Computing",
+    "Luiz Gustavo da Silva|558358|A API · C#, SOA e Cybersecurity",
+    "Rafael Duarte de Freitas|558644|A VM e os testes · Operating Systems e Testing",
+    "Rafael Gaspar Bragança Martins|557228|Equipe Calmaria · 3ESPW",
+    "Vinicius Monteiro Araújo|555088|O app e o modelo de ML · Mobile e IA",
+])
 
 BLOCOS = [
     ("A frase da entrevista", "0:00 a 0:30"),
@@ -143,8 +153,22 @@ def para_jpg(caminho_png, caminho_jpg):
     return caminho_jpg
 
 
+def ler_equipe(texto):
+    """Lê "Nome|RM|Parte;..." em (nome, rm, parte); sem a parte, usa a de PARTES na mesma posição."""
+    equipe = []
+    for i, item in enumerate(n.strip() for n in texto.split(";") if n.strip()):
+        campos = [c.strip() for c in item.split("|")]
+        nome = campos[0]
+        rm = campos[1] if len(campos) > 1 else ""
+        parte = campos[2] if len(campos) > 2 else (PARTES[i] if i < len(PARTES) else "")
+        equipe.append((nome, rm, parte))
+    return equipe
+
+
 def tudo(a):
-    equipe = [n.strip() for n in a.equipe.split(";") if n.strip()]
+    integrantes = ler_equipe(a.equipe)
+    equipe = [nome for nome, _, _ in integrantes]
+    com_rm = [f"{nome} · RM {rm}" if rm else nome for nome, rm, _ in integrantes]
     ex = Exportador()
     try:
         # Marca e app (AP-01 a AP-04, MA-02, MA-03, PA-03)
@@ -164,10 +188,11 @@ def tudo(a):
         for i, (titulo, tempo) in enumerate(BLOCOS, 1):
             ex.png("pecas/moldes/video.html", {"peca": "bloco", "n": i, "total": len(BLOCOS), "titulo": titulo, "tempo": tempo},
                    1920, 1080, f"vi-04-cartela-bloco-{i}.png", fundo_transparente=False)
-        ex.png("pecas/moldes/video.html", {"peca": "final", "repo": a.repo, "equipe": " · ".join(equipe)},
+        # Espaço sem quebra dentro de cada nome: a linha só quebra entre um nome e outro.
+        nomes = " · ".join(nome.replace(" ", " ") for nome in equipe)
+        ex.png("pecas/moldes/video.html", {"peca": "final", "repo": a.repo, "equipe": nomes},
                1920, 1080, "vi-05-cartela-final.png", fundo_transparente=False)
-        for i, nome in enumerate(equipe):
-            parte = PARTES[i] if i < len(PARTES) else ""
+        for i, (nome, _, parte) in enumerate(integrantes):
             ex.png("pecas/moldes/video.html", {"peca": "tarja", "nome": nome, "parte": parte},
                    1920, 1080, f"vi-02-tarja-{i + 1}-{slug(nome)}.png")
         mini = ex.png("pecas/moldes/miniatura.html", None, 1280, 720, "vi-06-miniatura-youtube.png", fundo_transparente=False)
@@ -175,7 +200,7 @@ def tudo(a):
         if jpg:
             ex.feitos[-1] = os.path.relpath(jpg, AQUI)
         # PDF de Testing (QA-01)
-        q = {"azure": a.azure, "youtube": a.youtube, "equipe": ";".join(equipe), "turma": a.turma}
+        q = {"azure": a.azure, "youtube": a.youtube, "equipe": ";".join(com_rm), "turma": a.turma}
         ex.pdf("pecas/moldes/capa.html", q, "qa-01-capa.pdf")
         ex.png("pecas/moldes/capa.html", q, 794, 1123, "qa-01-capa.png", escala=2, fundo_transparente=False)
     finally:
@@ -198,8 +223,8 @@ def cartela(a):
 
 def main():
     p = argparse.ArgumentParser(description="Exporta as peças visuais da Calmaria.")
-    p.add_argument("--equipe", default="Luiz Gustavo da Silva;Integrante 2;Integrante 3;Integrante 4;Integrante 5",
-                   help="nomes separados por ponto e vírgula, na ordem da divisão")
+    p.add_argument("--equipe", default=EQUIPE,
+                   help='integrantes separados por ponto e vírgula, cada um "Nome|RM|Parte"')
     p.add_argument("--repo", default="github.com/luyz-gusta/gs-citizentech-calmaria")
     p.add_argument("--azure", default="dev.azure.com/(organização)/calmaria")
     p.add_argument("--youtube", default="youtu.be/(link)")
