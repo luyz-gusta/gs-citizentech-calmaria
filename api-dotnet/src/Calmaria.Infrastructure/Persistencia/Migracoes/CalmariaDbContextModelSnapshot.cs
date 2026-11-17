@@ -285,6 +285,193 @@ namespace Calmaria.Infrastructure.Persistencia.Migracoes
                     b.ToTable("PrevisoesBarulho");
                 });
 
+            modelBuilder.Entity("Calmaria.Infrastructure.Privacidade.AchadoRegistro", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Destino")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Fonte")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Local")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<int>("Peso")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RegraId")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("Trecho")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<long>("VarreduraId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VarreduraId");
+
+                    b.ToTable("AchadosDeVarredura", (string)null);
+                });
+
+            modelBuilder.Entity("Calmaria.Infrastructure.Privacidade.AlertaEmCache", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Destino")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("GeradoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Mitigado")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("ParaCidadao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("ParaEquipe")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Categoria", "Destino", "Mitigado", "Modelo")
+                        .IsUnique();
+
+                    b.ToTable("AlertasEmCache", (string)null);
+                });
+
+            modelBuilder.Entity("Calmaria.Infrastructure.Privacidade.EventoDeFluxoRegistro", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Bloqueado")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Destino")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("OcorridoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Origem")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("Peso")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OcorridoEm");
+
+                    b.ToTable("EventosDeFluxo", (string)null);
+                });
+
+            modelBuilder.Entity("Calmaria.Infrastructure.Privacidade.VarreduraRegistro", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("AlertasJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ComposicaoJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ConcluidaEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Expostos")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Faixa")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<int>("Fluxos")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FontesJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Indice")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("IniciadaEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Mitigados")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConcluidaEm");
+
+                    b.ToTable("Varreduras", (string)null);
+                });
+
             modelBuilder.Entity("Calmaria.Domain.Sensorial.LugarMonitorado", b =>
                 {
                     b.HasBaseType("Calmaria.Domain.Sensorial.Lugar");
@@ -448,6 +635,20 @@ namespace Calmaria.Infrastructure.Persistencia.Migracoes
                         .HasForeignKey("LugarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Calmaria.Infrastructure.Privacidade.AchadoRegistro", b =>
+                {
+                    b.HasOne("Calmaria.Infrastructure.Privacidade.VarreduraRegistro", null)
+                        .WithMany("Achados")
+                        .HasForeignKey("VarreduraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Calmaria.Infrastructure.Privacidade.VarreduraRegistro", b =>
+                {
+                    b.Navigation("Achados");
                 });
 #pragma warning restore 612, 618
         }

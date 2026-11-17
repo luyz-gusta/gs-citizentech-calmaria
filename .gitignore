@@ -42,3 +42,10 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Log da API em arquivo: com o guarda de privacidade desligado, pode ter dado pessoal.
+logs/
+
+# A entrega de Cybersecurity é gerada por security/gerar-zip.ps1 e vai pelo Teams, não pelo Git.
+security/calmaria-cybersecurity.zip
+security/relatorios/demo-logs/

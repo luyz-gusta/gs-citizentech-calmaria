@@ -10,6 +10,7 @@ namespace Calmaria.Api.Sensorial;
 [Tags("Sensorial")]
 public sealed class LugaresController(
     ILugarService lugares,
+    ILugarCadastro cadastro,
     ILeituraService leituras,
     IHorarioCalmoService horariosCalmos,
     TimeProvider relogio) : ControllerBase
@@ -94,6 +95,64 @@ public sealed class LugaresController(
         var resultado = await horariosCalmos.CalcularAsync(id, ct);
         return resultado is null ? LugarNaoEncontrado(id) : Ok(HorariosCalmosDto.De(resultado));
     }
+
+    /// <summary>
+    /// Cadastra um lugar (uso da equipe). Com o tipo REFUGIO, vira um refúgio calmo fixo, que o botão de crise passa
+    /// a considerar. Exige o cabeçalho X-Admin-Key.
+    /// </summary>
+    /// <param name="corpo">Os dados do lugar.</param>
+    /// <param name="ct">Cancelamento da requisição.</param>
+    /// <response code="201">O lugar criado, com o endereço dele no cabeçalho Location.</response>
+    /// <response code="400">Dado inválido (nome, coordenada, distrito, horário fora do formato).</response>
+    /// <response code="401">Sem o cabeçalho X-Admin-Key ou com a chave errada.</response>
+    [HttpPost]
+    [ExigeChaveAdmin]
+    [ProducesResponseType<LugarDetalheDto>(StatusCodes.Status201Created)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
+    public async Task<IActionResult> Criar([FromBody] LugarEntradaDto corpo, CancellationToken ct)
+    {
+        var criado = await cadastro.CriarAsync(corpo.ParaDados(), ct);
+        return Created($"/api/lugares/{criado.Id}", LugarDetalheDto.De(criado));
+    }
+
+    /// <summary>Atualiza o cadastro de um lugar. Refúgio não vira lugar monitorado, nem o contrário.</summary>
+    /// <param name="id">Identificador do lugar.</param>
+    /// <param name="corpo">Os dados novos.</param>
+    /// <param name="ct">Cancelamento da requisição.</param>
+    /// <response code="200">O lugar atualizado.</response>
+    /// <response code="400">Dado inválido.</response>
+    /// <response code="401">Sem o cabeçalho X-Admin-Key ou com a chave errada.</response>
+    /// <response code="404">Não existe lugar com esse id.</response>
+    /// <response code="409">Tentativa de trocar entre refúgio e lugar monitorado.</response>
+    [HttpPut("{id:int}")]
+    [ExigeChaveAdmin]
+    [ProducesResponseType<LugarDetalheDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json")]
+    public async Task<IActionResult> Atualizar(int id, [FromBody] LugarEntradaDto corpo, CancellationToken ct)
+    {
+        var atualizado = await cadastro.AtualizarAsync(id, corpo.ParaDados(), ct);
+        return atualizado is null ? LugarNaoEncontrado(id) : Ok(LugarDetalheDto.De(atualizado));
+    }
+
+    /// <summary>Apaga um lugar. Lugar com sensor ou com relatos não se apaga, para não perder o histórico.</summary>
+    /// <param name="id">Identificador do lugar.</param>
+    /// <param name="ct">Cancelamento da requisição.</param>
+    /// <response code="204">Apagado.</response>
+    /// <response code="401">Sem o cabeçalho X-Admin-Key ou com a chave errada.</response>
+    /// <response code="404">Não existe lugar com esse id.</response>
+    /// <response code="409">O lugar tem sensor ou relatos.</response>
+    [HttpDelete("{id:int}")]
+    [ExigeChaveAdmin]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json")]
+    public async Task<IActionResult> Apagar(int id, CancellationToken ct) =>
+        await cadastro.ApagarAsync(id, ct) ? NoContent() : LugarNaoEncontrado(id);
 
     private ObjectResult LugarNaoEncontrado(int id) =>
         Problem(statusCode: StatusCodes.Status404NotFound, title: "Lugar não encontrado",

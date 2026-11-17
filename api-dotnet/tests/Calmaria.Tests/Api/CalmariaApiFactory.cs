@@ -14,7 +14,8 @@ namespace Calmaria.Tests.Api;
 /// A API inteira em memória, com SQLite no lugar do PostgreSQL e um relógio fixo. Cada teste cria a sua, então
 /// um teste não vê os dados do outro.
 /// </summary>
-internal sealed class CalmariaApiFactory(DateTimeOffset agora) : WebApplicationFactory<Program>
+internal sealed class CalmariaApiFactory(DateTimeOffset agora, IReadOnlyDictionary<string, string>? configuracao = null)
+    : WebApplicationFactory<Program>
 {
     /// <summary>Chave administrativa só dos testes.</summary>
     public const string ChaveAdmin = "chave-de-teste-calmaria";
@@ -25,6 +26,11 @@ internal sealed class CalmariaApiFactory(DateTimeOffset agora) : WebApplicationF
     {
         builder.UseEnvironment("Testing");
         builder.UseSetting("Privacidade:ChaveAdmin", ChaveAdmin);
+        // Sem log em arquivo e sem varrer o repositório de verdade: cada teste de varredura passa as pastas dele.
+        builder.UseSetting("LogEmArquivo:Pasta", "");
+        builder.UseSetting("Privacidade:Varredura:PastaDeCodigo", "");
+        foreach (var (chave, valor) in configuracao ?? new Dictionary<string, string>())
+            builder.UseSetting(chave, valor);
         builder.ConfigureServices(services =>
         {
             // Tira o PostgreSQL registrado no Program.cs e põe o SQLite em memória.
