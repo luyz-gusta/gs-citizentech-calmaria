@@ -1,0 +1,25 @@
+{
+  "_aviso": "Relatos ficticios, criados para teste. Nao sao de pessoas reais.",
+  "resumos": {
+    "1": { "lugarId": 1, "totalRelatos": 31, "notaMedia": 3.6, "gatilhosMaisCitados": [{ "gatilho": "BARULHO", "vezes": 18 }, { "gatilho": "MULTIDAO", "vezes": 12 }] },
+    "2": { "lugarId": 2, "totalRelatos": 14, "notaMedia": 2.4, "gatilhosMaisCitados": [{ "gatilho": "MULTIDAO", "vezes": 11 }, { "gatilho": "BARULHO", "vezes": 9 }] },
+    "3": { "lugarId": 3, "totalRelatos": 9, "notaMedia": 3.9, "gatilhosMaisCitados": [{ "gatilho": "LUZ_FORTE", "vezes": 4 }] },
+    "4": { "lugarId": 4, "totalRelatos": 12, "notaMedia": 3.1, "gatilhosMaisCitados": [{ "gatilho": "FILA", "vezes": 7 }, { "gatilho": "LUZ_FORTE", "vezes": 5 }] },
+    "5": { "lugarId": 5, "totalRelatos": 6, "notaMedia": 4.7, "gatilhosMaisCitados": [] }
+  },
+  "itens": {
+    "1": [
+      { "id": 31, "nota": 4, "gatilhos": ["BARULHO", "MULTIDAO"], "comentario": "Muito cheio às 18h", "visitadoEm": "2026-11-16T18:00:00-03:00" },
+      { "id": 27, "nota": 3, "gatilhos": ["BARULHO"], "comentario": "Trem chegando faz muito barulho na plataforma", "visitadoEm": "2026-11-14T09:10:00-03:00" }
+    ],
+    "2": [
+      { "id": 30, "nota": 2, "gatilhos": ["MULTIDAO", "BARULHO"], "comentario": "Baldeação lotada no fim da tarde", "visitadoEm": "2026-11-15T17:40:00-03:00" }
+    ],
+    "4": [
+      { "id": 29, "nota": 3, "gatilhos": ["FILA", "LUZ_FORTE"], "comentario": "De manhã cedo estava vazio", "visitadoEm": "2026-11-14T08:15:00-03:00" }
+    ],
+    "5": [
+      { "id": 28, "nota": 5, "gatilhos": [], "comentario": "Silencioso perto do lago", "visitadoEm": "2026-11-13T15:00:00-03:00" }
+    ]
+  }
+}

@@ -80,3 +80,17 @@ explicar o que foi aproveitado. Uma entrada por uso relevante, a mais recente no
   `GET /api/lugares/{id}`, `/health` e o Scalar; 40 testes (MSTest, SQLite em memória). Revisado e rodado no
   PostgreSQL local. **Mudança no plano:** o discriminador da herança é a coluna `Categoria`, não o `Tipo`.
 
+
+## 15 a 17/11/2026: notebook de ML e app Expo
+- **Quem:** (preencher: integrantes de IA e de Mobile)
+- **Parte:** `ml/` e `mobile/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Na pasta docs, quero resolver as disciplinas de IA e mobile." A ferramenta leu
+  `docs/disciplinas/ia-machine-learning.md` e `docs/disciplinas/mobile.md` e seguiu os dois briefings.
+- **O que foi aproveitado:** no ML, o download dos 8 trimestres do SP156, o filtro do PSIU (detectando
+  codificação, separador e formato de data de cada arquivo), o notebook com linha de base, Random Forest e
+  XGBoost com busca por `TimeSeriesSplit`, os gráficos, o CSV de previsões e o relatório. O resultado foi
+  mantido como saiu: o modelo ganha pouco da linha de base, e o relatório explica por quê. No app, o projeto
+  Expo (SDK 58) com todas as telas, o cliente da API com mock de reserva, o SQLite, o botão de crise offline e
+  a passada de acessibilidade. **A revisar pela equipe:** as frases da entrevista no README do app, os prints
+  e os vídeos; o app ainda não foi testado num celular.
