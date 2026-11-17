@@ -6,7 +6,7 @@ Global Solution 2026.2 (CitizenTech), FIAP, Engenharia de Software, 3º ano.
 
 | Campo | Resposta |
 |---|---|
-| Nome da CitizenTech | Calmaria (provisório) |
+| Nome da CitizenTech | Calmaria |
 | Cidade e bairro | São Paulo, Bela Vista e Consolação |
 | Cidadão beneficiado | Pessoas autistas com hipersensibilidade sensorial e as famílias que planejam as saídas delas |
 | Problema, em uma frase | Pessoas autistas não têm como saber, antes de sair, se um mercado ou uma estação vai estar barulhento, claro demais ou lotado, nem onde fica o lugar calmo mais próximo quando a sobrecarga vem |
@@ -87,13 +87,13 @@ O escopo completo, com os contratos entre as partes, está em
   Dados Abertos da Prefeitura de São Paulo. Detalhes em `ml/dados/README.md`.
 
 ## Integrantes
-| Nome | RM | Disciplinas |
-|---|---|---|
-| Luiz Gustavo da Silva | (preencher) | C# Software Development, SOA e Web Services, Cybersecurity |
-| (Integrante 2) | | Mobile Development e IoT |
-| (Integrante 3) | | IA e Machine Learning |
-| (Integrante 4) | | Operating Systems; Testing, Compliance e QA |
-| (Integrante 5) | | Physical Computing, e o pitch |
+| Nome | RM |
+|---|---|
+| Vinicius Monteiro Araújo | 555088 |
+| Guilherme Almeida | 555180 |
+| Rafael Duarte de Freitas | 558644 |
+| Rafael Gaspar Bragança Martins | 557228 |
+| Luiz Gustavo da Silva | 558358 |
 
 ## Uso de IA
 Os prompts usados estão em [prompts.md](prompts.md), como o briefing pede.
