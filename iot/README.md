@@ -11,7 +11,7 @@ controle deslizante do Wokwi e o PIR detecta movimento quando a gente clica nele
 | | |
 |---|---|
 | Projeto no Wokwi | https://wokwi.com/projects/480806758336429057 |
-| Vídeo de Physical (até 4 min) | https://youtu.be/fdnAx1fj3zc |
+| Vídeo | https://youtu.be/fdnAx1fj3zc |
 | Plano da disciplina | [docs/disciplinas/physical-computing.md](../docs/disciplinas/physical-computing.md) |
 | Integrantes | [integrantes.txt](integrantes.txt) |
 
@@ -22,7 +22,7 @@ controle deslizante do Wokwi e o PIR detecta movimento quando a gente clica nele
 | `sketch.ino` | O firmware, em Arduino (C++) |
 | `diagram.json` | O circuito, exportado do Wokwi |
 | `libraries.txt` | As bibliotecas que o Wokwi instala: PubSubClient, ArduinoJson, Adafruit SSD1306 e Adafruit GFX |
-| `integrantes.txt` | Nome e RM dos integrantes, o `.txt` que a disciplina pede |
+| `integrantes.txt` | Nome e RM dos integrantes |
 | `prints/` | Prints do circuito em CALMO e em INTENSO, do visor, da resposta da API e do cliente MQTT |
 
 ## O que o aparelho faz
@@ -200,7 +200,3 @@ com o JSON do contrato.
 - Um aparelho por lugar monitorado, cada um com o seu `LUGAR_ID` e `DISPOSITIVO_ID` cadastrados na API, em
   estações e mercados parceiros.
 - Fora do protótipo, o broker deixa de ser público: com usuário e senha por aparelho e TLS na porta 8883.
-
-## Uso de IA
-
-Os prompts usados nesta parte estão no [prompts.md](../prompts.md) da raiz, como o briefing pede.
