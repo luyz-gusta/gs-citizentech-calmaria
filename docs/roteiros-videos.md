@@ -8,7 +8,10 @@ aqui antes de gravar.
 - Kit de vídeo da Calmaria (peça VI-01): 1920 × 1080, 30 qps, cortes secos, sem música alta. Abertura (VI-03) e
   cartela final (VI-05) estão em `design/pecas/png/`.
 - Fale devagar. Pode gravar bloco por bloco e juntar depois.
-- Legendas: suba um `.srt` no YouTube (VI-07), não grave as legendas na imagem.
+- Legendas (VI-07): prontas em [legendas/ia.srt](legendas/ia.srt) e [legendas/mobile.srt](legendas/mobile.srt),
+  geradas destas falas, com até 2 linhas de 42 caracteres. Antes de subir, troque `[seu nome]` pelo seu nome.
+  Os tempos seguem os blocos do roteiro; se a sua fala sair mais rápida ou mais lenta, ajuste no editor de
+  legendas do YouTube (Studio, Legendas, Editar tempo). Não grave as legendas na imagem.
 - Os dois vídeos vão para o YouTube como **não listados**.
 
 ---
