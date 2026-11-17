@@ -19,4 +19,9 @@
     <ProjectReference Include="..\..\src\Calmaria.Privacidade\Calmaria.Privacidade.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- A amostra rotulada da medição de precisão e revocação. -->
+    <None Update="AmostraRotulada.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

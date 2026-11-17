@@ -1,5 +1,6 @@
 using Calmaria.Domain.Comunidade;
 using Calmaria.Domain.Sensorial;
+using Calmaria.Infrastructure.Privacidade;
 using Microsoft.EntityFrameworkCore;
 
 namespace Calmaria.Infrastructure.Persistencia;
@@ -18,6 +19,11 @@ public sealed class CalmariaDbContext(DbContextOptions<CalmariaDbContext> option
     public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<PerfilSensorial> PerfisSensoriais => Set<PerfilSensorial>();
     public DbSet<Relato> Relatos => Set<Relato>();
+
+    public DbSet<VarreduraRegistro> Varreduras => Set<VarreduraRegistro>();
+    public DbSet<AchadoRegistro> AchadosDeVarredura => Set<AchadoRegistro>();
+    public DbSet<EventoDeFluxoRegistro> EventosDeFluxo => Set<EventoDeFluxoRegistro>();
+    public DbSet<AlertaEmCache> AlertasEmCache => Set<AlertaEmCache>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CalmariaDbContext).Assembly);

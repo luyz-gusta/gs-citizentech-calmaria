@@ -1,0 +1,65 @@
+# Regras do Semgrep da Calmaria (taint analysis estático, a terceira camada).
+# A primeira camada é o sistema de tipos (TextoNaoConfiavel só vira TextoSanitizado pelo Sanitizador) e a segunda
+# são os guardas de saída em execução (LoggerProviderComRedacao e FiltroRespostaPublica). Esta pega o código que
+# ainda trata o dado do cidadão como string comum: o controller de exemplo em security/exemplos e qualquer
+# serviço novo que alguém escrever fora do padrão.
+#
+# Rodar: security/rodar-semgrep.ps1 (Docker ou semgrep instalado). O JSON vai para security/relatorios/.
+
+rules:
+  - id: calmaria-dado-do-cidadao-em-saida-insegura
+    mode: taint
+    languages: [csharp]
+    severity: ERROR
+    message: >-
+      O dado do cidadão em '$CAMPO' chega a uma saída insegura (log, console, arquivo ou serviço externo) sem
+      passar pelo Sanitizador. Na Calmaria, o comentário do relato pode ter CPF e dado de saúde, que é sensível
+      (LGPD, art. 11), e o contato de apoio é dado de terceiro. Passe por ISanitizador.Sanitizar antes da saída.
+    metadata:
+      cwe: "CWE-532: Insertion of Sensitive Information into Log File"
+      owasp: "A09:2021 Security Logging and Monitoring Failures"
+      lgpd: "art. 5, II e art. 11 (dado pessoal sensível de saúde)"
+      categoria: taint
+    pattern-sources:
+      # Os campos que trazem texto livre do cidadão nos contratos da API.
+      - patterns:
+          - pattern: $OBJ.$CAMPO
+          - metavariable-regex:
+              metavariable: $CAMPO
+              regex: ^(Comentario|ContatoApoioNome|ContatoApoioTelefone|Apelido)$
+    pattern-sanitizers:
+      - pattern: $SANITIZADOR.Sanitizar(...)
+    pattern-sinks:
+      # Log
+      - pattern: $LOGGER.LogTrace(...)
+      - pattern: $LOGGER.LogDebug(...)
+      - pattern: $LOGGER.LogInformation(...)
+      - pattern: $LOGGER.LogWarning(...)
+      - pattern: $LOGGER.LogError(...)
+      - pattern: $LOGGER.LogCritical(...)
+      - pattern: $LOGGER.Log(...)
+      # Console (no Linux da VM, vai para o journald)
+      - pattern: Console.WriteLine(...)
+      - pattern: Console.Write(...)
+      # Arquivo exportado
+      - pattern: File.WriteAllText(...)
+      - pattern: File.AppendAllText(...)
+      - pattern: File.WriteAllLines(...)
+      # Serviço externo (o LLM) por HttpClient
+      - pattern: $HTTP.PostAsJsonAsync(...)
+      - pattern: $HTTP.PostAsync(...)
+      - pattern: $HTTP.PutAsJsonAsync(...)
+      - pattern: $HTTP.SendAsync(...)
+
+  - id: calmaria-senha-escrita-no-codigo
+    languages: [csharp]
+    severity: ERROR
+    message: >-
+      Senha escrita no código. Quem recebe o ZIP ou clona o repositório recebe a senha junto. Leia de variável
+      de ambiente (ConnectionStrings__Calmaria) ou de user-secrets e troque a senha que vazou.
+    metadata:
+      cwe: "CWE-798: Use of Hard-coded Credentials"
+      owasp: "A07:2021 Identification and Authentication Failures"
+      categoria: segredo
+    # Variável ($senha), marcador (..., ***) e expressão ficam de fora, como na RegraSegredo do motor.
+    pattern-regex: (?i)\b(password|pwd|senha)\s*=\s*(?![$%{<\[(.*])[^\s;"']{4,}

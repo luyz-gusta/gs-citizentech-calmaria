@@ -11,6 +11,13 @@
   <ItemGroup>
     <!-- Regras novas sem recompilar: o arquivo vai junto da API e é lido ao subir. -->
     <None Update="Regras\regras-pii.json" CopyToOutputDirectory="PreserveNewest" />
+    <!-- O prompt do LLM é versionado com o código e vai dentro da DLL. -->
+    <EmbeddedResource Include="Remediacao\prompt-alerta.md" LogicalName="prompt-alerta.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Só a abstração de log (o TradutorLlm registra o que mandou ao LLM). Nada de ASP.NET nem de banco. -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.15" />
   </ItemGroup>
 
 </Project>

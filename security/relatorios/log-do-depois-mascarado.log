@@ -1,0 +1,33 @@
+﻿2026-11-17 12:12:32 -03:00 [INF] Microsoft.EntityFrameworkCore.Migrations: No migrations were applied. The database is already up to date.
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.Hosting.Lifetime: Now listening on: http://localhost:5091
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.Hosting.Lifetime: Application started. Press Ctrl+C to shut down.
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.Hosting.Lifetime: Hosting environment: Development
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.Hosting.Lifetime: Content root path: D:\LuyzOS\repos\FIAP\3ESPW\GS-CitizenTech\api-dotnet\src\Calmaria.Api
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware: Request:
+Method: GET
+PathBase: 
+Path: /health
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware: Request:
+Method: POST
+PathBase: 
+Path: /api/usuarios
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware: RequestBody: {}
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware: Request:
+Method: POST
+PathBase: 
+Path: /api/relatos
+2026-11-17 12:12:33 -03:00 [INF] Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware: RequestBody: {
+    "lugarId":  4,
+    "usuarioId":  "224d359e-716b-471f-bcfc-abd36001ae80",
+    "gatilhos":  [
+                     "BARULHO",
+                     "MULTIDAO"
+                 ],
+    "visitadoEm":  "2026-11-17T11:12:33-03:00",
+    "comentario":  "Relato fictício da demonstração. Meu CPF é [removido] e meu filho é <SAUDE>. Muito cheio às 18h.",
+    "nota":  2
+}
+2026-11-17 12:12:34 -03:00 [INF] Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware: Request:
+Method: POST
+PathBase: 
+Path: /api/privacidade/varreduras

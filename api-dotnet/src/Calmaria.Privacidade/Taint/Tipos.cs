@@ -39,17 +39,28 @@ public sealed class TextoSanitizado
     public override string ToString() => Valor;
 }
 
-/// <summary>Um achado sem posição nem texto original: o que pode ir à resposta e ao LLM.</summary>
+/// <summary>
+/// Um achado sem posição nem texto original: o que pode ir à resposta, ao painel e ao LLM. Só o módulo cria, a
+/// partir de um achado do motor, então o <see cref="Calmaria.Privacidade.Remediacao.ITradutorDeRisco"/> nunca
+/// recebe o dado real.
+/// </summary>
 public sealed record AchadoMascarado
 {
     public CategoriaPii Categoria { get; }
     public string Trecho { get; }
 
-    internal AchadoMascarado(CategoriaPii categoria, string trecho)
+    /// <summary>De 1 a 5, o peso da regra que achou.</summary>
+    public int Peso { get; }
+
+    internal AchadoMascarado(CategoriaPii categoria, string trecho, int peso)
     {
         Categoria = categoria;
         Trecho = trecho;
+        Peso = peso;
     }
+
+    /// <summary>O achado do motor já traz o trecho mascarado; aqui ele perde a posição.</summary>
+    internal static AchadoMascarado De(Achado achado) => new(achado.Categoria, achado.TrechoMascarado, achado.Peso);
 }
 
 internal sealed class TextoNaoConfiavelJson : JsonConverter<TextoNaoConfiavel>

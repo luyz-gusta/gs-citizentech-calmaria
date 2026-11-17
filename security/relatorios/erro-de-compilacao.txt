@@ -1,0 +1,11 @@
+﻿Prova do taint pelo sistema de tipos: as linhas do controller vulnerável, coladas na API.
+Gerado em 17/11/2026 12:07 por security/provar-erro-de-compilacao.ps1.
+
+Resultado do build: FALHOU, como devia
+
+TentativaDeVazamento.cs(17,29): error CS0029: Cannot implicitly convert type 'Calmaria.Privacidade.Taint.TextoNaoConfiavel' to 'string'
+TentativaDeVazamento.cs(17,29): error CS8600: Converting null literal or possible null value to non-nullable type.
+TentativaDeVazamento.cs(20,37): error CS1061: 'TextoNaoConfiavel' does not contain a definition for 'ValorCru' and no accessible extension method 'ValorCru' accepting a first argument of type 'TextoNaoConfiavel' could be found (are you missing a using directive or an assembly reference?)
+TentativaDeVazamento.cs(24,13): error CS1503: Argument 5: cannot convert from 'Calmaria.Privacidade.Taint.TextoNaoConfiavel' to 'Calmaria.Privacidade.Taint.TextoSanitizado?'
+TentativaDeVazamento.cs(27,54): error CS1503: Argument 4: cannot convert from 'Calmaria.Privacidade.Taint.TextoNaoConfiavel' to 'Calmaria.Privacidade.Taint.TextoSanitizado?'
+TentativaDeVazamento.cs(30,36): error CS1503: Argument 1: cannot convert from 'Calmaria.Privacidade.Taint.TextoNaoConfiavel' to 'Calmaria.Privacidade.Taint.AchadoMascarado'

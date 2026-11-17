@@ -6,7 +6,7 @@ Global Solution 2026.2 (CitizenTech), FIAP, Engenharia de Software, 3º ano.
 
 | Campo | Resposta |
 |---|---|
-| Nome da CitizenTech | Calmaria (provisório) |
+| Nome da CitizenTech | Calmaria |
 | Cidade e bairro | São Paulo, Bela Vista e Consolação |
 | Cidadão beneficiado | Pessoas autistas com hipersensibilidade sensorial e as famílias que planejam as saídas delas |
 | Problema, em uma frase | Pessoas autistas não têm como saber, antes de sair, se um mercado ou uma estação vai estar barulhento, claro demais ou lotado, nem onde fica o lugar calmo mais próximo quando a sobrecarga vem |
@@ -57,24 +57,24 @@ Especificação completa (telas do app, visor, painel, vídeos e a lista de 46 p
 
 ## Mapa da rubrica: uma API, três disciplinas
 C#, SOA e Cybersecurity avaliam a mesma API, organizada em três módulos (Sensorial, Comunidade e
-Privacidade). Cada professor acha aqui o que avalia. Os caminhos se completam quando o código existir.
+Privacidade). Cada professor acha aqui o que avalia.
 
 | Disciplina | Critério | Onde está |
 |---|---|---|
 | C# | POO | `api-dotnet/src/Calmaria.Domain/` (hierarquia de lugares) e `src/Calmaria.Privacidade/Regras/` (uma classe por regra) |
 | C# | Web API | `api-dotnet/src/Calmaria.Api/` (controllers por módulo) e o Scalar em `/scalar` |
 | C# | EF Core e LINQ | `api-dotnet/src/Calmaria.Infrastructure/` e os serviços de horários calmos e de resumo |
-| C# | Async/await | O worker MQTT e o cliente do LLM em `src/Calmaria.Infrastructure/` |
+| C# | Async/await | O worker MQTT em `src/Calmaria.Infrastructure/Mqtt/` e o cliente do LLM em `src/Calmaria.Privacidade/Remediacao/` |
 | C# | Qualidade | Os módulos, os dois projetos de teste e este README |
 | SOA | Domínio | `api-dotnet/src/Calmaria.Domain/` |
 | SOA | Banco | PostgreSQL com EF Core; conexão por variável de ambiente |
-| SOA | Migrações | `api-dotnet/src/Calmaria.Infrastructure/Migrations/` (uma por módulo) |
-| SOA | Documentação automática | Scalar em `/scalar` |
+| SOA | Migrações | `api-dotnet/src/Calmaria.Infrastructure/Persistencia/Migracoes/` (`Inicial_Sensorial`, `Comunidade`, `Privacidade`) |
+| SOA | Documentação automática | Scalar em `/scalar`, com exemplos; a seção "Para a avaliação de SOA" em `api-dotnet/README.md` |
 | SOA | Testes | `api-dotnet/tests/` (`dotnet test`) |
 | Cybersecurity | Motor de PII | `api-dotnet/src/Calmaria.Privacidade/Regras/` e `Motor/` |
-| Cybersecurity | Taint analysis | `src/Calmaria.Privacidade/Taint/`, os guardas em `src/Calmaria.Api/Privacidade/` e `security/semgrep/` |
+| Cybersecurity | Taint analysis | `src/Calmaria.Privacidade/Taint/`, os guardas em `src/Calmaria.Api/Privacidade/`, `security/semgrep/` e a Auditoria do Protótipo em [security/README.md](security/README.md) |
 | Cybersecurity | IA na remediação | `src/Calmaria.Privacidade/Remediacao/` |
-| Cybersecurity | Painel Risco Cidadão | `/seguranca/index.html` e `src/Calmaria.Privacidade/Risco/` |
+| Cybersecurity | Painel Risco Cidadão | `/seguranca` (em `src/Calmaria.Api/wwwroot/seguranca/`) e `src/Calmaria.Privacidade/Risco/` |
 
 O escopo completo, com os contratos entre as partes, está em
 [docs/01-escopo-global.md](docs/01-escopo-global.md). A ideia de onde tudo partiu está em
@@ -87,13 +87,13 @@ O escopo completo, com os contratos entre as partes, está em
   Dados Abertos da Prefeitura de São Paulo. Detalhes em `ml/dados/README.md`.
 
 ## Integrantes
-| Nome | RM | Disciplinas |
-|---|---|---|
-| Luiz Gustavo da Silva | (preencher) | C# Software Development, SOA e Web Services, Cybersecurity |
-| (Integrante 2) | | Mobile Development e IoT |
-| (Integrante 3) | | IA e Machine Learning |
-| (Integrante 4) | | Operating Systems; Testing, Compliance e QA |
-| (Integrante 5) | | Physical Computing, e o pitch |
+| Nome | RM |
+|---|---|
+| Vinicius Monteiro Araújo | 555088 |
+| Guilherme Almeida | 555180 |
+| Rafael Duarte de Freitas | 558644 |
+| Rafael Gaspar Bragança Martins | 557228 |
+| Luiz Gustavo da Silva | 558358 |
 
 ## Uso de IA
 Os prompts usados estão em [prompts.md](prompts.md), como o briefing pede.

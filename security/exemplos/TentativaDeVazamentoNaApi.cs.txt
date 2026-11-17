@@ -1,0 +1,32 @@
+// Prova da primeira camada do taint (o sistema de tipos). São as linhas do RelatoControllerVulneravel.cs coladas
+// dentro da API de verdade. O security/provar-erro-de-compilacao.ps1 copia este arquivo para a API, roda o build,
+// guarda os erros em security/relatorios/erro-de-compilacao.txt e apaga a cópia. O build TEM que falhar.
+
+using Calmaria.Api.Comunidade;
+using Calmaria.Domain.Comunidade;
+using Calmaria.Privacidade.Remediacao;
+using Calmaria.Privacidade.Taint;
+
+namespace Calmaria.Api.Privacidade;
+
+internal static class TentativaDeVazamento
+{
+    public static void Vazar(NovoRelatoDto corpo, ITradutorDeRisco tradutor)
+    {
+        // 1. Tratar o comentário como string comum: TextoNaoConfiavel não vira string.
+        string comentario = corpo.Comentario;
+
+        // 2. Ler o valor cru por fora do Sanitizador: a propriedade é interna ao módulo de privacidade.
+        var cru = corpo.Comentario!.ValorCru;
+
+        // 3. Gravar o comentário cru: o Relato só aceita TextoSanitizado.
+        var relato = Relato.Criar(corpo.UsuarioId!.Value, corpo.LugarId!.Value, new NotaSensorial(3), [],
+            corpo.Comentario, DateTime.UtcNow, DateTime.UtcNow);
+
+        // 4. Publicar o comentário cru: a resposta pública só aceita TextoSanitizado.
+        var publico = new RelatoPublicoDto(1, 3, [], corpo.Comentario, DateTimeOffset.Now);
+
+        // 5. Mandar o comentário cru ao LLM externo: o tradutor só aceita AchadoMascarado.
+        _ = tradutor.TraduzirAsync(corpo.Comentario, DestinoFluxo.Llm, mitigado: false);
+    }
+}

@@ -83,12 +83,21 @@ public sealed class RegrasTests
     [DataRow("Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.abc")]
     [DataRow("chave sk-proj-AbCdEfGhIjKlMnOp1234")]
     [DataRow("AKIAIOSFODNN7EXAMPLE")]
+    [DataRow("{ \"password\": \"hunter2024\" }")]
+    [DataRow("api_key = 'abcd1234efgh5678'")]
     public void Segredo_e_achado(string texto) => Assert.IsTrue(Acha(new RegraSegredo(), texto));
 
     [TestMethod]
     [DataRow("Uma senha forte é importante")]
     [DataRow("O token do metrô acabou")]
     [DataRow("Bearer sozinho")]
+    [DataRow("Sem nome, e-mail, CPF nem senha: o identificador basta")]
+    [DataRow("$senha = [Runtime.InteropServices.Marshal]::PtrToStringAuto($segura)")]
+    [DataRow("\"Host=localhost;Username=calmaria;Password=$senha\"")]
+    [DataRow("./efbundle --connection \"Host=localhost;Username=calmaria;Password=...\"")]
+    [DataRow("Password=******")]
+    [DataRow("password: string;")]
+    [DataRow("var apiKey = configuracao[\"Llm:Chave\"];")]
     public void Segredo_nao_e_achado_em_frase_comum(string texto) => Assert.IsFalse(Acha(new RegraSegredo(), texto));
 
     [TestMethod]

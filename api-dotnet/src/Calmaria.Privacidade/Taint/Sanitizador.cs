@@ -33,15 +33,24 @@ public sealed class Sanitizador(IMotorPii motor) : ISanitizador
         if (achados.Count == 0)
             return new ResultadoSanitizacao(TextoSanitizado.Criar(original), []);
 
-        var limpo = new StringBuilder(original);
+        var removidos = achados.Select(AchadoMascarado.De).ToList();
+        return new ResultadoSanitizacao(TextoSanitizado.Criar(Mascarar(original, achados)), removidos);
+    }
+
+    /// <summary>
+    /// Troca cada achado no texto pela marca: saúde vira &lt;SAUDE&gt;; o resto, [removido]. Os guardas de saída
+    /// (log e resposta pública) usam a mesma troca, para o texto sair igual em todo lugar.
+    /// </summary>
+    public static string Mascarar(string texto, IReadOnlyList<Achado> achados)
+    {
+        var limpo = new StringBuilder(texto);
         foreach (var achado in achados.OrderByDescending(a => a.Inicio))
         {
             var marca = achado.Categoria == CategoriaPii.Saude ? MarcaSaude : MarcaRemovido;
             limpo.Remove(achado.Inicio, achado.Tamanho).Insert(achado.Inicio, marca);
         }
 
-        var removidos = achados.Select(a => new AchadoMascarado(a.Categoria, a.TrechoMascarado)).ToList();
-        return new ResultadoSanitizacao(TextoSanitizado.Criar(limpo.ToString()), removidos);
+        return limpo.ToString();
     }
 
     public double ArredondarCoordenada(double grau) => Math.Round(grau, 3, MidpointRounding.AwayFromZero);

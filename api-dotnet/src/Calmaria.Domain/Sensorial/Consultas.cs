@@ -19,6 +19,23 @@ public interface ILugarService
     Task<LugarDetalhe?> ObterAsync(int id, CancellationToken ct = default);
 }
 
+/// <summary>O cadastro de lugares (uso da equipe, com a chave de administrador).</summary>
+public interface ILugarCadastro
+{
+    /// <summary>Cria um lugar monitorado ou, com o tipo REFUGIO, um refúgio.</summary>
+    Task<LugarDetalhe> CriarAsync(DadosDoLugar dados, CancellationToken ct = default);
+
+    /// <summary>Atualiza o cadastro; nulo se o lugar não existe. Refúgio não vira monitorado, nem o contrário.</summary>
+    Task<LugarDetalhe?> AtualizarAsync(int id, DadosDoLugar dados, CancellationToken ct = default);
+
+    /// <summary>Apaga o lugar; falso se não existe. Lugar com sensor ou com relatos não se apaga.</summary>
+    Task<bool> ApagarAsync(int id, CancellationToken ct = default);
+}
+
+/// <summary>Os dados de um lugar para cadastrar ou atualizar. A descrição só vale para refúgio.</summary>
+public sealed record DadosDoLugar(string Nome, TipoLugar Tipo, double Latitude, double Longitude, string Distrito,
+    string? Endereco, string? HorarioFuncionamento, string? Descricao);
+
 /// <param name="Origem">Onde a pessoa está; sem ela, não há filtro de raio nem distância.</param>
 /// <param name="RaioM">Raio em metros, usado só com origem.</param>
 /// <param name="Tipo">Filtra por tipo de lugar.</param>
