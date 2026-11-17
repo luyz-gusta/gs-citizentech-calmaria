@@ -16,11 +16,15 @@ namespace Calmaria.Tests.Api;
 /// </summary>
 internal sealed class CalmariaApiFactory(DateTimeOffset agora) : WebApplicationFactory<Program>
 {
+    /// <summary>Chave administrativa só dos testes.</summary>
+    public const string ChaveAdmin = "chave-de-teste-calmaria";
+
     private readonly SqliteConnection conexao = AbrirConexao();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
+        builder.UseSetting("Privacidade:ChaveAdmin", ChaveAdmin);
         builder.ConfigureServices(services =>
         {
             // Tira o PostgreSQL registrado no Program.cs e põe o SQLite em memória.
@@ -48,6 +52,13 @@ internal sealed class CalmariaApiFactory(DateTimeOffset agora) : WebApplicationF
         var calculadora = escopo.ServiceProvider.GetRequiredService<ICalculadoraIndice>();
         db.Leituras.Add(Leitura.Criar(dispositivoId, lugarId, somDb, luzLux, movimentosMin, calculadora, quando.UtcDateTime));
         await db.SaveChangesAsync();
+    }
+
+    /// <summary>Roda algo com os serviços da API num escopo próprio (banco, calculadora, relógio).</summary>
+    public async Task<T> ComEscopoAsync<T>(Func<IServiceProvider, Task<T>> acao)
+    {
+        using var escopo = Services.CreateScope();
+        return await acao(escopo.ServiceProvider);
     }
 
     protected override void Dispose(bool disposing)

@@ -1,3 +1,4 @@
+using Calmaria.Domain.Comunidade;
 using Calmaria.Domain.Sensorial;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,10 @@ public sealed class CalmariaDbContext(DbContextOptions<CalmariaDbContext> option
     public DbSet<Dispositivo> Dispositivos => Set<Dispositivo>();
     public DbSet<Leitura> Leituras => Set<Leitura>();
     public DbSet<PrevisaoBarulho> PrevisoesBarulho => Set<PrevisaoBarulho>();
+
+    public DbSet<Usuario> Usuarios => Set<Usuario>();
+    public DbSet<PerfilSensorial> PerfisSensoriais => Set<PerfilSensorial>();
+    public DbSet<Relato> Relatos => Set<Relato>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CalmariaDbContext).Assembly);

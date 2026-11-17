@@ -7,9 +7,6 @@ namespace Calmaria.Infrastructure.Sensorial;
 /// <summary>Consultas de lugares do módulo Sensorial.</summary>
 internal sealed class LugarService(CalmariaDbContext db, TimeProvider relogio) : ILugarService, ILugarConsulta
 {
-    /// <summary>Leitura mais velha que isso não conta como "agora": o lugar aparece sem nível atual.</summary>
-    private static readonly TimeSpan JanelaDoNivelAtual = TimeSpan.FromMinutes(15);
-
     public Task<bool> ExisteAsync(int lugarId, CancellationToken ct = default) =>
         db.Lugares.AnyAsync(l => l.Id == lugarId, ct);
 
@@ -24,13 +21,7 @@ internal sealed class LugarService(CalmariaDbContext db, TimeProvider relogio) :
             .Select(l => new { l.Id, l.Nome, l.Tipo, l.Latitude, l.Longitude, l.Distrito })
             .ToListAsync(ct);
 
-        // A leitura mais recente de cada lugar nos últimos 15 minutos (GroupBy com First vira ROW_NUMBER no banco).
-        var desde = relogio.GetUtcNow().UtcDateTime - JanelaDoNivelAtual;
-        var ultimas = await db.Leituras.AsNoTracking()
-            .Where(x => x.RegistradaEm >= desde)
-            .GroupBy(x => x.LugarId)
-            .Select(g => g.OrderByDescending(x => x.RegistradaEm).First())
-            .ToDictionaryAsync(x => x.LugarId, ct);
+        var ultimas = await NivelAtual.UltimasPorLugarAsync(db, relogio, ct);
 
         var resumos = lugares.Select(l =>
         {

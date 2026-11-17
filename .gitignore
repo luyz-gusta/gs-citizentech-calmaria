@@ -30,6 +30,9 @@ ml/dados/brutos/
 ml/dados/*.csv
 !ml/dados/psiu_filtrado.csv
 
+# Pacotes gerados para a VM (api-dotnet/scripts/empacotar-vm.ps1)
+api-dotnet/artefatos/
+
 # Entregas geradas (o ZIP de Cybersecurity sai do security/gerar-zip.ps1)
 *.zip
 

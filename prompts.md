@@ -80,6 +80,29 @@ explicar o que foi aproveitado. Uma entrada por uso relevante, a mais recente no
   `GET /api/lugares/{id}`, `/health` e o Scalar; 40 testes (MSTest, SQLite em memória). Revisado e rodado no
   PostgreSQL local. **Mudança no plano:** o discriminador da herança é a coluna `Categoria`, não o `Tipo`.
 
+## 15/11/2026: leituras, MQTT, horários calmos e botão de crise
+- **Quem:** Luiz
+- **Parte:** `api-dotnet/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Sim, adianta" (adiantar a etapa de sábado do `csharp.md`).
+- **O que foi aproveitado:** ingestão de leituras (HTTP e MQTT pelo mesmo serviço), o worker MQTT com MQTTnet e
+  reconexão, o histórico de leituras, os horários calmos (regra pura no domínio, horário de São Paulo, horário
+  de funcionamento), o refúgio da crise (retângulo no banco e Haversine em memória), `/api/refugios`, o MQTT no
+  `/health` e 4 semanas de leituras simuladas com semente fixa. 84 testes; conferido no PostgreSQL local e com uma
+  mensagem publicada no `broker.hivemq.com`. Dois testes acharam erros meus (um comentário que contradizia a
+  regra do horário de funcionamento e uma distância calculada de cabeça) e foram corrigidos.
+
+## 16/11/2026: Comunidade, núcleo da Privacidade, previsões do ML e pacote da VM
+- **Quem:** Luiz
+- **Parte:** `api-dotnet/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Se mais coisa que eu possa fazer, faça" (seguir o `csharp.md` e o `cybersecurity.md`).
+- **O que foi aproveitado:** o módulo Comunidade (usuário anônimo, perfil sensorial, relatos com a regra dos 30
+  minutos, listagem pública sem autor, resumo e exclusão pela LGPD); o motor de PII (uma classe por regra e regras
+  do JSON), os tipos de taint e o Sanitizador; a importação e a consulta das previsões do ML com chave de
+  administrador; o script do pacote linux-x64 e do efbundle. 170 testes; conferido no PostgreSQL local.
+  **Revisado:** dois exemplos errados do JSON de regras (Cartão SUS com 16 dígitos) e as expressões de CPF e
+  telefone, que não achavam o número no fim de uma frase.
 
 ## 15 a 17/11/2026: notebook de ML e app Expo
 - **Quem:** (preencher: integrantes de IA e de Mobile)

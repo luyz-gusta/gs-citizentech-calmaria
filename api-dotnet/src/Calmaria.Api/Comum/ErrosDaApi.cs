@@ -22,8 +22,8 @@ public static class ErrosDaApi
 }
 
 /// <summary>
-/// Regra de negócio violada vira 400; valor físico impossível do sensor vira 422. O resto segue para o
-/// tratamento padrão (500 sem detalhes internos).
+/// Regra de negócio violada vira 400; recurso que não existe, 404; valor físico impossível do sensor, 422. O resto
+/// segue para o tratamento padrão (500 sem detalhes internos).
 /// </summary>
 public sealed class TratadorDeErrosDeDominio(IProblemDetailsService problemas) : IExceptionHandler
 {
@@ -32,20 +32,19 @@ public sealed class TratadorDeErrosDeDominio(IProblemDetailsService problemas) :
         if (excecao is not DominioException erro)
             return false;
 
-        var status = erro is ValorForaDaFaixaException
-            ? StatusCodes.Status422UnprocessableEntity
-            : StatusCodes.Status400BadRequest;
+        var (status, titulo) = erro switch
+        {
+            RecursoNaoEncontradoException nao => (StatusCodes.Status404NotFound, nao.Titulo),
+            ConflitoException conflito => (StatusCodes.Status409Conflict, conflito.Titulo),
+            ValorForaDaFaixaException => (StatusCodes.Status422UnprocessableEntity, "Valor fora da faixa"),
+            _ => (StatusCodes.Status400BadRequest, ErrosDaApi.TituloDadosInvalidos)
+        };
         http.Response.StatusCode = status;
         return await problemas.TryWriteAsync(new ProblemDetailsContext
         {
             HttpContext = http,
             Exception = excecao,
-            ProblemDetails = new ProblemDetails
-            {
-                Status = status,
-                Title = status == StatusCodes.Status422UnprocessableEntity ? "Valor fora da faixa" : ErrosDaApi.TituloDadosInvalidos,
-                Detail = erro.Message
-            }
+            ProblemDetails = new ProblemDetails { Status = status, Title = titulo, Detail = erro.Message }
         });
     }
 }

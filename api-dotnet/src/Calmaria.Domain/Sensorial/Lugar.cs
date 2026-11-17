@@ -38,7 +38,7 @@ public abstract class Lugar
         Tipo = tipo;
         Latitude = coordenada.Latitude;
         Longitude = coordenada.Longitude;
-        Distrito = distrito.Trim().ToUpperInvariant();
+        Distrito = Sensorial.Distrito.Normalizar(distrito);
         Endereco = endereco;
         HorarioFuncionamento = horarioFuncionamento;
     }

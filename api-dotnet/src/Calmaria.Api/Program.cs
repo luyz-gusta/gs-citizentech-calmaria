@@ -1,8 +1,10 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Calmaria.Api.Comum;
+using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure;
 using Calmaria.Infrastructure.Persistencia;
+using Calmaria.Infrastructure.Persistencia.Seed;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -18,6 +20,8 @@ if (string.IsNullOrWhiteSpace(conexao) && !builder.Environment.IsEnvironment("Te
 
 builder.Services.AddPersistencia(conexao ?? string.Empty);
 builder.Services.AddModuloSensorial(builder.Configuration);
+builder.Services.AddModuloComunidade();
+builder.Services.AddModuloPrivacidade(builder.Configuration);
 
 // Valores fixos saem em maiúsculas com sublinhado (ESTACAO, LUZ_FORTE), como manda o contrato.
 var conversorDeEnum = new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper);
@@ -38,11 +42,22 @@ builder.Services.AddCors(o => o.AddPolicy("app", p => p.AllowAnyOrigin().AllowAn
 
 var app = builder.Build();
 
-// Em desenvolvimento, a API cria e atualiza as tabelas ao subir. Na VM, quem faz isso é o efbundle.
+// Em desenvolvimento, a API cria e atualiza as tabelas ao subir (na VM, quem faz isso é o efbundle) e, com o
+// banco vazio, grava 4 semanas de leituras simuladas.
 if (app.Configuration.GetValue<bool>("Banco:MigrarAoIniciar"))
 {
     using var escopo = app.Services.CreateScope();
-    await escopo.ServiceProvider.GetRequiredService<CalmariaDbContext>().Database.MigrateAsync();
+    var db = escopo.ServiceProvider.GetRequiredService<CalmariaDbContext>();
+    await db.Database.MigrateAsync();
+
+    if (app.Configuration.GetValue<bool>("Banco:SemearLeituras"))
+    {
+        var gravadas = await SeederDeLeituras.SemearAsync(db,
+            escopo.ServiceProvider.GetRequiredService<ICalculadoraIndice>(),
+            escopo.ServiceProvider.GetRequiredService<TimeProvider>().GetUtcNow().UtcDateTime);
+        if (gravadas > 0)
+            app.Logger.LogInformation("Seed: {Quantidade} leituras simuladas gravadas.", gravadas);
+    }
 }
 
 app.UseExceptionHandler();
