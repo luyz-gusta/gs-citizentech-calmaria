@@ -7,6 +7,9 @@
 //   2. O comentário cru vai para o LLM externo, que é outra empresa.
 //   3. O comentário cru é gravado e devolvido na listagem pública.
 //   4. A senha do banco está escrita no código.
+//
+// Construtor clássico de propósito: o parser de C# do Semgrep 1.185 não lê o construtor primário do C# 12, e o
+// exemplo precisa ser lido inteiro para o antes e o depois valerem como prova.
 
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc;
@@ -23,20 +26,32 @@ public sealed class Relato
     public string? Comentario { get; set; }
 }
 
-public sealed class ExemploDbContext(DbContextOptions<ExemploDbContext> opcoes) : DbContext(opcoes)
+public sealed class ExemploDbContext : DbContext
 {
     public const string Conexao = "Host=localhost;Database=calmaria;Username=calmaria;Password=calmaria123";
+
+    public ExemploDbContext(DbContextOptions<ExemploDbContext> opcoes) : base(opcoes)
+    {
+    }
 
     public DbSet<Relato> Relatos => Set<Relato>();
 }
 
 [ApiController]
 [Route("api/relatos")]
-public sealed class RelatoControllerVulneravel(
-    ExemploDbContext db,
-    ILogger<RelatoControllerVulneravel> logger,
-    HttpClient llm) : ControllerBase
+public sealed class RelatoControllerVulneravel : ControllerBase
 {
+    private readonly ExemploDbContext db;
+    private readonly ILogger<RelatoControllerVulneravel> logger;
+    private readonly HttpClient llm;
+
+    public RelatoControllerVulneravel(ExemploDbContext db, ILogger<RelatoControllerVulneravel> logger, HttpClient llm)
+    {
+        this.db = db;
+        this.logger = logger;
+        this.llm = llm;
+    }
+
     [HttpPost]
     public async Task<IActionResult> Criar([FromBody] NovoRelatoDto corpo)
     {

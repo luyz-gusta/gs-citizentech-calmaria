@@ -7,6 +7,9 @@
 //   2. O LLM recebe só o achado mascarado (categoria e trecho como 529.***.***-25), nunca o texto.
 //   3. Grava e publica o texto sanitizado.
 //   4. A conexão vem da variável de ambiente ConnectionStrings__Calmaria.
+//
+// Construtor clássico de propósito: o parser de C# do Semgrep 1.185 não lê o construtor primário do C# 12, e o
+// exemplo precisa ser lido inteiro para o "zero achado" valer como prova.
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +25,12 @@ public sealed class Relato
     public string? Comentario { get; set; }
 }
 
-public sealed class ExemploDbContext(DbContextOptions<ExemploDbContext> opcoes) : DbContext(opcoes)
+public sealed class ExemploDbContext : DbContext
 {
+    public ExemploDbContext(DbContextOptions<ExemploDbContext> opcoes) : base(opcoes)
+    {
+    }
+
     public static string Conexao(IConfiguration configuracao) =>
         configuracao.GetConnectionString("Calmaria") ?? throw new InvalidOperationException("Defina ConnectionStrings__Calmaria.");
 
@@ -46,12 +53,22 @@ public interface ITradutorDeRisco
 
 [ApiController]
 [Route("api/relatos")]
-public sealed class RelatoControllerCorrigido(
-    ExemploDbContext db,
-    ILogger<RelatoControllerCorrigido> logger,
-    ISanitizador sanitizador,
-    ITradutorDeRisco tradutor) : ControllerBase
+public sealed class RelatoControllerCorrigido : ControllerBase
 {
+    private readonly ExemploDbContext db;
+    private readonly ILogger<RelatoControllerCorrigido> logger;
+    private readonly ISanitizador sanitizador;
+    private readonly ITradutorDeRisco tradutor;
+
+    public RelatoControllerCorrigido(ExemploDbContext db, ILogger<RelatoControllerCorrigido> logger,
+        ISanitizador sanitizador, ITradutorDeRisco tradutor)
+    {
+        this.db = db;
+        this.logger = logger;
+        this.sanitizador = sanitizador;
+        this.tradutor = tradutor;
+    }
+
     [HttpPost]
     public async Task<IActionResult> Criar([FromBody] NovoRelatoDto corpo)
     {
