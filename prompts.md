@@ -104,3 +104,22 @@ explicar o que foi aproveitado. Uma entrada por uso relevante, a mais recente no
   **Revisado:** dois exemplos errados do JSON de regras (Cartão SUS com 16 dígitos) e as expressões de CPF e
   telefone, que não achavam o número no fim de uma frase.
 
+
+## 17/11/2026: privacidade completa (varreduras, IA, Risco Cidadão, painel), cadastro de lugares e documentação
+- **Quem:** Luiz
+- **Parte:** `api-dotnet/` e `security/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Sim, começa" (fazer a etapa de terça do `cybersecurity.md` e o que faltava do `soa-web-services.md`
+  e do `csharp.md`).
+- **O que foi aproveitado:** as varreduras (logs, relatos, broker MQTT e código) e a migração `Privacidade`; o
+  guarda de log (`LoggerProviderComRedacao`) e o filtro da resposta pública, com o rastreador de fluxo; o tradutor
+  por LLM com `HttpClient` tipado, resiliência, cache e frases prontas de reserva, e o prompt versionado
+  `prompt-alerta.md`; o cálculo do Risco Cidadão e o painel `/seguranca`; as regras do Semgrep, os exemplos
+  vulnerável e corrigido, a prova do erro de compilação, a demonstração do antes e depois e o script do ZIP; a
+  amostra rotulada de 60 comentários com precisão e revocação; o cadastro de lugares (`POST`, `PUT` e `DELETE`
+  `/api/lugares`), que o plano de C# pedia; os exemplos no Scalar e a seção de SOA no README. 240 testes.
+  **Revisado:** a medição achou o telefone marcando um número de protocolo (88% de precisão) e a varredura do
+  código achou 4 falsos positivos de segredo; as duas regras foram corrigidas e os casos viraram teste. A
+  demonstração mostrou que cada provedor de log registrava o mesmo fluxo (contava em dobro); corrigido para um
+  registro por linha. O Semgrep não roda nativo nesta máquina (Application Control do Windows): fica para rodar
+  pelo Docker.

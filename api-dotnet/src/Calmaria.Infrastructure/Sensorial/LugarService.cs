@@ -1,12 +1,75 @@
+using Calmaria.Domain.Comum;
 using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure.Persistencia;
 using Microsoft.EntityFrameworkCore;
 
 namespace Calmaria.Infrastructure.Sensorial;
 
-/// <summary>Consultas de lugares do módulo Sensorial.</summary>
-internal sealed class LugarService(CalmariaDbContext db, TimeProvider relogio) : ILugarService, ILugarConsulta
+/// <summary>Consultas e cadastro de lugares do módulo Sensorial.</summary>
+internal sealed class LugarService(CalmariaDbContext db, TimeProvider relogio) : ILugarService, ILugarConsulta, ILugarCadastro
 {
+    public async Task<LugarDetalhe> CriarAsync(DadosDoLugar dados, CancellationToken ct = default)
+    {
+        var coordenada = new Coordenada(dados.Latitude, dados.Longitude);
+        Lugar lugar = dados.Tipo == TipoLugar.Refugio
+            ? new Refugio(0, dados.Nome, coordenada, dados.Distrito, Limpo(dados.Descricao), dados.Endereco,
+                dados.HorarioFuncionamento)
+            : new LugarMonitorado(0, dados.Nome, dados.Tipo, coordenada, dados.Distrito, dados.Endereco,
+                dados.HorarioFuncionamento);
+        if (lugar is LugarMonitorado && !string.IsNullOrWhiteSpace(dados.Descricao))
+            throw new DominioException("Só refúgio tem descrição.");
+
+        db.Lugares.Add(lugar);
+        await db.SaveChangesAsync(ct);
+        return (await ObterAsync(lugar.Id, ct))!;
+    }
+
+    public async Task<LugarDetalhe?> AtualizarAsync(int id, DadosDoLugar dados, CancellationToken ct = default)
+    {
+        var lugar = await db.Lugares.FirstOrDefaultAsync(l => l.Id == id, ct);
+        if (lugar is null)
+            return null;
+        if ((dados.Tipo == TipoLugar.Refugio) != lugar.EhRefugio)
+            throw new ConflitoException("Troca de categoria",
+                "Refúgio e lugar monitorado são cadastros diferentes. Apague este lugar e cadastre de novo.");
+
+        var coordenada = new Coordenada(dados.Latitude, dados.Longitude);
+        switch (lugar)
+        {
+            case Refugio refugio:
+                refugio.Atualizar(dados.Nome, coordenada, dados.Distrito, dados.Descricao, dados.Endereco,
+                    dados.HorarioFuncionamento);
+                break;
+            case LugarMonitorado monitorado:
+                if (!string.IsNullOrWhiteSpace(dados.Descricao))
+                    throw new DominioException("Só refúgio tem descrição.");
+                monitorado.Atualizar(dados.Nome, dados.Tipo, coordenada, dados.Distrito, dados.Endereco,
+                    dados.HorarioFuncionamento);
+                break;
+        }
+
+        await db.SaveChangesAsync(ct);
+        return await ObterAsync(id, ct);
+    }
+
+    public async Task<bool> ApagarAsync(int id, CancellationToken ct = default)
+    {
+        var lugar = await db.Lugares.FirstOrDefaultAsync(l => l.Id == id, ct);
+        if (lugar is null)
+            return false;
+
+        // O histórico do lugar (leituras do sensor e relatos da comunidade) não some por um clique.
+        if (await db.Dispositivos.AnyAsync(d => d.LugarId == id, ct) || await db.Relatos.AnyAsync(r => r.LugarId == id, ct))
+            throw new ConflitoException("Lugar com histórico",
+                $"O lugar {id} tem sensor ou relatos e não pode ser apagado.");
+
+        db.Lugares.Remove(lugar);
+        await db.SaveChangesAsync(ct);
+        return true;
+    }
+
+    private static string? Limpo(string? texto) => string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
+
     public Task<bool> ExisteAsync(int lugarId, CancellationToken ct = default) =>
         db.Lugares.AnyAsync(l => l.Id == lugarId, ct);
 

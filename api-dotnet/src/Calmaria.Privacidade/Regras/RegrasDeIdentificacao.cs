@@ -43,7 +43,10 @@ public sealed partial class RegraCpf : RegraBase
     }
 }
 
-/// <summary>Telefone brasileiro, fixo ou celular, com ou sem DDD e +55.</summary>
+/// <summary>
+/// Telefone brasileiro, fixo ou celular, com ou sem DDD e +55. Não casa no meio de um número maior escrito em
+/// grupos (protocolo, cartão): grupo de dígitos logo antes, separado por espaço, desclassifica.
+/// </summary>
 public sealed partial class RegraTelefone : RegraBase
 {
     public override string Id => "telefone";
@@ -51,7 +54,7 @@ public sealed partial class RegraTelefone : RegraBase
     public override int Peso => 3;
     protected override Regex Padrao => Expressao();
 
-    [GeneratedRegex(@"(?<!\d)(?<!\d[.-])(?:\+?55[\s.-]?)?(?:\(?[1-9]\d\)?[\s.-]?)?(?:9\d{4}|[2-5]\d{3})[\s.-]?\d{4}(?!\d)(?![.-]\d)", RegexOptions.None, 250)]
+    [GeneratedRegex(@"(?<!\d)(?<!\d[.-])(?<!\d\s)(?:\+?55[\s.-]?)?(?:\(?[1-9]\d\)?[\s.-]?)?(?:9\d{4}|[2-5]\d{3})[\s.-]?\d{4}(?!\d)(?![.-]\d)", RegexOptions.None, 250)]
     private static partial Regex Expressao();
 
     protected override string Mascarar(string trecho) => $"****-{SoDigitos(trecho)[^4..]}";
@@ -77,7 +80,9 @@ public sealed partial class RegraEmail : RegraBase
 
 /// <summary>
 /// Segredo no texto ou no código: senha em string de conexão, chave de API, token Bearer e prefixos conhecidos
-/// de chave (sk-, AKIA). É o que a varredura de código procura.
+/// de chave (sk-, AKIA). É o que a varredura de código procura. Para não marcar o próprio código, o valor da senha
+/// precisa ter 4 caracteres ou mais e não pode ser variável ($senha, %SENHA%, {senha}), marcador (..., ***,
+/// &lt;senha&gt;), expressão ([...], (...)) nem nome de tipo (string, int); a chave de API precisa ter dígito.
 /// </summary>
 public sealed partial class RegraSegredo : RegraBase
 {
@@ -87,7 +92,7 @@ public sealed partial class RegraSegredo : RegraBase
     protected override Regex Padrao => Expressao();
 
     [GeneratedRegex(
-        @"(?i:\b(?:password|pwd|senha)\s*[=:]\s*[^\s;,'""]+|\bapi[_-]?key\s*[=:]\s*['""]?[A-Za-z0-9_\-]{8,}|\bbearer\s+[A-Za-z0-9\-._~+/]{10,}=*|\bsk-[A-Za-z0-9_-]{16,})|\bAKIA[0-9A-Z]{16}\b",
+        @"(?i:\b(?:password|pwd|senha)['""]?\s*[=:]\s*['""]?(?![$%{<\[(.*])(?!(?:string|number|bool|boolean|int|str|null|undefined|none|true|false)\b)[^\s;,'""]{4,}|\bapi[_-]?key['""]?\s*[=:]\s*['""]?(?=[A-Za-z_\-]*\d)[A-Za-z0-9_\-]{8,}|\bbearer\s+[A-Za-z0-9\-._~+/]{10,}=*|\bsk-[A-Za-z0-9_-]{16,})|\bAKIA[0-9A-Z]{16}\b",
         RegexOptions.None, 250)]
     private static partial Regex Expressao();
 

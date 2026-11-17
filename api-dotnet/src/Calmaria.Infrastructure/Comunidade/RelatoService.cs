@@ -15,6 +15,7 @@ internal sealed class RelatoService(
     CalmariaDbContext db,
     ILugarConsulta lugares,
     ISanitizador sanitizador,
+    IRastreadorDeFluxo rastreador,
     TimeProvider relogio) : IRelatoService
 {
     private static readonly TimeSpan IntervaloMinimo = TimeSpan.FromMinutes(30);
@@ -38,6 +39,12 @@ internal sealed class RelatoService(
                 "Você já relatou este lugar nos últimos 30 minutos. Tente de novo mais tarde.");
 
         var sanitizado = novo.Comentario is null ? null : sanitizador.Sanitizar(novo.Comentario);
+        if (sanitizado is { TinhaDadoPessoal: true })
+        {
+            // O comentário vai para a listagem pública: o que saiu dele é um fluxo bloqueado para o painel.
+            rastreador.Registrar("relato.comentario", DestinoFluxo.RespostaPublica, sanitizado.Removidos, bloqueado: true);
+        }
+
         var relato = Relato.Criar(novo.UsuarioId, novo.LugarId, nota, novo.Gatilhos, sanitizado?.Texto,
             novo.VisitadoEmUtc, agora);
         db.Relatos.Add(relato);

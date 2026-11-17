@@ -45,6 +45,7 @@ public sealed class RelatosController(IRelatoService relatos) : ControllerBase
     /// <response code="200">A página de relatos.</response>
     /// <response code="400">Página ou tamanho inválido.</response>
     [HttpGet]
+    [FiltroRespostaPublica]
     [ProducesResponseType<PaginaDto<RelatoPublicoDto>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
     public async Task<IActionResult> Listar([FromQuery] int? lugarId, [FromQuery] int pagina = 1,
@@ -68,6 +69,7 @@ public sealed class RelatosController(IRelatoService relatos) : ControllerBase
     /// <response code="200">O resumo; sem relatos, nota média nula e lista vazia.</response>
     /// <response code="404">O lugar não existe.</response>
     [HttpGet("~/api/lugares/{id:int}/resumo-relatos")]
+    [FiltroRespostaPublica]
     [ProducesResponseType<ResumoRelatosDto>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
     public async Task<IActionResult> Resumo(int id, CancellationToken ct)

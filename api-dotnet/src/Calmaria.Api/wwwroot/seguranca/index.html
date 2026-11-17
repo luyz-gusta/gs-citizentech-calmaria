@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Calmaria · Segurança</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="/tokens.css">
+  <link rel="stylesheet" href="painel.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"
+          integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC"
+          crossorigin="anonymous" defer></script>
+  <script src="painel.js" defer></script>
+</head>
+<body>
+  <svg class="simbolos" aria-hidden="true" focusable="false">
+    <symbol id="s-logo" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M6 14 C10 9 14 9 18 14 S26 19 30 14 S38 9 42 14"/><path d="M6 24 C10 21.5 14 21.5 18 24 S26 26.5 30 24 S38 21.5 42 24"/><path d="M6 34 H42"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-alerta" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></g></symbol>
+    <symbol id="nv-baixo" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.6"/></symbol>
+    <symbol id="nv-medio" viewBox="0 0 16 16"><rect x="1.6" y="1.6" width="12.8" height="12.8" rx="2"/></symbol>
+    <symbol id="nv-alto" viewBox="0 0 16 16"><path d="M8 .9 15.1 8 8 15.1 .9 8z"/></symbol>
+  </svg>
+
+  <main class="pagina">
+    <header class="cabecalho">
+      <h1 class="logo"><svg aria-hidden="true"><use href="#s-logo"/></svg>calmaria <span>· Segurança</span></h1>
+      <p class="meta"><span id="ultima">Nenhuma varredura ainda.</span> <span id="selo-exemplo" class="etiqueta" hidden>Dados de exemplo</span></p>
+      <button id="varrer" class="botao" type="button">Rodar varredura</button>
+    </header>
+
+    <section id="chave" class="cartao largo" hidden aria-labelledby="chave-titulo">
+      <h2 id="chave-titulo">Chave de administrador</h2>
+      <p id="chave-erro" class="erro" role="alert" hidden>Chave de administrador ausente ou errada.</p>
+      <form id="chave-form" class="linha">
+        <label for="chave-valor">Valor do cabeçalho X-Admin-Key</label>
+        <input id="chave-valor" type="password" autocomplete="off" required>
+        <button class="botao" type="submit">Entrar</button>
+      </form>
+      <p class="dica">A chave fica só nesta aba (sessionStorage) e vai no cabeçalho de cada pedido à API. Nunca na URL.</p>
+    </section>
+
+    <p id="aviso" class="aviso largo" role="status" hidden></p>
+
+    <section class="cartao largo" aria-labelledby="risco-titulo">
+      <h2 id="risco-titulo">Risco Cidadão</h2>
+      <div class="kpi">
+        <div class="valor"><small>Antes da correção</small><b id="antes-valor">-</b><span id="antes-selo"></span></div>
+        <div class="valor"><small>Agora</small><b id="agora-valor">-</b><span id="agora-selo"></span></div>
+        <div class="valor"><small>Dados expostos</small><b id="expostos">-</b><span class="dica">sem guarda na frente</span></div>
+        <div class="valor"><small>Fluxos barrados</small><b id="mitigados">-</b><span class="dica">um guarda tirou o dado</span></div>
+      </div>
+      <div class="faixa" aria-hidden="true">
+        <div class="barras"><i class="b-baixo"></i><i class="b-medio"></i><i class="b-alto"></i></div>
+        <span id="marca-antes" class="marca" hidden></span>
+        <span id="marca-agora" class="marca" hidden></span>
+        <span class="rotulo r-0">0</span><span class="rotulo r-20">20</span><span class="rotulo r-50">50</span><span class="rotulo fim">100</span>
+      </div>
+      <p id="risco-frase" class="dica">Rode uma varredura para calcular o indicador.</p>
+      <p class="dica">Risco de um item = peso do dado x peso da exposição (3 público, 2 log e arquivo, 1 banco) x (1 se exposto, 0,2 se barrado). Risco Cidadão = 100 x soma dos riscos / soma se nada estivesse barrado. Faixas: 0 a 20 baixo, 21 a 50 médio, 51 a 100 alto.</p>
+    </section>
+
+    <section class="cartao" aria-labelledby="cat-titulo">
+      <h2 id="cat-titulo">Risco por tipo de dado</h2>
+      <div id="por-categoria" class="barras-h"></div>
+    </section>
+
+    <section class="cartao" aria-labelledby="dest-titulo">
+      <h2 id="dest-titulo">Risco por destino</h2>
+      <div id="por-destino" class="barras-h"></div>
+    </section>
+
+    <section class="cartao largo" aria-labelledby="alertas-titulo">
+      <h2 id="alertas-titulo">Alertas traduzidos pela IA</h2>
+      <p class="dica">O LLM recebe só a categoria, o trecho já mascarado e o destino. Sem chave ou sem internet, entra a frase pronta, e o cartão diz isso.</p>
+      <div id="alertas" class="grade-alertas"></div>
+    </section>
+
+    <section class="cartao largo" aria-labelledby="fluxos-titulo">
+      <h2 id="fluxos-titulo">Fluxos bloqueados</h2>
+      <div class="tabela"><table>
+        <thead><tr><th scope="col">Quando</th><th scope="col">Origem</th><th scope="col">Destino</th><th scope="col">Dado</th><th scope="col">Situação</th></tr></thead>
+        <tbody id="fluxos"></tbody>
+      </table></div>
+    </section>
+
+    <section class="cartao largo" aria-labelledby="achados-titulo">
+      <h2 id="achados-titulo">Dados expostos na última varredura</h2>
+      <div class="tabela"><table>
+        <thead><tr><th scope="col">Fonte</th><th scope="col">Onde</th><th scope="col">Dado</th><th scope="col">Trecho mascarado</th></tr></thead>
+        <tbody id="achados"></tbody>
+      </table></div>
+    </section>
+
+    <section class="cartao" aria-labelledby="fontes-titulo">
+      <h2 id="fontes-titulo">Fontes da varredura</h2>
+      <div class="tabela"><table>
+        <thead><tr><th scope="col">Fonte</th><th scope="col">Lidos</th><th scope="col">Achados</th><th scope="col">Situação</th></tr></thead>
+        <tbody id="fontes"></tbody>
+      </table></div>
+    </section>
+
+    <section class="cartao" aria-labelledby="hist-titulo">
+      <h2 id="hist-titulo">Histórico do Risco Cidadão</h2>
+      <div class="grafico"><canvas id="historico" role="img" aria-label="Risco Cidadão de cada varredura, da mais velha para a mais nova"></canvas></div>
+      <details>
+        <summary>Ver em tabela</summary>
+        <div class="tabela"><table>
+          <thead><tr><th scope="col">Varredura</th><th scope="col">Quando</th><th scope="col">Risco</th></tr></thead>
+          <tbody id="historico-tabela"></tbody>
+        </table></div>
+      </details>
+    </section>
+  </main>
+</body>
+</html>
