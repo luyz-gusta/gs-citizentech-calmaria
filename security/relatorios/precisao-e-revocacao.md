@@ -2,7 +2,7 @@
 
 Amostra: api-dotnet/tests/Calmaria.Privacidade.Tests/AmostraRotulada.json, 60 comentários fictícios (40 com dado pessoal, 20 sem).
 Conta por comentário: a regra disparou ou não. VP verdadeiro positivo, FP falso positivo, FN falso negativo.
-Gerado em 17/11/2026 12:09 por security/medir-precisao.ps1. Piso do teste: 90% em cada regra.
+Gerado em 17/11/2026 16:16 por security/medir-precisao.ps1. Piso do teste: 90% em cada regra.
 
 | Regra | VP | FP | FN | Precisão | Revocação |
 |---|---|---|---|---|---|

@@ -24,7 +24,10 @@ Write-Host 'Publicando a API para linux-x64...'
 & $dotnet publish (Join-Path $raiz 'src\Calmaria.Api') -c Release -r linux-x64 --self-contained false -o $publicacao --nologo -v q
 if ($LASTEXITCODE -ne 0) { throw 'A publicação falhou.' }
 
-# ZipFile grava os caminhos com barra normal, que o unzip do Linux entende sem aviso.
+# Barra normal nos caminhos, que o unzip do Linux entende sem aviso. No Windows PowerShell 5.1 (.NET Framework), o
+# ZipFile grava barra invertida se a chave abaixo não for desligada antes de carregar a biblioteca, e o wwwroot\seguranca
+# viraria arquivos soltos com a barra no nome.
+[AppContext]::SetSwitch('Switch.System.IO.Compression.ZipFile.UseBackslash', $false)
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory($publicacao, (Join-Path $saida 'calmaria-api-linux-x64.zip'))
 Remove-Item $publicacao -Recurse -Force

@@ -37,7 +37,7 @@ public sealed class RelatosController(IRelatoService relatos) : ControllerBase
             new RelatoCriadoDto(criado.Id, criado.Comentario, criado.Removidos.Select(AchadoDto.De).ToList()));
     }
 
-    /// <summary>Os relatos públicos, do mais novo para o mais velho, <b>sem o autor</b>.</summary>
+    /// <summary>Os relatos públicos, do mais novo para o mais velho, sem o autor.</summary>
     /// <param name="lugarId">Filtra por lugar (opcional).</param>
     /// <param name="pagina">Página, a partir de 1.</param>
     /// <param name="tamanho">Itens por página, de 1 a 50. Padrão: 10.</param>

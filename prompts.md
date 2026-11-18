@@ -136,3 +136,22 @@ explicar o que foi aproveitado. Uma entrada por uso relevante, a mais recente no
   demonstração mostrou que cada provedor de log registrava o mesmo fluxo (contava em dobro); corrigido para um
   registro por linha. O Semgrep não roda nativo nesta máquina (Application Control do Windows): fica para rodar
   pelo Docker.
+
+
+## 17/11/2026: Semgrep, nomes da equipe, evidências e vídeo de Cybersecurity
+- **Quem:** Luiz
+- **Parte:** `security/`, `api-dotnet/`, `design/pecas/` e `entrega/`
+- **Ferramenta:** Claude (Anthropic), no Claude Code
+- **Prompt:** "Abri o Docker" (rodar o Semgrep) e, depois, a lista de nomes e RMs com "Sobre o resto, já deixe tudo
+  pronto para entregar, até mesmo o Video eu quero que vc gere".
+- **O que foi aproveitado:** o Semgrep rodado pelo Docker (4 achados no vulnerável, zero no corrigido e na API);
+  os nomes e RMs no README, na capa, nas tarjas e na cartela final; o tema da Calmaria no Scalar; o gerador de
+  evidências (`entrega/gerar-evidencias.mjs`), que tira os prints de execuções reais num schema vazio; o gerador do
+  vídeo (`entrega/video/`), com a narração na voz pt-BR do Windows, a legenda e o MP4. 241 testes.
+  **Revisado:** o parser de C# do Semgrep não lê o construtor primário e escondia metade do controller corrigido;
+  os exemplos passaram a usar construtor clássico. O primeiro print do MQTT mostrava uma leitura antiga, porque a
+  API ainda não tinha assinado o tópico; o script passou a esperar a conexão e a não gerar o print se a leitura não
+  chegar. O painel mostrava o cartão da chave mesmo com a chave guardada (o CSS anulava o `hidden`). A documentação
+  do OpenAPI punha a descrição do `CancellationToken` no corpo das requisições (defeito do gerador do .NET 10);
+  contornado e coberto por teste.
+

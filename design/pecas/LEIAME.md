@@ -22,9 +22,9 @@ As imagens prontas estão em `png/`. O código no começo de cada arquivo é o d
 | `qa-01-capa.pdf`, `qa-01-capa.png` | Capa do PDF de Testing | A4 | Primeira página do PDF do Azure Boards |
 
 ## Refazer com os nomes e os links certos
-A cartela final já tem o link do repositório. As tarjas, a cartela final e a capa ainda estão com os
-marcadores "Integrante 2" a "Integrante 5", "dev.azure.com/(organização)/calmaria" e "youtu.be/(link)".
-Quando existirem os nomes e os links, rode de novo (precisa do Chrome ou do Edge, do Python 3.9 ou mais novo e
+Desde 17/11, as tarjas, a cartela final e a capa têm os nomes da equipe (a capa, com o RM), e a cartela final
+tem o link do repositório. A capa ainda está com os marcadores "dev.azure.com/(organização)/calmaria" e
+"youtu.be/(link)". Quando existirem esses links, rode de novo (precisa do Chrome ou do Edge, do Python 3.9 ou mais novo e
 do Pillow):
 
 ```bash

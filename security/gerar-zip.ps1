@@ -3,13 +3,14 @@
 #   api/      os guardas e as rotas da API (PrivacidadeController, LoggerProviderComRedacao, FiltroRespostaPublica)
 #             e o painel /seguranca
 #   security/ as regras do Semgrep, os exemplos, os relatórios e as evidências
+#   video/    o MP4 e a legenda do vídeo, se já gerados (node entrega/video/gerar-video.mjs)
 #   README.md e LINK-DO-VIDEO.txt
 # Antes de fechar, procura segredo em tudo o que vai no ZIP (os mesmos padrões da RegraSegredo). Os testes e os
 # exemplos têm segredos FALSOS de propósito; eles aparecem na lista, mas não barram. Qualquer outro barra.
 #
 # Uso:  powershell -ExecutionPolicy Bypass -File security\gerar-zip.ps1 -LinkDoVideo 'https://youtu.be/...'
 
-param([string]$LinkDoVideo = '(preencher com o link do vídeo)')
+param([string]$LinkDoVideo = '')
 
 $ErrorActionPreference = 'Stop'
 $raiz = Split-Path -Parent $PSScriptRoot
@@ -46,10 +47,18 @@ try {
     Copiar 'security\relatorios' 'security\relatorios'
     Copiar 'security\evidencias' 'security\evidencias'
     Copiar 'security\README.md' 'README.md'
-    @(
-        'Vídeo da atividade de Cybersecurity (Calmaria, Global Solution 2026.2):'
-        $LinkDoVideo
-    ) | Set-Content -Path (Join-Path $pasta 'LINK-DO-VIDEO.txt') -Encoding utf8
+    $temVideo = Test-Path (Join-Path $raiz 'entrega\saida\video\calmaria-cybersecurity.mp4')
+    if ($temVideo) {
+        Copiar 'entrega\saida\video\calmaria-cybersecurity.mp4' 'video\calmaria-cybersecurity.mp4'
+        Copiar 'entrega\saida\video\calmaria-cybersecurity.srt' 'video\calmaria-cybersecurity.srt'
+    }
+    if (-not $temVideo -and -not $LinkDoVideo) {
+        throw 'Sem vídeo: gere com node entrega/video/gerar-video.mjs ou passe -LinkDoVideo.'
+    }
+    $linhas = @('Vídeo da atividade de Cybersecurity (Calmaria, Global Solution 2026.2):')
+    if ($LinkDoVideo) { $linhas += $LinkDoVideo }
+    if ($temVideo) { $linhas += 'O arquivo está neste ZIP: video/calmaria-cybersecurity.mp4, com a legenda em video/calmaria-cybersecurity.srt.' }
+    $linhas | Set-Content -Path (Join-Path $pasta 'LINK-DO-VIDEO.txt') -Encoding utf8
 
     # A conferência de segredo: os mesmos padrões da RegraSegredo, em todo arquivo de texto do ZIP.
     $padrao = '(?i)\b(password|pwd|senha)[''"]?\s*[=:]\s*[''"]?(?![$%{<\[(.*])(?!(string|number|bool|boolean|int|str|null|undefined|none|true|false)\b)[^\s;,''"]{4,}' +
@@ -73,7 +82,9 @@ try {
     }
 
     if (Test-Path $destino) { Remove-Item $destino -Force }
-    # ZipFile grava os caminhos com barra normal, que abre igual no Windows, no Linux e no macOS.
+    # Barra normal nos caminhos, que abre igual no Windows, no Linux e no macOS. No Windows PowerShell 5.1 (.NET
+    # Framework), o ZipFile grava barra invertida se a chave abaixo não for desligada antes de carregar a biblioteca.
+    [AppContext]::SetSwitch('Switch.System.IO.Compression.ZipFile.UseBackslash', $false)
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [IO.Compression.ZipFile]::CreateFromDirectory($montagem, $destino)
     $tamanho = [math]::Round((Get-Item $destino).Length / 1KB)
