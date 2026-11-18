@@ -1,0 +1,506 @@
+[
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-16",
+  "reclamacoesPrevistas": 2.1,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-17",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-18",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-19",
+  "reclamacoesPrevistas": 2.1,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-20",
+  "reclamacoesPrevistas": 3.4,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-21",
+  "reclamacoesPrevistas": 3.9,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-22",
+  "reclamacoesPrevistas": 4.2,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-23",
+  "reclamacoesPrevistas": 2.2,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-24",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-25",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-26",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-27",
+  "reclamacoesPrevistas": 2.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-28",
+  "reclamacoesPrevistas": 3.6,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-29",
+  "reclamacoesPrevistas": 3.9,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-11-30",
+  "reclamacoesPrevistas": 2.0,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-01",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-02",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-03",
+  "reclamacoesPrevistas": 2.1,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-04",
+  "reclamacoesPrevistas": 3.0,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-05",
+  "reclamacoesPrevistas": 3.8,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-06",
+  "reclamacoesPrevistas": 4.1,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-07",
+  "reclamacoesPrevistas": 2.2,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-08",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-09",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-10",
+  "reclamacoesPrevistas": 2.0,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-11",
+  "reclamacoesPrevistas": 2.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-12",
+  "reclamacoesPrevistas": 3.6,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "CONSOLACAO",
+  "data": "2026-12-13",
+  "reclamacoesPrevistas": 3.9,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-16",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-17",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-18",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-19",
+  "reclamacoesPrevistas": 2.0,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-20",
+  "reclamacoesPrevistas": 2.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-21",
+  "reclamacoesPrevistas": 3.1,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-22",
+  "reclamacoesPrevistas": 3.5,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-23",
+  "reclamacoesPrevistas": 2.0,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-24",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-25",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-26",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-27",
+  "reclamacoesPrevistas": 2.0,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-28",
+  "reclamacoesPrevistas": 2.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-29",
+  "reclamacoesPrevistas": 3.3,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-11-30",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-01",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-02",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-03",
+  "reclamacoesPrevistas": 2.0,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-04",
+  "reclamacoesPrevistas": 2.1,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-05",
+  "reclamacoesPrevistas": 3.1,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-06",
+  "reclamacoesPrevistas": 3.5,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-07",
+  "reclamacoesPrevistas": 2.0,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-08",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-09",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-10",
+  "reclamacoesPrevistas": 2.0,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-11",
+  "reclamacoesPrevistas": 2.1,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-12",
+  "reclamacoesPrevistas": 3.0,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "BELA VISTA",
+  "data": "2026-12-13",
+  "reclamacoesPrevistas": 3.4,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-16",
+  "reclamacoesPrevistas": 1.3,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-17",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-18",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-19",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-20",
+  "reclamacoesPrevistas": 2.3,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-21",
+  "reclamacoesPrevistas": 2.4,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-22",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-23",
+  "reclamacoesPrevistas": 1.4,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-24",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-25",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-26",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-27",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-28",
+  "reclamacoesPrevistas": 2.2,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-29",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-11-30",
+  "reclamacoesPrevistas": 1.3,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-01",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-02",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-03",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-04",
+  "reclamacoesPrevistas": 1.9,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-05",
+  "reclamacoesPrevistas": 2.4,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-06",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-07",
+  "reclamacoesPrevistas": 1.4,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-08",
+  "reclamacoesPrevistas": 1.7,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-09",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-10",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-11",
+  "reclamacoesPrevistas": 1.8,
+  "nivel": "MEDIO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-12",
+  "reclamacoesPrevistas": 2.3,
+  "nivel": "ALTO"
+ },
+ {
+  "distrito": "JARDIM PAULISTA",
+  "data": "2026-12-13",
+  "reclamacoesPrevistas": 1.6,
+  "nivel": "MEDIO"
+ }
+]

@@ -50,5 +50,9 @@ logs/
 security/calmaria-cybersecurity.zip
 security/relatorios/demo-logs/
 
+# Videos montados (pesados, vao para o YouTube)
+videos-finais/
+videos-brutos/
+
 # Entrega: capturas, slides, áudio e o vídeo gerados (entrega/LEIA-ME.md)
 entrega/saida/

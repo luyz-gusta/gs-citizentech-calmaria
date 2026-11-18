@@ -1,0 +1,293 @@
+1
+00:00:00,000 --> 00:00:03,235
+Oi, eu sou [seu nome],
+da equipe da Calmaria.
+
+2
+00:00:03,285 --> 00:00:08,855
+Para muitas pessoas autistas, barulho
+alto é gatilho de sobrecarga sensorial.
+
+3
+00:00:08,905 --> 00:00:12,797
+A Calmaria ajuda essas pessoas
+a saber, antes de sair,
+
+4
+00:00:12,847 --> 00:00:15,205
+se um lugar vai estar barulhento.
+
+5
+00:00:15,255 --> 00:00:18,855
+Neste vídeo eu mostro a
+parte de Machine Learning:
+
+6
+00:00:18,905 --> 00:00:25,059
+um modelo que prevê quantas reclamações de
+barulho cada distrito de São Paulo vai ter
+
+7
+00:00:25,109 --> 00:00:29,950
+em cada dia, e se esse dia vai ser
+de barulho baixo, médio ou alto.
+
+8
+00:00:30,000 --> 00:00:32,969
+Os dados são reais e públicos: o SP156,
+
+9
+00:00:33,019 --> 00:00:39,008
+o canal de reclamações da Prefeitura de
+São Paulo, no Portal de Dados Abertos.
+
+10
+00:00:39,058 --> 00:00:43,653
+Usei oito trimestres, de outubro
+de 2024 a setembro de 2026,
+
+11
+00:00:43,703 --> 00:00:47,137
+e filtrei o assunto
+"Poluição Sonora - PSIU".
+
+12
+00:00:47,187 --> 00:00:53,098
+São 104 mil reclamações em 96 distritos.
+Os arquivos não são iguais entre si.
+
+13
+00:00:53,148 --> 00:00:56,815
+Sete vêm numa codificação
+e com ponto e vírgula,
+
+14
+00:00:56,865 --> 00:00:59,756
+e o último vem em UTF-8 e com vírgula.
+
+15
+00:00:59,806 --> 00:01:05,563
+A data também muda de formato: dia e
+mês trocam de lugar no último arquivo.
+
+16
+00:01:05,613 --> 00:01:10,518
+Por isso o notebook detecta,
+arquivo por arquivo, a codificação,
+
+17
+00:01:10,568 --> 00:01:12,995
+o separador e o formato da data,
+
+18
+00:01:13,045 --> 00:01:18,337
+e confere que cem por cento das
+datas caem dentro do trimestre certo.
+
+19
+00:01:18,387 --> 00:01:23,989
+Uma limitação importante: a base só
+tem a data da reclamação, não a hora.
+
+20
+00:01:24,039 --> 00:01:29,950
+Então o modelo responde "onde e em que
+dia". A hora vem dos sensores, na API.
+
+21
+00:01:30,000 --> 00:01:34,140
+Primeiro eu agreguei
+por distrito e por dia,
+
+22
+00:01:34,190 --> 00:01:38,331
+e completei com zero
+os dias sem reclamação,
+
+23
+00:01:38,381 --> 00:01:42,712
+porque dia sem reclamação
+também é informação.
+
+24
+00:01:42,762 --> 00:01:46,902
+Ficaram 70 mil linhas,
+e 40% delas são zero.
+
+25
+00:01:46,952 --> 00:01:53,188
+Os atributos são de calendário:
+dia da semana, fim de semana, mês,
+
+26
+00:01:53,238 --> 00:01:55,950
+feriado e véspera de feriado.
+
+27
+00:01:56,000 --> 00:02:01,379
+Também entram o distrito e a
+média histórica do distrito,
+
+28
+00:02:01,429 --> 00:02:07,379
+calculada só com os dados de
+treino, para não vazar a resposta.
+
+29
+00:02:07,429 --> 00:02:11,093
+A divisão é por tempo, nunca aleatória.
+
+30
+00:02:11,143 --> 00:02:18,426
+Treino de outubro de 2024 a março de
+2026, teste de abril a setembro de 2026.
+
+31
+00:02:18,476 --> 00:02:26,140
+Se eu sorteasse os dias, o modelo veria
+a véspera e o dia seguinte de cada dia do
+
+32
+00:02:26,190 --> 00:02:29,950
+teste, e o resultado ficaria bom demais.
+
+33
+00:02:30,000 --> 00:02:36,394
+Antes de qualquer modelo, eu criei uma
+linha de base sem Machine Learning:
+
+34
+00:02:36,444 --> 00:02:40,922
+a média histórica do distrito
+naquele dia da semana.
+
+35
+00:02:40,972 --> 00:02:44,406
+Um modelo só vale se for melhor que ela.
+
+36
+00:02:44,456 --> 00:02:49,892
+Depois treinei dois modelos de
+árvore, Random Forest e XGBoost.
+
+37
+00:02:49,942 --> 00:02:56,946
+Escolhi árvores porque os atributos são
+de calendário e de lugar, com interações:
+
+38
+00:02:56,996 --> 00:03:02,432
+o sábado pesa mais na Consolação
+do que num bairro residencial.
+
+39
+00:03:02,482 --> 00:03:09,573
+A busca de hiperparâmetros usou validação
+cruzada em série temporal, só no treino.
+
+40
+00:03:09,623 --> 00:03:16,713
+Foram 18 combinações na Random Forest e
+54 no XGBoost, variando número de árvores,
+
+41
+00:03:16,763 --> 00:03:21,416
+profundidade, taxa de
+aprendizado e a função de perda.
+
+42
+00:03:21,466 --> 00:03:27,338
+A melhor foi o XGBoost raso, com
+profundidade 3, e perda de Poisson,
+
+43
+00:03:27,388 --> 00:03:29,950
+que é a própria para contagem.
+
+44
+00:03:30,000 --> 00:03:33,292
+Aqui está o resultado,
+e eu vou ser honesto:
+
+45
+00:03:33,342 --> 00:03:36,330
+o ganho sobre a linha de base é pequeno.
+
+46
+00:03:36,380 --> 00:03:40,279
+No teste, o erro médio é
+de 1,33 reclamação por dia,
+
+47
+00:03:40,329 --> 00:03:46,659
+praticamente igual ao da linha de base. Na
+métrica própria para contagem, a deviance
+
+48
+00:03:46,709 --> 00:03:49,393
+de Poisson, o XGBoost é 0,6% melhor.
+
+49
+00:03:49,443 --> 00:03:55,621
+Onde ele mais ajuda é na Consolação e na
+Bela Vista: acerta o nível do dia, baixo,
+
+50
+00:03:55,671 --> 00:04:02,077
+médio ou alto, em 46% dos dias, contra 42%
+da linha de base. O motivo está nos dados.
+
+51
+00:04:02,127 --> 00:04:07,697
+A média é de uma reclamação e meia por
+distrito por dia, com muitos zeros.
+
+52
+00:04:07,747 --> 00:04:13,393
+Quase tudo o que dá para prever está
+em qual distrito e qual dia da semana,
+
+53
+00:04:13,443 --> 00:04:15,672
+e a linha de base já usa isso.
+
+54
+00:04:15,722 --> 00:04:19,925
+Sobre overfitting: com árvores
+fundas e folhas pequenas,
+
+55
+00:04:19,975 --> 00:04:25,697
+o erro de treino cai muito e o de
+validação piora. O modelo decora o treino.
+
+56
+00:04:25,747 --> 00:04:29,950
+Árvores rasas e folhas maiores
+reduziram essa diferença.
+
+57
+00:04:30,000 --> 00:04:35,581
+Para a Marina, que trabalha
+na Paulista: na Consolação,
+
+58
+00:04:35,631 --> 00:04:40,291
+sábado e domingo têm
+previsão de barulho alta,
+
+59
+00:04:40,341 --> 00:04:45,001
+com mais que o dobro das
+reclamações da terça.
+
+60
+00:04:45,051 --> 00:04:51,349
+O melhor dia para resolver coisas
+na região é terça ou quarta.
+
+61
+00:04:51,399 --> 00:04:59,950
+E é isso que aparece no app: a previsão do
+distrito para os próximos dias. Obrigado.
+

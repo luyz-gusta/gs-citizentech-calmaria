@@ -31,6 +31,9 @@ Global Solution 2026.2 (CitizenTech), FIAP, Engenharia de Software, 3º ano.
 | `design/` | Todas (identidade, cores, fonte e o desenho de cada peça) | [plano-de-design.md](design/plano-de-design.md) e `design/design-da-calmaria.html` |
 | `entrega/` | C#, SOA e Cybersecurity (as evidências e o vídeo, gerados de execuções reais) | [entrega/LEIA-ME.md](entrega/LEIA-ME.md) |
 
+Vídeos (YouTube, não listados): IA e Machine Learning em https://youtu.be/IYpR5PEd4nM; Mobile em
+https://youtu.be/9kRDjxLAlS4.
+
 ## Identidade visual
 ![Calmaria](design/pecas/png/ma-02-logotipo.png)
 

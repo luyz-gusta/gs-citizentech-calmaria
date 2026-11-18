@@ -1,0 +1,170 @@
+1
+00:00:00,000 --> 00:00:03,915
+Oi, eu sou [seu nome],
+da equipe da Calmaria.
+
+2
+00:00:03,965 --> 00:00:08,408
+Pessoas autistas não têm
+como saber, antes de sair,
+
+3
+00:00:08,458 --> 00:00:14,928
+se um mercado ou uma estação vai estar
+barulhento, claro demais ou lotado.
+
+4
+00:00:14,978 --> 00:00:19,950
+Este é o app da Calmaria,
+feito em Expo com React Native.
+
+5
+00:00:20,000 --> 00:00:26,010
+Na primeira abertura, o app
+explica o que faz em três frases.
+
+6
+00:00:26,060 --> 00:00:31,275
+O perfil é anônimo: não
+pedimos nome, e-mail nem CPF.
+
+7
+00:00:31,325 --> 00:00:37,433
+A pessoa diz o quanto som, luz
+e multidão incomodam, de 1 a 5,
+
+8
+00:00:37,483 --> 00:00:40,116
+e cada valor tem uma frase.
+
+9
+00:00:40,166 --> 00:00:44,586
+Também dá para cadastrar
+um contato de apoio.
+
+10
+00:00:44,636 --> 00:00:49,950
+Tudo fica salvo no SQLite
+do celular e vai para a API.
+
+11
+00:00:50,000 --> 00:00:55,788
+Aqui estão os lugares perto, com o
+nível medido pelos sensores agora.
+
+12
+00:00:55,838 --> 00:01:01,204
+Cada nível aparece em cor, em
+texto e com uma letra e uma forma:
+
+13
+00:01:01,254 --> 00:01:07,973
+C no círculo para calmo, M no quadrado
+para moderado, I no losango para intenso.
+
+14
+00:01:08,023 --> 00:01:10,596
+Assim a cor nunca está sozinha.
+
+15
+00:01:10,646 --> 00:01:14,827
+A Trianon-Masp está calma;
+a Consolação, moderada.
+
+16
+00:01:14,877 --> 00:01:20,665
+Tem o mapa, e tem a lista, que é a
+alternativa para o leitor de tela.
+
+17
+00:01:20,715 --> 00:01:24,642
+Abrindo a Estação Paulista:
+está intensa agora.
+
+18
+00:01:24,692 --> 00:01:29,719
+Som, luz e movimento vêm em
+números e com uma frase simples.
+
+19
+00:01:29,769 --> 00:01:36,404
+Embaixo, os horários mais calmos da semana
+e a previsão de barulho do distrito,
+
+20
+00:01:36,454 --> 00:01:42,496
+que vem do nosso modelo de Machine
+Learning com os dados reais do SP156.
+
+21
+00:01:42,546 --> 00:01:44,950
+No sábado, a previsão é alta.
+
+22
+00:01:45,000 --> 00:01:51,969
+O botão "Preciso de calma" fica sempre
+no mesmo canto, em todas as telas.
+
+23
+00:01:52,019 --> 00:01:58,700
+A tela de crise é escura e lisa, sem
+som, sem vibração e sem animação.
+
+24
+00:01:58,750 --> 00:02:05,142
+Ela mostra o lugar calmo mais perto,
+a distância e os minutos a pé,
+
+25
+00:02:05,192 --> 00:02:08,315
+e abre o caminho no app de mapas.
+
+26
+00:02:08,365 --> 00:02:13,123
+Tem um roteiro de respiração,
+que avança no toque,
+
+27
+00:02:13,173 --> 00:02:20,238
+e um botão para ligar para o contato
+de apoio. Agora eu ligo o modo avião.
+
+28
+00:02:20,288 --> 00:02:26,200
+Toco de novo no botão, e o refúgio
+aparece mesmo sem internet,
+
+29
+00:02:26,250 --> 00:02:30,527
+porque os refúgios ficam
+guardados no celular
+
+30
+00:02:30,577 --> 00:02:34,950
+e a distância é calculada
+no próprio aparelho.
+
+31
+00:02:35,000 --> 00:02:38,982
+A pessoa pode relatar como foi a visita.
+
+32
+00:02:39,032 --> 00:02:44,023
+Se ela escrever um dado
+pessoal, como um telefone,
+
+33
+00:02:44,073 --> 00:02:49,970
+o app avisa antes de enviar
+que esse dado vai ser removido.
+
+34
+00:02:50,020 --> 00:02:54,406
+E com o leitor de tela
+ligado, cada cartão é
+
+35
+00:02:54,456 --> 00:02:59,950
+lido inteiro: o nome, o tipo
+e o nível agora. Obrigado.
+
