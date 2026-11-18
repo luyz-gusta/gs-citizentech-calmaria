@@ -1,7 +1,7 @@
 # Relatório de IA e Machine Learning: quando e onde São Paulo fica mais barulhenta
 
 Calmaria, Global Solution 2026.2, FIAP. Notebook: [calmaria_ml.ipynb](calmaria_ml.ipynb). Dados:
-[dados/README.md](dados/README.md).
+[dados/README.md](dados/README.md). Vídeo (até 5 minutos, não listado): https://youtu.be/IYpR5PEd4nM
 
 ## 1. O problema e a pergunta de ML
 

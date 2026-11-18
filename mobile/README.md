@@ -128,7 +128,11 @@ TalkBack ou o VoiceOver ligado. (adicionar)
 
 ## Vídeo
 
-Até 3 minutos, com o app rodando: (link)
+Até 3 minutos, com o app rodando: https://youtu.be/9kRDjxLAlS4 (não listado, com legendas em português).
+
+O vídeo mostra o app na versão web, em tamanho de celular, ligado na API local, com as leituras dos sensores
+simuladas por `api-dotnet/scripts/simular-leituras.ps1`. O "sem internet" foi feito cortando a conexão do app com
+a API.
 
 ## Integrantes
 
