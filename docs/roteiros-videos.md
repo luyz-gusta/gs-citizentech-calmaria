@@ -110,10 +110,21 @@ da Consolação.
 
 **Antes de gravar:**
 - Grave a tela do celular (gravador nativo do Android ou do iPhone), com o app no Expo Go.
-- Se a API do Luiz estiver no ar, coloque o IP dela no `.env`. Com a API, a tela de crise mostra "Sem
-  internet. Usando os refúgios salvos no celular." no modo avião. Sem a API, o app usa o mock e o refúgio
-  aparece do mesmo jeito, mas essa frase não aparece.
-- Abra o app uma vez com internet antes de gravar (é quando ele guarda os refúgios no celular).
+- Grave com a API rodando no computador, para não aparecer a faixa "Mostrando dados de exemplo". Da raiz do
+  repositório, em dois terminais (o PostgreSQL precisa estar instalado; veja `api-dotnet/README.md`):
+
+  ```bash
+  dotnet run --project api-dotnet/src/Calmaria.Api --launch-profile http
+  powershell -ExecutionPolicy Bypass -File api-dotnet\scripts\simular-leituras.ps1
+  ```
+
+  No `mobile/.env.local`, `EXPO_PUBLIC_API_URL=http://<IP do computador>:5080`; depois `npx expo start --clear`
+  dentro de `mobile/`. Celular e computador na mesma rede Wi-Fi.
+- O simulador faz o papel dos sensores e deixa os níveis fixos: **Estação Paulista intensa** (índice 92),
+  **Estação Consolação moderada** (50), **Supermercado da Rua Augusta moderado** (47) e **Estação Trianon-Masp
+  calma** (16). Sem ele, o "nível agora" some 15 minutos depois da última leitura.
+- Abra o app uma vez com internet antes de gravar (é quando ele guarda os refúgios no celular). Com a API, a
+  tela de crise no modo avião mostra "Sem internet. Usando os refúgios salvos no celular."
 - Para mostrar o primeiro uso, apague os dados do app (Perfil, "Apagar meus dados") antes de gravar.
 - No relato, escreva um comentário com um telefone inventado, por exemplo "Muito cheio, me liga no 11
   90000-0000", para aparecer o aviso do dado removido.
@@ -135,20 +146,22 @@ apoio, salvar.
 > nem CPF. A pessoa diz o quanto som, luz e multidão incomodam, de 1 a 5, e cada valor tem uma frase. Também dá
 > para cadastrar um contato de apoio. Tudo fica salvo no SQLite do celular e vai para a API.
 
-### Bloco 3: lugares perto e detalhe (0:50 a 1:40)
+### Bloco 3: lugares perto e detalhe (0:50 a 1:45)
 
-**Na tela:** a lista de lugares; trocar para o mapa; voltar para a lista; abrir a Estação Paulista
-(Intenso); rolar até os horários calmos e a previsão de barulho.
+**Na tela:** a lista de lugares (Paulista intensa, Consolação e mercado moderados, Trianon-Masp calma); trocar
+para o mapa; voltar para a lista; abrir a Estação Paulista; rolar até os horários calmos e a previsão de
+barulho.
 
-> Aqui estão os lugares perto, do mais próximo ao mais longe. Cada nível aparece em cor, em texto e com uma
-> letra e uma forma: C no círculo para calmo, M no quadrado para moderado, I no losango para intenso. Assim a
-> cor nunca está sozinha. Tem o mapa, e tem a lista, que é a alternativa para o leitor de tela.
+> Aqui estão os lugares perto, com o nível medido pelos sensores agora. Cada nível aparece em cor, em texto e
+> com uma letra e uma forma: C no círculo para calmo, M no quadrado para moderado, I no losango para intenso.
+> Assim a cor nunca está sozinha. A Trianon-Masp está calma; a Consolação, moderada. Tem o mapa, e tem a
+> lista, que é a alternativa para o leitor de tela.
 >
 > Abrindo a Estação Paulista: está intensa agora. Som, luz e movimento vêm em números e com uma frase
-> simples. Embaixo, os três horários mais calmos da semana, e a previsão de barulho do distrito, que vem do
-> nosso modelo de Machine Learning com os dados reais do SP156. No sábado, a previsão é alta.
+> simples. Embaixo, os horários mais calmos da semana e a previsão de barulho do distrito, que vem do nosso
+> modelo de Machine Learning com os dados reais do SP156. No sábado, a previsão é alta.
 
-### Bloco 4: o botão de crise (1:40 a 2:30)
+### Bloco 4: o botão de crise (1:45 a 2:35)
 
 **Na tela:** tocar em "Preciso de calma"; mostrar o refúgio, a distância e a respiração; avançar dois passos.
 Fechar. Ligar o modo avião. Tocar em "Preciso de calma" de novo.
@@ -161,7 +174,7 @@ Fechar. Ligar o modo avião. Tocar em "Preciso de calma" de novo.
 > Agora eu ligo o modo avião. Toco de novo no botão, e o refúgio aparece mesmo sem internet, porque os
 > refúgios ficam guardados no celular e a distância é calculada no próprio aparelho.
 
-### Bloco 5: relato e acessibilidade (2:30 a 3:00)
+### Bloco 5: relato e acessibilidade (2:35 a 3:00)
 
 **Na tela:** desligar o modo avião; aba Relatar; escolher o lugar, a nota e os gatilhos; escrever o
 comentário com o telefone; tocar em Enviar; mostrar o aviso. Depois ligar o TalkBack ou o VoiceOver e tocar
