@@ -135,5 +135,12 @@ simuladas por `api-dotnet/scripts/simular-leituras.ps1`. O "sem internet" foi fe
 a API.
 
 ## Integrantes
+Turma 3ESPW, FIAP, Engenharia de Software.
 
-(preencher)
+| Nome | RM |
+|---|---|
+| Guilherme Almeida | 555180 |
+| Luiz Gustavo da Silva | 558358 |
+| Rafael Duarte de Freitas | 558644 |
+| Rafael Gaspar Bragança Martins | 557228 |
+| Vinicius Monteiro Araújo | 555088 |
