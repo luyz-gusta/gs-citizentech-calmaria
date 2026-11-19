@@ -92,6 +92,7 @@ public sealed class RegrasTests
     [DataRow("O token do metrô acabou")]
     [DataRow("Bearer sozinho")]
     [DataRow("Sem nome, e-mail, CPF nem senha: o identificador basta")]
+    [DataRow("// O broker é público e sem senha: qualquer pessoa pode assinar o tópico.")]
     [DataRow("$senha = [Runtime.InteropServices.Marshal]::PtrToStringAuto($segura)")]
     [DataRow("\"Host=localhost;Username=calmaria;Password=$senha\"")]
     [DataRow("./efbundle --connection \"Host=localhost;Username=calmaria;Password=...\"")]

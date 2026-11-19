@@ -83,6 +83,7 @@ public sealed partial class RegraEmail : RegraBase
 /// de chave (sk-, AKIA). É o que a varredura de código procura. Para não marcar o próprio código, o valor da senha
 /// precisa ter 4 caracteres ou mais e não pode ser variável ($senha, %SENHA%, {senha}), marcador (..., ***,
 /// &lt;senha&gt;), expressão ([...], (...)) nem nome de tipo (string, int); a chave de API precisa ter dígito.
+/// "Sem senha:" e "nem senha:" dizem que não há senha, então não contam.
 /// </summary>
 public sealed partial class RegraSegredo : RegraBase
 {
@@ -92,7 +93,7 @@ public sealed partial class RegraSegredo : RegraBase
     protected override Regex Padrao => Expressao();
 
     [GeneratedRegex(
-        @"(?i:\b(?:password|pwd|senha)['""]?\s*[=:]\s*['""]?(?![$%{<\[(.*])(?!(?:string|number|bool|boolean|int|str|null|undefined|none|true|false)\b)[^\s;,'""]{4,}|\bapi[_-]?key['""]?\s*[=:]\s*['""]?(?=[A-Za-z_\-]*\d)[A-Za-z0-9_\-]{8,}|\bbearer\s+[A-Za-z0-9\-._~+/]{10,}=*|\bsk-[A-Za-z0-9_-]{16,})|\bAKIA[0-9A-Z]{16}\b",
+        @"(?i:\b(?<!\b(?:sem|nem)\s+)(?:password|pwd|senha)['""]?\s*[=:]\s*['""]?(?![$%{<\[(.*])(?!(?:string|number|bool|boolean|int|str|null|undefined|none|true|false)\b)[^\s;,'""]{4,}|\bapi[_-]?key['""]?\s*[=:]\s*['""]?(?=[A-Za-z_\-]*\d)[A-Za-z0-9_\-]{8,}|\bbearer\s+[A-Za-z0-9\-._~+/]{10,}=*|\bsk-[A-Za-z0-9_-]{16,})|\bAKIA[0-9A-Z]{16}\b",
         RegexOptions.None, 250)]
     private static partial Regex Expressao();
 
