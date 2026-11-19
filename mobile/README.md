@@ -13,7 +13,7 @@ App em **Expo** (React Native, TypeScript, Expo Router) da Calmaria, a CitizenTe
 | Problema, em uma frase | Pessoas autistas não têm como saber, antes de sair, se um mercado ou uma estação vai estar barulhento, claro demais ou lotado, nem onde fica o lugar calmo mais próximo quando a sobrecarga vem |
 | Como funciona | Sensores calculam um índice de sobrecarga de cada lugar; o app mostra o índice, os horários mais calmos e a previsão de barulho da região, e tem um botão de crise que leva ao refúgio calmo mais próximo, mesmo offline |
 | O que cada parte faz | O ESP32 mede; a API em C# guarda, calcula, recebe os relatos e protege o dado de saúde com o módulo de privacidade; o ML prevê o barulho com o SP156; o app mostra; a VM hospeda e monitora; o Azure Boards garante a qualidade |
-| Link do repositório | (preencher) |
+| Link do repositório | https://github.com/luyz-gusta/gs-citizentech-calmaria |
 | Indicador de impacto | Tempo do toque no botão de crise até a chegada ao refúgio (meta: menos de 10 minutos a pé) e a parcela das visitas feitas em horário calmo |
 | ODS conectados | 3 (meta 3.4), 10 (meta 10.2) e 11 (metas 11.2 e 11.7) |
 
@@ -113,18 +113,29 @@ aparece na tela; falta de conexão, tempo esgotado ou erro 5xx fazem o app usar 
 
 ## Aderência ao problema
 
-| Escolha | Frase da entrevista que justificou |
+Cada escolha do app vem de um princípio de design do escopo (`docs/01-escopo-global.md`, seção 2) e responde a
+uma parte do problema da Ficha.
+
+| Escolha | O que ela resolve para o cidadão |
 |---|---|
-| Botão de crise grande e fixo | (preencher com a frase da entrevista) |
-| Sem som e sem animação | (preencher) |
-| Modo offline | (preencher) |
-| Perfil anônimo | (preencher) |
+| Botão de crise grande e fixo | Na sobrecarga, procurar um botão já é um esforço a mais. Ele fica sempre no mesmo canto, com 64 pontos de altura, e leva ao refúgio mais próximo com um toque. |
+| Sem som e sem animação | Um app para quem sofre com estímulo não pode ser mais um estímulo: nada toca, vibra, pisca ou anima, e as trocas de tela são instantâneas. |
+| Modo offline | A crise pode vir numa estação sem sinal. Os refúgios ficam guardados no celular, e a distância até eles é calculada no próprio aparelho. |
+| Perfil anônimo | O perfil sensorial é dado de saúde. O app cria um usuário sem nome, e-mail nem CPF, e o histórico de crises não sai do celular. |
 
 ## Prints
 
-Prints do aparelho, sem moldura (peça AP-15), em `mobile/prints/`: boas-vindas, perfil, lista, mapa, detalhe,
-crise com internet, crise sem internet, relatar com o aviso de dado removido, meus lugares e uma tela com o
-TalkBack ou o VoiceOver ligado. (adicionar)
+Em `mobile/prints/`. Foram tirados da versão web do app em tamanho de celular (390 x 844), ligada na API local
+com as leituras dos sensores simuladas, como no vídeo, e com a localização fixada perto da Rua Augusta. No
+navegador não há o mapa nativo (`react-native-maps`), então a aba Lugares aparece na lista.
+
+| | | |
+|---|---|---|
+| <img src="prints/01-boas-vindas.png" width="220" alt="Boas-vindas"><br>Boas-vindas | <img src="prints/02-perfil.png" width="220" alt="Perfil sensorial"><br>Perfil sensorial | <img src="prints/03-lugares-perto.png" width="220" alt="Lugares perto"><br>Lugares perto, por distância |
+| <img src="prints/04-detalhe-agora.png" width="220" alt="Detalhe do lugar"><br>Detalhe: nível agora e horários calmos | <img src="prints/05-detalhe-previsao.png" width="220" alt="Previsão de barulho"><br>Detalhe: previsão de barulho do ML | <img src="prints/06-crise.png" width="220" alt="Tela de crise"><br>Crise: refúgio mais perto |
+| <img src="prints/07-crise-sem-internet.png" width="220" alt="Crise sem internet"><br>Crise sem internet | <img src="prints/08-relatar-aviso.png" width="220" alt="Aviso de dado removido"><br>Relatar: o CPF é removido | <img src="prints/09-meus-lugares.png" width="220" alt="Meus lugares"><br>Meus lugares |
+
+O CPF do relato é o fictício `529.982.247-25`, o mesmo dos testes da API.
 
 ## Vídeo
 
