@@ -41,16 +41,34 @@ node entrega/video/gerar-video.mjs
 ```
 
 Depois das evidências. Segue o roteiro de `docs/disciplinas/cybersecurity.md` em seis blocos, com a abertura, as
-cartelas de bloco e a cartela final do design (`design/pecas/`). A narração é a voz pt-BR do próprio Windows
-("Microsoft Maria"), gerada no computador, sem mandar texto a serviço nenhum (`entrega/video/falar.ps1`). Opções:
-`--voz Daniel` e `--velocidade 1.1`.
+cartelas de bloco e a cartela final do design (`design/pecas/`), e um só exemplo atravessa os seis: o relato fictício
+com o CPF de exemplo e a frase "meu filho é autista".
+
+Como é feito:
+- **As falas e os dados** estão em `entrega/video/roteiro.mjs`. Cada número sai das capturas, dos relatórios ou do
+  próprio código; cada trecho de código na tela é conferido contra o arquivo, e o gerador para se não bater.
+- **As cenas** (`entrega/video/cenas.mjs`) são composições do [HyperFrames](https://hyperframes.heygen.com): HTML
+  com uma linha do tempo GSAP, renderizado quadro a quadro no Chrome. Cada parte entra quando a voz a nomeia; nada
+  pisca nem fica em laço, e o corte entre as cenas é seco (VI-01). O gerador chama `npx hyperframes@0.9.65` com a
+  telemetria desligada.
+- **A narração** (`entrega/video/voz.mjs`) é gerada nesta máquina, sem mandar o texto a serviço nenhum. O padrão é
+  a voz do Luiz clonada no VoiceStudio local (`--voz voicestudio:LuyzVoice`, em `http://localhost:3900`); a reserva é a
+  voz do Windows (`--voz windows:Maria`). Cada fala fica em cache em `entrega/saida/voz/`: rodar de novo só gera o
+  que mudou.
+- **O som:** só a voz, sem trilha; passa-alta, compressão leve e loudnorm em duas passadas, para -16 LUFS.
+- **A legenda** sai do tempo de cada fala, cortada na pontuação.
+
+Opções: `--velocidade` (1,4 na voz clonada, que sai lenta; 1,0 na do Windows), `--passos 32` (qualidade da voz clonada), `--qualidade draft` (render rápido, para
+conferir) e `--sem-render` (monta o projeto e para; para ver no navegador, `npx hyperframes@0.9.65 preview` dentro de
+`entrega/saida/video/projeto/`).
 
 Sai em `entrega/saida/video/`:
 - `calmaria-cybersecurity.mp4`: 1920 x 1080, 30 qps, H.264, AAC 48 kHz, voz normalizada em -16 LUFS (kit de vídeo
   VI-01);
-- `calmaria-cybersecurity.srt`: a legenda em pt-BR, até 42 caracteres por linha, para subir junto no YouTube (VI-07).
+- `calmaria-cybersecurity.srt`: a legenda em pt-BR, até 42 caracteres por linha, para subir junto no YouTube (VI-07);
+- `folha-de-contato.png`, um quadro de cada cena, e `projeto/`, o projeto do HyperFrames.
 
-O texto de cada fala está em `entrega/video/roteiro.mjs`. Para mudar uma frase, edite lá e rode de novo.
+O gerador apaga `entrega/saida/video/` a cada rodada. Para mudar uma frase, edite `roteiro.mjs` e rode de novo.
 
 ## 3. O ZIP
 

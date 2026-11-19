@@ -1,101 +1,102 @@
 // Gera o vídeo de Cybersecurity (roteiro de docs/disciplinas/cybersecurity.md, seis blocos) a partir das capturas
-// reais de entrega/gerar-evidencias.mjs: slides em 1920 x 1080, narração com a voz pt-BR do Windows, legenda .srt
-// e o MP4 (H.264, 30 qps, AAC 48 kHz, voz normalizada em -16 LUFS), como pede o kit de vídeo (VI-01 e VI-07).
+// reais de entrega/gerar-evidencias.mjs. As cenas são composições do HyperFrames (HTML com movimento, renderizado
+// quadro a quadro no Chrome), cada parte entrando quando a voz a nomeia; a narração é gerada nesta máquina; a
+// legenda .srt sai do tempo de cada fala; o MP4 segue o kit de vídeo (VI-01 e VI-07).
 //
-// Uso (da raiz, depois do gerar-evidencias):  node entrega/video/gerar-video.mjs [--voz Maria] [--velocidade 1.0]
-// Sai em entrega/saida/video/: calmaria-cybersecurity.mp4 e calmaria-cybersecurity.srt.
-import { readFileSync, rmSync, writeFileSync } from 'node:fs';
+// Uso (da raiz, depois do gerar-evidencias):
+//   node entrega/video/gerar-video.mjs [--voz voicestudio:LuyzVoice | --voz windows:Maria] [--velocidade 1.4]
+//                                      [--passos 32] [--qualidade delivery|draft] [--sem-render]
+// Sai em entrega/saida/video/: calmaria-cybersecurity.mp4, calmaria-cybersecurity.srt, folha-de-contato.png e o
+// projeto do HyperFrames em projeto/ (para abrir no preview: npx hyperframes@0.9.65 preview, dentro dele).
+import { copyFileSync, existsSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { roteiro } from './roteiro.mjs';
-import { abrirNavegador } from '../lib/navegador.mjs';
-import { slide } from '../lib/moldes.mjs';
+import { BLOCOS, dados, falar, roteiro } from './roteiro.mjs';
+import { montarCena } from './cenas.mjs';
+import { montarSrt } from './legenda.mjs';
+import { lerVoz, narrar, paraPcm } from './voz.mjs';
 import { RAIZ, SAIDA, pasta, rodar } from '../lib/util.mjs';
 
 const args = process.argv.slice(2);
 const opcao = (nome, padrao) => { const i = args.indexOf(`--${nome}`); return i >= 0 ? args[i + 1] : padrao; };
-const VOZ = opcao('voz', 'Maria');
-const VELOCIDADE = Number(opcao('velocidade', '1.0'));
+const VOZ = lerVoz(opcao('voz', 'voicestudio:LuyzVoice'));
+// A voz clonada sai lenta (uns 12 caracteres por segundo): em 1,4 fica num ritmo de fala normal e o vídeo cabe em
+// menos de 5 minutos. A voz do Windows já é rápida e fica em 1,0.
+const VELOCIDADE = Number(opcao('velocidade', VOZ.motor === 'voicestudio' ? '1.4' : '1.0'));
+const PASSOS = Number(opcao('passos', '32'));
+const QUALIDADE = opcao('qualidade', 'delivery');
+const RENDERIZAR = !args.includes('--sem-render');
+const HYPERFRAMES = 'hyperframes@0.9.65';
 
 const AMOSTRAS = 48000;           // por segundo, mono, 16 bits
-const POR_QUADRO = AMOSTRAS / 30; // 1600 amostras por quadro: cada cena dura um número inteiro de quadros
-const PAUSA_ENTRE_FRASES = 0.35;
-const PAUSA_NO_COMECO = 0.4;
-const PAUSA_NO_FIM = 0.7;
+const POR_QUADRO = AMOSTRAS / 30; // cada cena dura um número inteiro de quadros
+const PAUSA_NO_COMECO = 0.45;
+const PAUSA_ENTRE_FALAS = 0.35;
+const PAUSA_NO_FIM = 0.95;
 
-rmSync(join(SAIDA, 'video'), { recursive: true, force: true });
-const VIDEO = pasta(SAIDA, 'video');
-const SLIDES = pasta(VIDEO, 'slides');
-const FALAS = pasta(VIDEO, 'falas');
-const PECAS = resolve(RAIZ, 'design', 'pecas', 'png');
-
+const VIDEO = resolve(SAIDA, 'video');
 const tempo = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
-const srtTempo = (s) => {
-  const ms = Math.round(s * 1000);
-  const h = Math.floor(ms / 3600000); const m = Math.floor((ms % 3600000) / 60000);
-  const seg = Math.floor((ms % 60000) / 1000); const resto = ms % 1000;
-  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(seg).padStart(2, '0')},${String(resto).padStart(3, '0')}`;
-};
 
-/** Quebra uma frase em legendas de até duas linhas de 42 caracteres. */
-function legendas(texto) {
-  const palavras = texto.split(/\s+/);
-  const linhas = [];
-  let atual = '';
-  for (const p of palavras) {
-    if ((atual ? `${atual} ${p}` : p).length > 42 && atual) { linhas.push(atual); atual = p; }
-    else atual = atual ? `${atual} ${p}` : p;
-  }
-  if (atual) linhas.push(atual);
-  const blocos = [];
-  for (let i = 0; i < linhas.length; i += 2) blocos.push(linhas.slice(i, i + 2).join('\n'));
-  return blocos;
+function hyperframes(comando, cwd, mostrar = false) {
+  return rodar('cmd', ['/c', 'npx', '--yes', HYPERFRAMES, ...comando], {
+    // CI=1: sem o processo de check "quente", que segura a pasta do projeto por 5 minutos depois de terminar.
+    cwd, mostrar, env: { HYPERFRAMES_NO_TELEMETRY: '1', DO_NOT_TRACK: '1', CI: '1' },
+  });
+}
+
+/** O instante (segundos da cena) em que a voz diz um termo da fala i: proporção do texto dentro do áudio. */
+function tempos(cena, ini, dur) {
+  return {
+    ini, dur,
+    a(i, termo, ocorrencia = 1) {
+      const texto = cena.falas[i].texto;
+      let idx = -1;
+      for (let k = 0; k < ocorrencia; k++) idx = texto.indexOf(termo, idx + 1);
+      if (idx < 0) throw new Error(`Cena ${cena.id}, fala ${i}: não achei "${termo}" em "${texto}"`);
+      const fracao = falar(texto.slice(0, idx)).length / falar(texto).length;
+      return Math.max(ini[i], ini[i] + dur[i] * fracao - 0.12);
+    },
+  };
 }
 
 async function main() {
-  const cenas = roteiro();
+  const d = dados();
+  const cenas = roteiro(d);
 
-  // 1. A narração: um WAV por frase, convertido para PCM cru de 48 kHz.
+  rmSync(VIDEO, { recursive: true, force: true });
+  pasta(VIDEO);
+  const TMP = pasta(VIDEO, 'tmp');
+  const PROJETO = pasta(VIDEO, 'projeto');
+
+  // 1. A narração: um áudio por fala (do cache, se já existe), sem o silêncio das pontas.
   const frases = [];
-  cenas.forEach((c, ci) => (c.falas || []).forEach((f, fi) => frases.push({ id: `c${ci}-f${fi}`, fala: f.fala || f.texto })));
-  writeFileSync(join(VIDEO, 'frases.json'), JSON.stringify(frases), 'utf8');
-  console.log(`Narração: ${frases.length} frases com a voz ${VOZ}...`);
-  const r = await rodar('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', resolve(RAIZ, 'entrega', 'video', 'falar.ps1'),
-    '-Frases', join(VIDEO, 'frases.json'), '-Pasta', FALAS, '-Voz', VOZ, '-Velocidade', String(VELOCIDADE)]);
-  if (r.codigo !== 0) throw new Error(`A narração falhou:\n${r.saida}`);
-
+  cenas.forEach((c) => (c.falas || []).forEach((f, i) => frases.push({ id: `${c.id}-${i}`, fala: f.fala })));
+  const wavs = await narrar(frases, VOZ, { velocidade: VELOCIDADE, passos: PASSOS });
   const pcm = {};
-  for (const f of frases) {
-    const cru = join(FALAS, `${f.id}.pcm`);
-    const c = await rodar('ffmpeg', ['-y', '-v', 'error', '-i', join(FALAS, `${f.id}.wav`), '-f', 's16le', '-ar', String(AMOSTRAS), '-ac', '1', cru]);
-    if (c.codigo !== 0) throw new Error(`ffmpeg: ${c.saida}`);
-    pcm[f.id] = readFileSync(cru);
-  }
+  for (const f of frases) pcm[f.id] = await paraPcm(wavs[f.id], join(TMP, `${f.id}.pcm`));
 
-  // 2. A linha do tempo: cada cena com o áudio dela, arredondado para quadros inteiros.
-  const silencio = (seg) => Buffer.alloc(Math.round(seg * AMOSTRAS) * 2);
-  const partesDoAudio = [];
-  const linhaDoTempo = [];
-  const srt = [];
+  // 2. A linha do tempo: cada cena com o áudio dela, arredondada para quadros inteiros.
+  const silencio = (s) => Buffer.alloc(Math.round(s * AMOSTRAS) * 2);
+  const partes = [];
+  const linha = [];
+  const falasNoVideo = [];
   let inicio = 0;
-  cenas.forEach((c, ci) => {
+  for (const c of cenas) {
     const pedacos = [];
-    const cues = [];
+    const ini = [];
+    const dur = [];
     if (c.falas?.length) {
-      pedacos.push(silencio(PAUSA_NO_COMECO));
       let t = PAUSA_NO_COMECO;
-      c.falas.forEach((f, fi) => {
-        if (fi > 0) { pedacos.push(silencio(PAUSA_ENTRE_FRASES)); t += PAUSA_ENTRE_FRASES; }
-        const audio = pcm[`c${ci}-f${fi}`];
-        const dur = audio.length / 2 / AMOSTRAS;
-        const blocos = legendas(f.texto);
-        const total = blocos.reduce((s, b) => s + b.length, 0);
-        let tb = t;
-        for (const b of blocos) { const d = dur * (b.length / total); cues.push({ de: tb, ate: tb + d, texto: b }); tb += d; }
+      pedacos.push(silencio(t));
+      c.falas.forEach((f, i) => {
+        if (i > 0) { const p = PAUSA_ENTRE_FALAS + (c.falas[i - 1].pausa || 0); pedacos.push(silencio(p)); t += p; }
+        const audio = pcm[`${c.id}-${i}`];
+        const s = audio.length / 2 / AMOSTRAS;
+        ini.push(t); dur.push(s);
+        falasNoVideo.push({ texto: f.texto, de: inicio + t, ate: inicio + t + s });
         pedacos.push(audio);
-        t += dur;
+        t += s;
       });
-      pedacos.push(silencio(PAUSA_NO_FIM));
+      pedacos.push(silencio(PAUSA_NO_FIM + (c.fim || 0)));
     } else {
       pedacos.push(silencio(c.duracao));
     }
@@ -103,62 +104,109 @@ async function main() {
     const quadros = Math.ceil(bloco.length / 2 / POR_QUADRO);
     bloco = Buffer.concat([bloco, Buffer.alloc(quadros * POR_QUADRO * 2 - bloco.length)]);
     const duracao = quadros / 30;
-    partesDoAudio.push(bloco);
-    linhaDoTempo.push({ cena: c, inicio, duracao });
-    for (const q of cues) srt.push({ de: inicio + q.de, ate: inicio + q.ate, texto: q.texto });
+    partes.push(bloco);
+    linha.push({ c, inicio, duracao, t: tempos(c, ini, dur) });
     inicio += duracao;
-  });
-  writeFileSync(join(VIDEO, 'narracao.pcm'), Buffer.concat(partesDoAudio));
-  console.log(`Duração: ${tempo(inicio)} (${inicio.toFixed(1)} s).`);
-
-  // 3. As cartelas de bloco (VI-04) com o tempo de cada bloco, pelo exportador do design.
-  const blocos = [...new Set(cenas.filter((c) => c.bloco).map((c) => c.bloco.n))];
-  for (const n of blocos) {
-    const doBloco = linhaDoTempo.filter((l) => l.cena.bloco?.n === n);
-    const de = doBloco[0].inicio;
-    const ate = doBloco.at(-1).inicio + doBloco.at(-1).duracao;
-    const cena = doBloco[0].cena;
-    const saida = join(SLIDES, `cartela-${n}.png`);
-    const e = await rodar('python', [resolve(RAIZ, 'design', 'pecas', 'exportar.py'), 'cartela', '--n', String(n), '--total',
-      String(blocos.length), '--titulo', cena.bloco.titulo, '--tempo', `${tempo(de)} a ${tempo(ate)}`, '--saida', saida]);
-    if (e.codigo !== 0) throw new Error(`exportar.py cartela: ${e.saida}`);
   }
+  const TOTAL = inicio;
+  writeFileSync(join(TMP, 'narracao.pcm'), Buffer.concat(partes));
+  console.log(`Duração: ${tempo(TOTAL)} (${TOTAL.toFixed(2)} s), ${frases.length} falas, ${cenas.length} cenas.`);
 
-  // 4. Os slides (as cenas com HTML), num navegador sem janela.
-  const nav = await abrirNavegador();
-  try {
-    for (const [i, l] of linhaDoTempo.entries()) {
-      const c = l.cena;
-      if (c.tipo === 'cartela') { c.imagem = join(SLIDES, `cartela-${c.n}.png`); continue; }
-      if (c.tipo === 'peca') { c.imagem = join(PECAS, c.arquivo); continue; }
-      const html = join(SLIDES, `slide-${String(i).padStart(2, '0')}.html`);
-      writeFileSync(html, slide({ bloco: c.cabecalho, titulo: c.titulo, corpo: c.corpo, escuro: c.escuro }));
-      const aba = await nav.novaAba({ largura: 1920, altura: 1080, escala: 1 });
-      await aba.ir(pathToFileURL(html).href);
-      c.imagem = await aba.foto(html.replace(/\.html$/, '.png'));
-      await aba.fechar();
-    }
-  } finally {
-    await nav.fechar();
+  // 3. O áudio: passa-alta, compressão leve e loudnorm em duas passadas, para -16 LUFS (VI-01).
+  const cadeia = 'highpass=f=70,acompressor=threshold=-22dB:ratio=2.5:attack=8:release=120:makeup=1';
+  const crua = ['-f', 's16le', '-ar', String(AMOSTRAS), '-ac', '1', '-i', join(TMP, 'narracao.pcm')];
+  const medida = await rodar('ffmpeg', ['-hide_banner', ...crua, '-af', `${cadeia},loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json`, '-f', 'null', '-']);
+  const m = JSON.parse(medida.saida.slice(medida.saida.lastIndexOf('{'), medida.saida.lastIndexOf('}') + 1));
+  const narracao = join(PROJETO, 'assets', 'narracao.wav');
+  pasta(PROJETO, 'assets');
+  const norm = `loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true`;
+  const a = await rodar('ffmpeg', ['-y', '-v', 'error', ...crua, '-af', `${cadeia},${norm}`, '-ar', '48000', '-ac', '2', '-c:a', 'pcm_s16le', narracao]);
+  if (a.codigo !== 0) throw new Error(`ffmpeg (áudio): ${a.saida}`);
+
+  // 4. A legenda.
+  writeFileSync(join(VIDEO, 'calmaria-cybersecurity.srt'), montarSrt(falasNoVideo), 'utf8');
+
+  // 5. O projeto do HyperFrames: fontes e imagem do design e das capturas, uma composição por cena.
+  const fontes = pasta(PROJETO, 'assets', 'fonts');
+  for (const f of ['next-400', 'next-500', 'next-600', 'next-700', 'mono-400', 'mono-600']) {
+    copyFileSync(resolve(RAIZ, 'design', 'pecas', 'fontes', `${f}.ttf`), join(fontes, `${f}.ttf`));
   }
+  copyFileSync(join(SAIDA, 'capturas', 'painel-inteiro.png'), join(pasta(PROJETO, 'assets', 'img'), 'painel-inteiro.png'));
+  const COMPOSICOES = pasta(PROJETO, 'compositions');
+  const tempoDoBloco = (n) => {
+    const doBloco = linha.filter((l) => l.c.bloco === n || (l.c.tipo === 'cartela' && l.c.n === n));
+    return `${tempo(doBloco[0].inicio)} a ${tempo(doBloco.at(-1).inicio + doBloco.at(-1).duracao)}`;
+  };
+  for (const l of linha) {
+    const extra = l.c.tipo === 'cartela' ? { tempo: tempoDoBloco(l.c.n) } : {};
+    writeFileSync(join(COMPOSICOES, `${l.c.id}.html`), montarCena(l.c, { ...l.t, total: l.duracao }, d, extra), 'utf8');
+  }
+  const hosts = linha.map((l) => `      <div id="${l.c.id}" data-composition-id="${l.c.id}" data-composition-src="compositions/${l.c.id}.html"
+        data-start="${l.inicio.toFixed(3)}" data-duration="${l.duracao.toFixed(3)}" data-track-index="0" data-track-kind="graphics"
+        data-width="1920" data-height="1080"></div>`).join('\n');
+  writeFileSync(join(PROJETO, 'index.html'), `<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Calmaria: o dado de saúde não pode vazar</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #1F2733; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="${TOTAL.toFixed(3)}" data-width="1920"
+      data-height="1080" data-fps="30">
+${hosts}
+      <audio id="narracao" class="clip" src="assets/narracao.wav" data-start="0" data-duration="${TOTAL.toFixed(3)}"
+        data-track-index="1" data-volume="1"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
+`, 'utf8');
+  writeFileSync(join(PROJETO, 'package.json'), JSON.stringify({
+    name: 'calmaria-cybersecurity', private: true, type: 'module',
+    scripts: { dev: `npx --yes ${HYPERFRAMES} preview`, check: `npx --yes ${HYPERFRAMES} check`, render: `npx --yes ${HYPERFRAMES} render` },
+  }, null, 2));
+  writeFileSync(join(VIDEO, 'linha-do-tempo.json'), JSON.stringify(linha.map((l) => ({
+    cena: l.c.id, bloco: l.c.bloco ?? null, inicio: Number(l.inicio.toFixed(3)), duracao: Number(l.duracao.toFixed(3)),
+  })), null, 2));
+  for (const n of [1, 2, 3, 4, 5, 6]) console.log(`  bloco ${n} (${BLOCOS[n]}): ${tempoDoBloco(n)}`);
 
-  // 5. O vídeo: as imagens com a duração exata de cada cena e a narração por baixo.
-  const lista = linhaDoTempo.map((l) => `file '${l.cena.imagem.replace(/\\/g, '/').replace(/'/g, "'\\''")}'\nduration ${l.duracao.toFixed(6)}`);
-  lista.push(`file '${linhaDoTempo.at(-1).cena.imagem.replace(/\\/g, '/')}'`);
-  writeFileSync(join(VIDEO, 'imagens.txt'), lista.join('\n'));
-  writeFileSync(join(VIDEO, 'calmaria-cybersecurity.srt'),
-    srt.map((q, i) => `${i + 1}\n${srtTempo(q.de)} --> ${srtTempo(q.ate)}\n${q.texto}\n`).join('\n'), 'utf8');
+  // 6. A conferência do HyperFrames (contrato, leiaute, fontes).
+  console.log('Conferindo o projeto (hyperframes check)...');
+  const chk = await hyperframes(['check', '--json'], PROJETO);
+  writeFileSync(join(VIDEO, 'check.json'), chk.saida);
+  if (chk.codigo !== 0) console.log(`  o check terminou com código ${chk.codigo}: veja entrega/saida/video/check.json`);
+  if (!RENDERIZAR) { console.log('Sem render (--sem-render). Projeto em entrega/saida/video/projeto.'); return; }
+
+  // 7. O render (quadro a quadro) e a mixagem final com a narração já nivelada.
+  console.log(`Renderizando (${QUALIDADE})...`);
+  const mudo = join(TMP, 'render.mp4');
+  const r = await hyperframes(['render', '--quality', QUALIDADE, '--output', mudo], PROJETO, true);
+  if (r.codigo !== 0 || !existsSync(mudo)) throw new Error(`O render falhou:\n${r.saida.slice(-3000)}`);
   const mp4 = join(VIDEO, 'calmaria-cybersecurity.mp4');
-  console.log('Montando o MP4...');
-  const f = await rodar('ffmpeg', ['-y', '-v', 'error',
-    '-f', 'concat', '-safe', '0', '-i', join(VIDEO, 'imagens.txt'),
-    '-f', 's16le', '-ar', String(AMOSTRAS), '-ac', '1', '-i', join(VIDEO, 'narracao.pcm'),
-    '-vf', 'fps=30,scale=1920:1080:flags=lanczos,format=yuv420p',
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-tune', 'stillimage',
-    '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-ac', '2',
-    '-movflags', '+faststart', '-t', inicio.toFixed(3), mp4]);
-  if (f.codigo !== 0) throw new Error(`ffmpeg: ${f.saida}`);
-  console.log(`Pronto: entrega/saida/video/calmaria-cybersecurity.mp4 e .srt (${tempo(inicio)}).`);
+  const f = await rodar('ffmpeg', ['-y', '-v', 'error', '-i', mudo, '-i', narracao, '-map', '0:v:0', '-map', '1:a:0',
+    '-vf', 'fps=30,scale=1920:1080:flags=lanczos,format=yuv420p', '-c:v', 'libx264', '-preset', 'slow', '-crf', '18',
+    '-profile:v', 'high', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2', '-movflags', '+faststart',
+    '-t', TOTAL.toFixed(3), mp4]);
+  if (f.codigo !== 0) throw new Error(`ffmpeg (mixagem): ${f.saida}`);
+
+  // 8. A folha de contato: um quadro do meio de cada cena.
+  const quadros = pasta(TMP, 'quadros');
+  for (const [i, l] of linha.entries()) {
+    const t = l.c.falas ? l.inicio + l.duracao - 0.4 : l.inicio + l.duracao * 0.6;
+    await rodar('ffmpeg', ['-y', '-v', 'error', '-ss', t.toFixed(3), '-i', mp4, '-frames:v', '1', '-vf', 'scale=480:270', join(quadros, `q${String(i).padStart(2, '0')}.png`)]);
+  }
+  const linhas = Math.ceil(linha.length / 4);
+  await rodar('ffmpeg', ['-y', '-v', 'error', '-i', join(quadros, 'q%02d.png'), '-vf', `tile=4x${linhas}:padding=4:color=0x1F2733`,
+    '-frames:v', '1', join(VIDEO, 'folha-de-contato.png')]);
+  console.log(`Pronto: entrega/saida/video/calmaria-cybersecurity.mp4 e .srt (${tempo(TOTAL)}).`);
 }
 
 main().catch((erro) => { console.error(`FALHOU: ${erro.stack || erro.message}`); process.exit(1); });
