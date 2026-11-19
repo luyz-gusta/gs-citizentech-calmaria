@@ -3,7 +3,7 @@ using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure.Persistencia;
 using Microsoft.EntityFrameworkCore;
 
-namespace Calmaria.Infrastructure.Sensorial;
+namespace Calmaria.Application.Sensorial;
 
 /// <summary>Recebe as leituras do ESP32 (MQTT ou HTTP) e consulta o histórico.</summary>
 internal sealed class LeituraService(CalmariaDbContext db, ICalculadoraIndice calculadora, TimeProvider relogio)

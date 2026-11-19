@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Calmaria.Application\Calmaria.Application.csproj" />
     <ProjectReference Include="..\Calmaria.Domain\Calmaria.Domain.csproj" />
     <ProjectReference Include="..\Calmaria.Infrastructure\Calmaria.Infrastructure.csproj" />
     <ProjectReference Include="..\Calmaria.Privacidade\Calmaria.Privacidade.csproj" />

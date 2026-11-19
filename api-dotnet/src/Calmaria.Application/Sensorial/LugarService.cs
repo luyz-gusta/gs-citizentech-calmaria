@@ -3,7 +3,7 @@ using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure.Persistencia;
 using Microsoft.EntityFrameworkCore;
 
-namespace Calmaria.Infrastructure.Sensorial;
+namespace Calmaria.Application.Sensorial;
 
 /// <summary>Consultas e cadastro de lugares do módulo Sensorial.</summary>
 internal sealed class LugarService(CalmariaDbContext db, TimeProvider relogio) : ILugarService, ILugarConsulta, ILugarCadastro

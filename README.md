@@ -67,10 +67,10 @@ Privacidade). Cada professor acha aqui o que avalia.
 |---|---|---|
 | C# | POO | `api-dotnet/src/Calmaria.Domain/` (hierarquia de lugares) e `src/Calmaria.Privacidade/Regras/` (uma classe por regra) |
 | C# | Web API | `api-dotnet/src/Calmaria.Api/` (controllers por módulo) e o Scalar em `/scalar` |
-| C# | EF Core e LINQ | `api-dotnet/src/Calmaria.Infrastructure/` e os serviços de horários calmos e de resumo |
+| C# | EF Core e LINQ | `api-dotnet/src/Calmaria.Infrastructure/Persistencia/` e as consultas LINQ dos casos de uso em `src/Calmaria.Application/` (horários calmos e resumo dos relatos) |
 | C# | Async/await | O worker MQTT em `src/Calmaria.Infrastructure/Mqtt/` e o cliente do LLM em `src/Calmaria.Privacidade/Remediacao/` |
 | C# | Qualidade | Os módulos, os dois projetos de teste e este README |
-| SOA | Domínio | `api-dotnet/src/Calmaria.Domain/` |
+| SOA | Domínio | `api-dotnet/src/Calmaria.Domain/`, numa API em quatro camadas: domínio, aplicação (`src/Calmaria.Application/`), infraestrutura e API |
 | SOA | Banco | PostgreSQL com EF Core; conexão por variável de ambiente |
 | SOA | Migrações | `api-dotnet/src/Calmaria.Infrastructure/Persistencia/Migracoes/` (`Inicial_Sensorial`, `Comunidade`, `Privacidade`) |
 | SOA | Documentação automática | Scalar em `/scalar`, com exemplos; a seção "Para a avaliação de SOA" em `api-dotnet/README.md` |
