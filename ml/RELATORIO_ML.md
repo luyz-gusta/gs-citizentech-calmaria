@@ -3,6 +3,9 @@
 Calmaria, Global Solution 2026.2, FIAP. Notebook: [calmaria_ml.ipynb](calmaria_ml.ipynb). Dados:
 [dados/README.md](dados/README.md). Vídeo (até 5 minutos, não listado): https://youtu.be/IYpR5PEd4nM
 
+**Integrantes (3ESPW):** Guilherme Almeida (RM 555180), Luiz Gustavo da Silva (RM 558358), Rafael Duarte de
+Freitas (RM 558644), Rafael Gaspar Bragança Martins (RM 557228) e Vinicius Monteiro Araújo (RM 555088).
+
 ## 1. O problema e a pergunta de ML
 
 Para muitas pessoas autistas, barulho alto é gatilho de sobrecarga sensorial. A Calmaria mostra no app se um
