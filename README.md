@@ -26,8 +26,8 @@ Global Solution 2026.2 (CitizenTech), FIAP, Engenharia de Software, 3º ano.
 | `mobile/` | Mobile Development e IoT | [mobile.md](docs/disciplinas/mobile.md) |
 | `iot/` | Physical Computing | [physical-computing.md](docs/disciplinas/physical-computing.md) |
 | `ml/` | IA e Machine Learning | [ia-machine-learning.md](docs/disciplinas/ia-machine-learning.md) |
-| `infra/` | Operating Systems | [operating-systems.md](docs/disciplinas/operating-systems.md) |
-| `qa/` | Testing, Compliance e QA | [testing-qa.md](docs/disciplinas/testing-qa.md) |
+| Fora do repositório: entregue à parte por Rafael Duarte de Freitas | Operating Systems | [operating-systems.md](docs/disciplinas/operating-systems.md) |
+| Fora do repositório: entregue à parte por Rafael Duarte de Freitas | Testing, Compliance e QA | [testing-qa.md](docs/disciplinas/testing-qa.md) |
 | `design/` | Todas (identidade, cores, fonte e o desenho de cada peça) | [plano-de-design.md](design/plano-de-design.md) e `design/design-da-calmaria.html` |
 | `entrega/` | C#, SOA e Cybersecurity (as evidências e o vídeo, gerados de execuções reais) | [entrega/LEIA-ME.md](entrega/LEIA-ME.md) |
 
