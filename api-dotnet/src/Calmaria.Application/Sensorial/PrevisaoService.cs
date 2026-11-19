@@ -4,7 +4,7 @@ using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure.Persistencia;
 using Microsoft.EntityFrameworkCore;
 
-namespace Calmaria.Infrastructure.Sensorial;
+namespace Calmaria.Application.Sensorial;
 
 /// <summary>Importa o CSV do notebook de ML e consulta as previsões por distrito.</summary>
 internal sealed class PrevisaoService(CalmariaDbContext db) : IPrevisaoService

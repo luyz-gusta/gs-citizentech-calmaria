@@ -2,7 +2,7 @@ using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure.Persistencia;
 using Microsoft.EntityFrameworkCore;
 
-namespace Calmaria.Infrastructure.Sensorial;
+namespace Calmaria.Application.Sensorial;
 
 /// <summary>O refúgio do botão de crise: um refúgio fixo ou um lugar CALMO agora, o que estiver mais perto.</summary>
 internal sealed class RefugioService(CalmariaDbContext db, TimeProvider relogio) : IRefugioService

@@ -2,7 +2,7 @@ using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure.Persistencia;
 using Microsoft.EntityFrameworkCore;
 
-namespace Calmaria.Infrastructure.Sensorial;
+namespace Calmaria.Application.Sensorial;
 
 /// <summary>Busca as leituras dos últimos 28 dias e entrega o cálculo à regra do domínio.</summary>
 internal sealed class HorarioCalmoService(CalmariaDbContext db, TimeProvider relogio) : IHorarioCalmoService

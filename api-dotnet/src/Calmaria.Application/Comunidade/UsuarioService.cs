@@ -4,7 +4,7 @@ using Calmaria.Infrastructure.Persistencia;
 using Calmaria.Privacidade.Taint;
 using Microsoft.EntityFrameworkCore;
 
-namespace Calmaria.Infrastructure.Comunidade;
+namespace Calmaria.Application.Comunidade;
 
 /// <summary>Usuário anônimo e perfil sensorial.</summary>
 internal sealed class UsuarioService(CalmariaDbContext db, ISanitizador sanitizador, TimeProvider relogio)

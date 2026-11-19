@@ -1,6 +1,7 @@
-# Segredos: nunca versionar. Cada pasta traz um .env.exemplo com as chaves vazias.
+# Segredos: nunca versionar. Cada pasta traz um .env.exemplo (na API, .env.example, o nome do guia de SOA) sem os segredos.
 .env
 .env.*
+!.env.example
 !.env.exemplo
 *.pfx
 *.pem

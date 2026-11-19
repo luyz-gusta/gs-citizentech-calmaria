@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- A camada de aplicação: os casos de uso dos módulos Sensorial e Comunidade. Implementa as interfaces de serviço
+       do domínio (Calmaria.Domain) e usa o banco pelo DbContext da infraestrutura. -->
+  <ItemGroup>
+    <ProjectReference Include="..\Calmaria.Domain\Calmaria.Domain.csproj" />
+    <ProjectReference Include="..\Calmaria.Infrastructure\Calmaria.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

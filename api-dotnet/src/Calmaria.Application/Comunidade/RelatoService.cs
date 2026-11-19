@@ -5,7 +5,7 @@ using Calmaria.Infrastructure.Persistencia;
 using Calmaria.Privacidade.Taint;
 using Microsoft.EntityFrameworkCore;
 
-namespace Calmaria.Infrastructure.Comunidade;
+namespace Calmaria.Application.Comunidade;
 
 /// <summary>
 /// Relatos de visita. O lugar é conferido por <see cref="ILugarConsulta"/> (a porta do módulo Sensorial), e o

@@ -3,10 +3,24 @@
 A API em C# (.NET 10) que atende três disciplinas da GS: C# Software Development, SOA e Web Services e
 Cybersecurity. Três módulos que só conversam por interface: **Sensorial** (lugares, leituras, índice, crise),
 **Comunidade** (perfil anônimo e relatos) e **Privacidade** (dado sensível, taint, Risco Cidadão). O plano
-completo está em `docs/disciplinas/csharp.md`; a Ficha da CitizenTech, no [README da raiz](../README.md).
+completo está em `docs/disciplinas/csharp.md`.
 
 **Integrantes (3ESPW):** Guilherme Almeida (RM 555180), Luiz Gustavo da Silva (RM 558358), Rafael Duarte de
 Freitas (RM 558644), Rafael Gaspar Bragança Martins (RM 557228) e Vinicius Monteiro Araújo (RM 555088).
+
+## Ficha da CitizenTech
+
+| Campo | Resposta |
+|---|---|
+| Nome da CitizenTech | Calmaria |
+| Cidade e bairro | São Paulo, Bela Vista e Consolação |
+| Cidadão beneficiado | Pessoas autistas com hipersensibilidade sensorial e as famílias que planejam as saídas delas |
+| Problema, em uma frase | Pessoas autistas não têm como saber, antes de sair, se um mercado ou uma estação vai estar barulhento, claro demais ou lotado, nem onde fica o lugar calmo mais próximo quando a sobrecarga vem |
+| Como funciona | Sensores calculam um índice de sobrecarga de cada lugar; o app mostra o índice, os horários mais calmos e a previsão de barulho da região, e tem um botão de crise que leva ao refúgio calmo mais próximo, mesmo offline |
+| O que cada parte faz | O ESP32 mede; a API em C# guarda, calcula, recebe os relatos e protege o dado de saúde com o módulo de privacidade; o ML prevê o barulho com o SP156; o app mostra; a VM hospeda e monitora; o Azure Boards garante a qualidade |
+| Link do repositório | https://github.com/luyz-gusta/gs-citizentech-calmaria |
+| Indicador de impacto | Tempo do toque no botão de crise até a chegada ao refúgio (meta: menos de 10 minutos a pé) e a parcela das visitas feitas em horário calmo |
+| ODS conectados | 3 (meta 3.4), 10 (meta 10.2) e 11 (metas 11.2 e 11.7) |
 
 ## Estado (17/11)
 Os três módulos completos. A parte de Cybersecurity (varreduras, tradução por IA, Risco Cidadão, painel, Semgrep e
@@ -60,12 +74,24 @@ São 241 testes: 137 da API e 104 do módulo de privacidade.
 
 | Critério | Onde está | O que mostrar |
 |---|---|---|
-| Estruturação do domínio (3,0) | `src/Calmaria.Domain/Sensorial/` (lugar, refúgio, dispositivo, leitura, índice, previsão) e `src/Calmaria.Domain/Comunidade/` (usuário, perfil, relato), com objetos de valor (`Coordenada`, `NotaSensorial`, `Sensibilidade`) e as regras dentro das entidades | O diagrama abaixo; uma regra barrando dado inválido: nota 6 (400), leitura de -10 dB (422), relato repetido (409) |
-| Conexão com banco (3,0) | PostgreSQL com EF Core e Npgsql em `src/Calmaria.Infrastructure/Persistencia/`: herança numa tabela (TPH), 1:1 (usuário e perfil), 1:N com cascata (usuário e relatos), restrição (lugar com relato), índices | `\dt` no `psql`; a conexão vem de `ConnectionStrings__Calmaria`, nunca do código |
-| Migrações (1,5) | Uma por módulo em `src/Calmaria.Infrastructure/Persistencia/Migracoes/`: `Inicial_Sensorial`, `Comunidade` e `Privacidade`; o `efbundle` que a VM aplica | `dotnet ef migrations list` e o banco criado do zero |
+| Estruturação do domínio (3,0) | Quatro camadas, uma por projeto (tabela abaixo). `src/Calmaria.Domain/Sensorial/` (lugar, refúgio, dispositivo, leitura, índice, previsão) e `src/Calmaria.Domain/Comunidade/` (usuário, perfil, relato), com objetos de valor (`Coordenada`, `NotaSensorial`, `Sensibilidade`) e as regras dentro das entidades; os casos de uso em `src/Calmaria.Application/`; entrada e saída por DTOs com validação em `src/Calmaria.Api/` | O diagrama abaixo; uma regra barrando dado inválido: nota 6 (400), leitura de -10 dB (422), relato repetido (409) |
+| Conexão com banco (3,0) | PostgreSQL com EF Core e Npgsql em `src/Calmaria.Infrastructure/Persistencia/`: herança numa tabela (TPH), 1:1 (usuário e perfil), 1:N com cascata (usuário e relatos), restrição (lugar com relato), índices. CRUD completo de lugares (`/api/lugares`) e consultas além do CRUD: lugares perto por raio e tipo, histórico por período, relatos paginados | `\dt` no `psql`; a conexão vem de `ConnectionStrings__Calmaria`, nunca do código, com o modelo em [.env.example](.env.example) |
+| Migrações (1,5) | Uma por módulo em `src/Calmaria.Infrastructure/Persistencia/Migracoes/`: `Inicial_Sensorial`, `Comunidade` e `Privacidade`; o seed dos lugares vem na primeira migração; o `efbundle` que a VM aplica | `dotnet ef migrations list` e o banco criado do zero com o comando de [Como rodar](#como-rodar) |
 | Documentação automática (1,5) | OpenAPI gerado pelo código (comentários XML e `[ProducesResponseType]` em cada status), Scalar em `/scalar` com os três módulos, exemplos e o tema da Calmaria (`src/Calmaria.Api/Comum/DocumentacaoOpenApi.cs` e `TemaDoScalar.cs`) | Um endpoint testado no próprio Scalar |
-| Testes automatizados (1,0) | `tests/Calmaria.Tests` (domínio e endpoints com `WebApplicationFactory` e SQLite em memória) e `tests/Calmaria.Privacidade.Tests` (MSTest) | `dotnet test` com 241 testes |
+| Testes automatizados (1,0) | `tests/Calmaria.Tests` (domínio e endpoints com `WebApplicationFactory` e SQLite em memória) e `tests/Calmaria.Privacidade.Tests` (MSTest) | `dotnet test api-dotnet/Calmaria.sln`: 241 testes ([print](docs/evidencias/testes.png)) |
 | Chamada a API REST | O `TradutorLlm` chama o LLM por `HttpClient` tipado com tempo limite, nova tentativa e disjuntor (`Microsoft.Extensions.Http.Resilience`) e cai na frase pronta se o serviço falhar; testado com um serviço simulado (resposta certa, erro 500, 401, sem rede, resposta fora do formato) | O alerta no painel `/seguranca`, que diz se veio do LLM ou da frase pronta, e por quê |
+
+### As camadas
+
+| Camada | Projeto | O que tem | Depende de |
+|---|---|---|---|
+| Domínio | `src/Calmaria.Domain/` | Entidades, objetos de valor e regras (índice de sobrecarga, nota de 1 a 5, leitura dentro da faixa do sensor, horários calmos) e as interfaces dos casos de uso (`ILeituraService`, `IRelatoService`...) | nada de HTTP nem de banco |
+| Aplicação | `src/Calmaria.Application/` | Os casos de uso: registrar leitura, consultar lugares e horários calmos, achar o refúgio, criar relato, apagar usuário (`LeituraService`, `LugarService`, `RelatoService`...) | Domínio e o `DbContext` da Infraestrutura |
+| Infraestrutura | `src/Calmaria.Infrastructure/` | `DbContext`, mapeamentos, migrações, seed, consumidor MQTT e as fontes de varredura | Domínio |
+| API | `src/Calmaria.Api/` | Controllers, DTOs de entrada e saída com validação, erros em `ProblemDetails`, OpenAPI e Scalar | Aplicação, pelas interfaces do domínio |
+
+O módulo de Privacidade (`src/Calmaria.Privacidade/`) não depende de ASP.NET nem de banco, para poder ir sozinho no
+ZIP de Cybersecurity.
 
 **Onde está a orientação a serviços.** Os três módulos têm fronteira e contrato: cada um tem os próprios
 controllers, serviços, tabelas e migração, e só conversam por interface (`ILugarConsulta`, `ISanitizador`,
@@ -209,7 +235,16 @@ Precisa do SDK do .NET 10 e de um PostgreSQL 16 ou mais novo.
 powershell -ExecutionPolicy Bypass -File api-dotnet/scripts/criar-banco-dev.ps1
 ```
 
-2. Subir a API. Em desenvolvimento, as tabelas e o seed são criados ao subir:
+2. Criar as tabelas do zero, pelas migrações (o seed dos lugares vem junto):
+
+```bash
+cd api-dotnet
+dotnet tool restore
+dotnet ef database update --project src/Calmaria.Infrastructure --startup-project src/Calmaria.Api
+cd ..
+```
+
+3. Subir a API. Em desenvolvimento, ela também aplica as migrações que faltarem e grava as leituras simuladas:
 
 ```bash
 dotnet run --project api-dotnet/src/Calmaria.Api
@@ -219,7 +254,7 @@ A API escuta em `http://0.0.0.0:5080`: no computador, `http://localhost:5080/sca
 computador na rede, como `http://192.168.0.10:5080`. O painel fica em `http://localhost:5080/seguranca` e pede a
 chave de administrador (a do user-secrets `Privacidade:ChaveAdmin`).
 
-3. Rodar os testes (SQLite em memória, sem PostgreSQL):
+4. Rodar os testes (SQLite em memória, sem PostgreSQL):
 
 ```bash
 dotnet test api-dotnet/Calmaria.sln
@@ -240,7 +275,8 @@ api-dotnet/
 │   ├── Calmaria.Domain/          Entidades, objetos de valor e interfaces dos módulos Sensorial e Comunidade
 │   ├── Calmaria.Privacidade/     O módulo de Cybersecurity, sem ASP.NET nem banco: regras, motor, taint,
 │   │                             varredura, remediação por IA e Risco Cidadão
-│   ├── Calmaria.Infrastructure/  DbContext, configurações, migrações, seed, serviços, MQTT e fontes de varredura
+│   ├── Calmaria.Application/     Os casos de uso dos módulos Sensorial e Comunidade
+│   ├── Calmaria.Infrastructure/  DbContext, configurações, migrações, seed, MQTT e fontes de varredura
 │   └── Calmaria.Api/             Controllers por módulo, guardas de saída, Program.cs, Scalar e o painel (wwwroot)
 ├── tests/
 │   ├── Calmaria.Tests/              Domínio e endpoints (MSTest)

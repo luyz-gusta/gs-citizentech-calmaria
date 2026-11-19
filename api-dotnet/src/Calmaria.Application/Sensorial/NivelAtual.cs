@@ -2,7 +2,7 @@ using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure.Persistencia;
 using Microsoft.EntityFrameworkCore;
 
-namespace Calmaria.Infrastructure.Sensorial;
+namespace Calmaria.Application.Sensorial;
 
 /// <summary>O "agora" de cada lugar: a leitura mais recente dos últimos 15 minutos.</summary>
 internal static class NivelAtual

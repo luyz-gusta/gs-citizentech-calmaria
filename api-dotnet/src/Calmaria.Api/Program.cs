@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Calmaria.Api.Comum;
 using Calmaria.Api.Privacidade;
+using Calmaria.Application;
 using Calmaria.Domain.Sensorial;
 using Calmaria.Infrastructure;
 using Calmaria.Infrastructure.Persistencia;
@@ -30,7 +31,8 @@ if (pastaDeLogs is not null)
 
 builder.Services.AddPersistencia(conexao ?? string.Empty);
 builder.Services.AddModuloSensorial(builder.Configuration);
-builder.Services.AddModuloComunidade();
+builder.Services.AddCasosDeUsoSensorial();
+builder.Services.AddCasosDeUsoComunidade();
 builder.Services.AddModuloPrivacidade(builder.Configuration, pastaDeLogs,
     RaizDoRepositorio(builder.Environment.ContentRootPath));
 
